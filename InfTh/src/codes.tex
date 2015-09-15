@@ -1,0 +1,195 @@
+Output of the source is in discrete time and discrete valued.
+
+\begin{example}
+    The output is a sequence of letters from an (finite) alphabet $\U$.
+\end{example}
+
+We want to decompose the encoder into a source encoder and a channel encoder. So, the number of encoder is linear with respect of the the number of sources and channel and not quadratic.
+
+The source encoder outputs a stream of bits and don't care of the channel and the channel encoder translate the input stream of bits without considering the kind of data.
+
+We can use this architecture without loss of generality.
+
+\bigskip
+
+Source coding : Representation of information sources in bits.
+
+\begin{example}
+    $\U = \set{a,b,c,d}$
+    \[
+        \begin{aligned}
+            a &\ra 0\\
+            b &\ra 0\\
+            c &\ra 0\\
+            d &\ra 1
+        \end{aligned}
+        \qquad \text{bad, "singular"}            
+    \]
+\end{example}
+
+A source code is a function
+\[
+    \C : \U \ra \set{0;1}^*
+\]
+
+\begin{definition}
+    A code $\C$ is called singular  if
+    \[
+        \exists (u,v) \in \U^2, u \neq v \wedge \C(u) = \C(v)
+    \]
+\end{definition}
+
+\begin{definition}
+    A code $\C$ is called non singular (injective) if
+    \[
+        \forall (u,v) \in \U^2, u \neq v \Ra \C(u) \neq \C(v)
+    \]
+\end{definition}
+
+\begin{example}
+    \[
+        \begin{aligned}
+            a &\ra 0\\
+            b &\ra 00\\
+            c &\ra 1\\
+            d &\ra 11
+        \end{aligned}
+        \qquad \text{still bad, "not uniquely decodable"}            
+    \]
+\end{example}
+
+\begin{definition}
+    Given a code $\C : \U \ra \set{0;1}^*$, define for $n\in\NN^*$
+    \[
+        \C^n : \U^n \ra \set{0;1}^*
+    \]
+    as
+    \[
+        \C^n(u_1\ldots u_n) = \C(u_1) \ldots \C(u_n)
+    \]
+    and
+    \[
+        \C^* : \U^* \ra \set{0;1}^*
+    \]
+    as
+    \[
+        \C^n(u_1\ldots u_k) = \C(u_1) \ldots \C(u_k)
+    \]
+\end{definition}
+
+\begin{definition}
+    A code $\C$ is said to be uniquely decodable if $\C^*$ is injective (non singular).
+\end{definition}
+
+We want our code to be uniquely decodable.
+
+\begin{definition}
+    A sequence $u_1\ldots u_m$ is a prefix of $v_1 \ldots v_n$ if $n\leqslant m$ and $\forall i\in\llbracket 1,m\rrbracket, u_i = v_i$.
+\end{definition}
+
+\begin{example}
+    \[
+        \begin{aligned}
+            a &\ra 0\\
+            b &\ra 10\\
+            c &\ra 110\\
+            d &\ra 111
+        \end{aligned}       
+    \]
+    
+    \[
+        \underbrace{110}_{c}\underbrace{110}_{c}\underbrace{0}_{a}\underbrace{111}_{d}\underbrace{10}_{b} \underbrace{0}_{a}
+    \]
+\end{example}
+
+\begin{definition}
+    A code $\C$ is said to be prefix free if $\C(u)$ is not a prefix of $\C(v)$ for all $u\neq v$.
+\end{definition}
+
+\begin{theorem}
+    A prefix free code is uniquely decodable.
+\end{theorem}
+\begin{proof}
+    Suppose that $\C$ is prefix free but not uniquely decodable. So, there is  $u_1\ldots u_m$ and $v_1\ldots, v_n$ such that $u_1\ldots u_m \neq v_1\ldots, v_n$ and $\C(u_1) \ldots \C(u_m) = \C(v_1) \ldots \C(v_n)$.
+
+    Without loss of generality, we can assume $u_1 \neq v_1$.
+    
+    Suppose $\C(u_1)$ is longer than $\C(v_1)$ $\Ra$ $\C(v_1)$ is a prefix of $\C(u_1)$: contradiction.
+    
+    In the other case, $\C(u_1)$ is a prefix of $\C(v_1)$: contradiction.
+\end{proof}
+
+\begin{example}
+    \[
+        \begin{aligned}
+            a &\ra 0\\
+            b &\ra 01\\
+            c &\ra 011\\
+            d &\ra 111
+        \end{aligned}
+        \qquad \text{not prefix free but still uniquely decodable}
+    \]
+    
+    \[
+        \underbrace{110}_{c}\underbrace{110}_{c}\underbrace{111}_{d}
+    \]
+\end{example}
+
+Binary tree representation of source codes.
+
+\begin{center}
+	\begin{forest}
+    	[$\emptyset$ [0 [00 [000] [001]] [01 [010] [011]]] [1 [10 [100] [101]] [11 [110] [111]]]]
+	\end{forest}
+\end{center}
+
+\begin{center}
+	\begin{forest}
+    	[ [$\C(b)$ [$\C(a)$] [$\C(c)$] ] [[] [[][]]]]
+	\end{forest}
+	$\ra$ not prefix free.
+\end{center}
+
+\begin{center}
+    \begin{forest}
+        [[[][$\C(a)$]][[$\C(b)$][[$\C(c)$][$\C(d)$]]]]
+    \end{forest}
+    $\ra$ prefix free
+\end{center}
+
+\begin{remark}
+    In the binary tree representation of a prefix tree code, all codewords are found on the leaves.
+\end{remark}
+
+\begin{theorem}[\textsc{Kraft}'s inequality for prefix-free codes]
+    If $\C$ is prefix free, then
+    \[
+        \operatorname{KarftSum}(\C) := \sum\limits_{u\in\U} 2^{-\lvert \C(u) \rvert} \leqslant 1
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            1 &= \sum\limits_{l \in \text{leaves}} \prob{\text{squirrel reaches leaf } l}\\
+            &= \sum\limits_{l \in \text{leaves}} 2^{-\operatorname{height}(l)}\\
+            &\geqslant \sum\limits_{u\in\U} 2^{-\lvert \C(u)\rvert}
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{proposition}
+    \[
+        \opname{KraftSum}(\C^n) = (\opname{KraftSum}(\C))^n
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            \opname{KraftSum}(\C^n) &= \sum\limits_{u_1\ldots u_n\in\U^n} 2^{-\lvert \underbrace{\C^n(u_1\ldots u_n)}_{\C(u_1)\ldots\C(u_n)} \rvert}\\
+            &= \sum\limits_{u_1\ldots u_n\in\U^n} 2^{-(\sum\limits_{i=1}^n\lvert \C(u_i) \rvert)}\\
+            &= \sum\limits_{u_1\ldots u_n\in\U^n} \prod\limits_{i=1}^n 2^{-\lvert\C(u_i) \rvert}\\
+            &= \prod\limits_{i=1}^n \sum\limits_{u_i}2^{-\lvert \C(u_i)\rvert}\\
+            &= (\opname{KraftSum(\C)})^n
+        \end{aligned}
+    \]
+\end{proof}
