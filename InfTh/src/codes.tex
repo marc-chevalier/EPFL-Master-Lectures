@@ -1,3 +1,4 @@
+\section{Definitions}
 Output of the source is in discrete time and discrete valued.
 
 \begin{example}
@@ -161,6 +162,8 @@ Binary tree representation of source codes.
     In the binary tree representation of a prefix tree code, all codewords are found on the leaves.
 \end{remark}
 
+\section{\textsc{Kraft}'s inequality}
+
 \begin{theorem}[\textsc{Kraft}'s inequality for prefix-free codes]
     If $\C$ is prefix free, then
     \[
@@ -279,3 +282,156 @@ Binary tree representation of source codes.
         \forall u \in \U, \left\lvert \C'(u) \right\rvert = \left\lvert \C(u) \right\rvert    
     \]
 \end{corollary}
+
+\section{Entropy}
+
+\begin{definition}
+    Expected codeword length
+    \[
+        \sum\limits_i \prob{a_i} \left\lvert \C(a_i) \right\rvert
+    \]
+\end{definition}
+
+
+\begin{definition}
+    For a discrete random variable $X$ which has a mass function $P$
+    \[
+        H(X) := -\sum\limits_i P{x_i}\log(P(x_i))
+    \]
+\end{definition}
+
+\begin{theorem}
+   Expected codeword length $\geqslant$ Entropy
+\end{theorem}
+
+\begin{example}
+    $\U = \set{a,b,c,d}$.
+    \[
+        \begin{array}{cccc}
+            \prob{a} = \frac{1}{2} &
+            \prob{b} = \frac{1}{4} &
+            \prob{c} = \frac{1}{8} &
+            \prob{d} = \frac{1}{8}
+        \end{array}
+    \]
+    
+    \[
+        \begin{aligned}
+            a &\ra 0\\
+            b &\ra 10\\
+            c &\ra 110\\
+            d &\ra 111
+        \end{aligned}
+    \]
+    
+    \[
+        \esp{\left\lvert \C(\U) \right\rvert} = 1.75 = H(\U)
+    \]
+\end{example}
+
+\begin{theorem}
+    Given a source $\U$, there exists a prefix code $\C$ such that
+    
+    \[
+        \esp{\left\lvert \C(\U) \right\rvert}\leqslant H(\U) + 1
+    \]
+\end{theorem}
+\begin{proof}
+    Take $l(u) = \ceil{\log_2\frac{1}{p(u)}}$
+
+    \[
+        \log \frac{1}{p(u)} \leqslant l(u) \leqslant 1 + \log \frac{1}{p(u)}
+    \]
+    
+    Using the left inequality.
+    
+    \[
+        \begin{aligned}
+            2^{-l(u)} \leqslant p(u) &\Ra \sum\limits_u 2^{-l(u)} \leqslant \sum\limits p(u) = 1\\
+            &\Ra \exists \text{a prefix free }\C:\left\lvert \C(u)\right\rvert = l(u)
+        \end{aligned}            
+    \]    
+    
+    
+    Also
+    \[
+        \begin{aligned}
+            \esp{\left\lvert \C(\U) \right\rvert} &= \sum\limits_u p(u)l(u)\\
+            &\leqslant \sum\limits_u p(u) \left( 1+\log\frac{1}{p(u)}\right)\\
+            &=1+H(\U)
+        \end{aligned}
+    \]
+\end{proof}
+
+
+\begin{proposition}
+    \[
+        H(\U) \geqslant 0    
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            H(U) &= \sum \underbrace{p(u)}_{\geqslant 0} \overbrace{\log \underbrace{\frac{1}{p(u)}}_{\geqslant 1}}^{\geqslant 0}\\
+            &\geqslant 0
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{proposition}
+    \[
+        H(\U) \leqslant \log \left\lvert \U \right\rvert
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            \sum p(u) \log \frac{1}{p(u)} - \sum p(u) \log\left\lvert \U \right\rvert &= \sum p(u) \log \frac{1}{p(u) \left\lvert\U\right\rvert}\\
+            &= \left( \sum p(u) \log \frac{1}{p(u)\left\lvert \U \right\rvert} \right) \left( \log e\right)\\
+            &\leqslant \left( \log e\right)\left( \sum p(u)\left( \frac{1}{p(u)\left\lvert \U\right\rvert}-1\right) \right)\\
+            &=\left( \log e\right)\left( 1-1 \right)\\
+            &= 0
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{proposition}
+    Suppose $U$ and $V$ are independent random variables. Then 
+    \[
+        H(UV) = H(U) + H(V)
+    \]
+\end{proposition}
+\begin{proof}
+    We can consider $(U,V)$ as a new random variable.
+    
+    \[
+        \prob{(U,V) = (u,v)} = \frac{\prob{U = u} \prob{V = v}}{p(u,v)}
+    \]
+    
+    Then 
+    \[
+        \begin{aligned}
+            H(UV) &= \sum p(uv) \log \frac{1}{p(uv)}\\
+            &= \sum p(uv) \log \frac{1}{p(u)p(v)}\\
+            &= \sum p(uv) \left( \log \frac{1}{p(u)} + \log \frac{1}{p(v)}\right)\\
+            &= \sum\limits_{u,v} p(uv) \log \frac{1}{p(u)} + \sum\limits_{u,v} p(uv) \log \frac{1}{p(v)}\\
+            &= \sum\limits_{u} p(u) \log \frac{1}{p(u)} + \sum\limits_{v} p(v) \log \frac{1}{p(v)}\\
+        \end{aligned}
+    \]
+\end{proof}
+
+Suppose we have a memoryless, stationary source, producing $\U_1$, $\U_2$, $U_3$, $\U_4$...
+
+So fare, we choose to represent the source output in a letter to letter fashion. If instead, we use a code to represent $n$ letters at a time, we will have
+\[
+    H(\U_1\ldots \U_n) \leqslant \frac{\esp{\left\lvert \C(\U_1\ldots \U_n)\right\rvert}}{n} \leqslant \frac{H(\U_1\ldots \U_n) +1}{n}
+\]
+
+Also
+\[
+    \begin{aligned}
+        \frac{1}{n}H(\U_1\ldots \U_n) &= \frac{1}{n} \sum\limits_{i=1}^n H(\U_i)\\
+        &= \frac{1}{n}\sum\limits_{i=1}^n H(\U_1)\\
+        &= H(\U_1)
+    \end{aligned}
+\]
