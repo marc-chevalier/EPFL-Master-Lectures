@@ -17,3 +17,13 @@ Given $\varepsilon > 0$, the goal is to output a point $x$ such that
 \]
 
 The running time depend of $\frac{1}{\varepsilon}$.
+
+
+Start with $x_1$.
+
+\[
+    x_{t+1} = x_t - \underbrace{\eta_t}_{\substack{>0\\\text{step size}}} \nabla f(x_t)
+\]
+
+Why is this algorithm good?
+
