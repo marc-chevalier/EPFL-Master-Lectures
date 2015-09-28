@@ -1,19 +1,16 @@
-sudo: false
-
-addons:
-  apt:
-    packages:
-    - texlive-fonts-recommended
-    - texlive-latex-recommended
-    - texlive-math-extra
-    - texlive-latex-extra
-    - texlive-science
-    - texlive-lang-french
-    - graphviz
-    - latex-xcolor
-    - pgf
-    - texlive-pstricks
-    - dot2tex
-
+install:
+    - sudo apt-get install texlive-fonts-recommended
+    - sudo apt-get install texlive-latex-recommended
+    - sudo apt-get install texlive-math-extra
+    - sudo apt-get install texlive-latex-extra
+    - sudo apt-get install texlive-science
+    - sudo apt-get install texlive-lang-french
+    - sudo apt-get install graphviz
+    - sudo apt-get install latex-xcolor
+    - sudo apt-get install pgf
+    - sudo apt-get install texlive-pstricks
+    - sudo apt-get install texlive-pictures
+    - sudo apt-get install dot2tex
+	
 script:
     - make
