@@ -7,7 +7,6 @@ addons:
     - texlive-latex-recommended
     - texlive-math-extra
     - texlive-latex-extra
-    - texlive-math-extra
     - texlive-science
     - texlive-lang-french
     - graphviz
