@@ -12,6 +12,7 @@ addons:
     - graphviz
     - latex-xcolor
     - pgf
+    - texlive-pstricks
 
 script:
     - make
