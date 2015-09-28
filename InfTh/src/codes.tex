@@ -1,9 +1,9 @@
 \section{Definitions}
 Output of the source is in discrete time and discrete valued.
 
-\begin{example}
+\begin{definition}
     The output is a sequence of letters from an (finite) alphabet $\U$.
-\end{example}
+\end{definition}
 
 We want to decompose the encoder into a source encoder and a channel encoder. So, the number of encoder is linear with respect of the the number of sources and channel and not quadratic.
 
@@ -293,7 +293,7 @@ Binary tree representation of source codes.
 \end{definition}
 
 
-\begin{definition}
+\begin{definition}[Entropy]
     For a discrete random variable $X$ which has a mass function $P$
     \[
         H(X) := -\sum\limits_i P{x_i}\log(P(x_i))
@@ -435,3 +435,30 @@ Also
         &= H(\U_1)
     \end{aligned}
 \]
+
+So far we have seen bounds to the performance of code design, but we have not seen how to actually design a prefix code.
+
+Given $p:\U \to \RR$. 
+
+$\min\limits_{l:\U\to\NN} \sum p(u) l(u)$ 
+
+$\sum\limits_u 2^{-l(u)} \leqslant 1$
+
+Properties of optimal (in terms of minimizing $\sum p(u) \lvert\C(u)\rvert$ codes
+
+\begin{enumerate}
+    \item if $p(u) < p(v)$ then $l(u) \geqslant l(v)$.
+        \begin{proof}
+            Suppose not $p(u) < p(v)$ but $l(u) < l(v)$. Then swap the codewords for $u$ \& $v$. That improve the code.
+        \end{proof}
+        
+    \item In an optimal prefix code, there are at least 2 longest codewords.
+        \begin{proof}
+            If not, the longest codeword can be shortened without violating the prefix free condition.
+        \end{proof}
+        
+    \item Among optimal codes, there is one for which the two least probable symbols are siblings.
+        \begin{proof}
+            They have to be at the same height. We just need to permute in order to make the two least probable symbols siblings.
+        \end{proof}
+\end{enumerate}
