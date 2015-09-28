@@ -18,7 +18,7 @@ sudo aptitude install texlive-fonts-recommended texlive-latex-recommended texliv
 ## How to clone
 
 ```
-git clone git@git.aliens-lyon.fr:tpelliss/cours-m1.git
+git clone git@github.com:s-i-newton/EPFL-Master-Lectures.git
 ```
 
 ## How to build the sources
