@@ -1,0 +1,70 @@
+The first derivative is the gradient:
+\[
+    \nabla f = \left( \frac{\partial f}{\partial x_1},\ldots, \frac{\partial f}{\partial x_n} \right)
+\]
+
+The second derivative is the Hessian:
+\[
+    \nabla^2 f = \left(\frac{\partial f}{\partial x_i\partial x_j} \right)_{\substack{i\in\llbracket 1;n\rrbracket\\ j\in\llbracket 1;n\rrbracket}} \in \M_n(\RR^n \to \RR)
+\]
+
+
+\begin{notation}
+    For $M\in\M_n(\RR)$ and $(l,L)\in\RR^2$. We note
+    \[
+        lI_n  \preccurlyeq M \preccurlyeq LI_n
+    \]
+    if all eigenvalues of $M$ are in $[l;L]$.
+\end{notation}
+
+\begin{definition}
+    \[
+        \forall (x,y) \in {\RR^n}^2, \langle x, y\rangle = \sum\limits_{i=1}^n x_i y_i = x^Ty
+    \]
+    
+    \[
+        \lVert x \rVert := \sqrt{\angle{x,x}}
+    \]
+\end{definition}
+
+\begin{theorem}[\textsc{Cauchy-Schwarz} inequality]
+    \[
+        \angle{x,y} = \lVert x \rVert \lVert y \rVert
+    \]
+\end{theorem}
+
+\begin{theorem}[Taylor Expansion]
+    $f : \RR^n\to\RR$
+    
+    \[
+        f(y) = f(x) + \angle{\nabla f(x),y-x)} + \frac{1}{2}(y-x)^T \nabla^2 f(x)(y-x) + \ldots
+    \]
+\end{theorem}
+
+\begin{definition}[Convex set]
+    A set $K\subseteq \RR^n$ is convex if
+    \[
+        \forall (x,y) \in K^2, \forall t\in[0;1], tx+(1-t)y \in K
+    \]
+\end{definition}
+
+\begin{definition}[Convex function]
+    A function $f : \RR^n \to \RR$ is convex if
+    \[
+        \forall (x,y) \in K^2, \forall t\in[0;1], f(tx+(1-t)y) \leqslant tf(x) + (1-t)f(y)
+    \]
+\end{definition}
+
+\begin{proposition}
+    A function $f$ is convex if and only if
+    \[
+        f(y) \geqslant f(x) + \angle{\nabla f(x),y-x)}    
+    \]
+\end{proposition}
+
+\begin{proposition}
+    A function $f$ is convex if and only if
+    \[
+        \forall x\in K, \nabla^2 f(x) \succcurlyeq 0
+    \]
+\end{proposition}

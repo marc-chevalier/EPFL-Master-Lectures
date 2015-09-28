@@ -1,0 +1,31 @@
+\[
+    \inf\limits_{x\in K} f(x)
+\]
+
+\begin{example}
+    Input: $A \in \M_n(\RR)$, $A\geqslant 0$, $b\in\RR^n$.
+    
+    Goal: Solve $Ax=b$.
+    
+    $f(x)$ is convex such that $x=\inf\limits_{t} f(t) \Ra A^{-1} b = x$.
+    
+    $f(x) = \lVert Ax-b \rVert^2 \geqslant 0$
+    
+    \[
+        \begin{aligned}
+            \angle{Ax-b, Ax-b} &= x^T A^2x\\
+            \nabla^2 f &= A^2
+        \end{aligned}
+    \]
+\end{example}
+
+\begin{example}[Linear programming]
+    Input: $A \in \M_{m,n}(\RR)$, $b\in\RR^n$, $c\in\RR^m$.
+    
+    Goal: $\min\limits \angle{c,x}$ such that $Ax=b$ and $x\geqslant 0$.
+\end{example}
+
+\begin{proposition}
+    $x$ is optimal iff $\nabla^2f(x) = 0$.
+\end{proposition}
+
