@@ -11,6 +11,7 @@ addons:
     - texlive-lang-french
     - graphviz
     - latex-xcolor
+    - pgf
 
 script:
     - make
