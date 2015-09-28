@@ -34,7 +34,7 @@ For a global compilation, go at root and use `make`.
 
 ## Automatic compilation
 
-Documents are compiled automatically (almost) every night by Valentin Lorentz and made available here: http://builds.progval.net/ens/cours-m1/
+Documents are compiled automatically (almost) every night by Valentin Lorentz and made available here: http://builds.progval.net/epfl/master-lectures/
 
 ## Your course is full of mistakes!
 
