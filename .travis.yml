@@ -1,5 +1,16 @@
-install:
-    - sudo apt-get install texlive-fonts-recommended texlive-latex-recommended texlive-math-extra texlive-latex-extra texlive-math-extra texlive-science texlive-lang-french graphviz
+sudo: false
+
+addons:
+  apt:
+    packages:
+    - texlive-fonts-recommended
+    - texlive-latex-recommended
+    - texlive-math-extra
+    - texlive-latex-extra
+    - texlive-math-extra
+    - texlive-science
+    - texlive-lang-french
+    - graphviz
 
 script:
     - make

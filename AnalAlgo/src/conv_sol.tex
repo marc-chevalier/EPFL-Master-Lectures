@@ -4,4 +4,16 @@ Template:
     \item Starting point $x_i$
     \item Compute $\nabla f(x_i)$.
     \item Either $\nabla f(x_i) = 0$ (OK) or figure out $x_{i+1}$ goto 2.
-\end{enumerate} 
+\end{enumerate}
+
+We don't expect to solve the convex program exactly.
+
+Given $\varepsilon > 0$, the goal is to output a point $x$ such that
+\[
+    \begin{aligned}
+	    f(x^*) &\leqslant f(x)  + \varepsilon\\
+	    \lvert f(x)-f(x^*)\rvert &\leqslant \varepsilon
+    \end{aligned}
+\]
+
+The running time depend of $\frac{1}{\varepsilon}$.
