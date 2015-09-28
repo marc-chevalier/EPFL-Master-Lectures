@@ -1,4 +1,4 @@
-sudo: false
+sudo: required
 
 addons:
   apt:
@@ -13,8 +13,10 @@ addons:
     - latex-xcolor
     - pgf
     - texlive-pstricks
-    - dot2tex
     - texlive-pictures
 
+install: 
+    - sudo apt-get install dot2tex
+	
 script:
     - make
