@@ -10,6 +10,7 @@ addons:
     - texlive-science
     - texlive-lang-french
     - graphviz
+    - latex-xcolor
 
 script:
     - make
