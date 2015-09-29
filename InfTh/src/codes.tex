@@ -526,6 +526,8 @@ We know that under the conditioning $V=v$, the probability that $U=u$ is now $\p
     \]
 \end{proof}
 
+\section{Mutual information}
+
 \begin{definition}
 \[
     \begin{aligned}
@@ -630,8 +632,134 @@ This difference is the mutual information $I(U,V)$ between $U$ and $V$, and repr
         p(x,y,z) = p(x)p(y\vert x) p(z\vert x,y)
     \]
     
-    If $X\-- Y\-- Z$, then
+    If $X \text{----} Y \text{----} Z$, then
     \[
         p(x,y,z) = p(x)p(y\vert x) p(z\vert y)
     \]
 \end{remark}
+
+\begin{proposition}
+    If
+    \[
+        U_1 \text{----} \cdots \text{----} U_n    
+    \]
+    then
+    \[
+    H(U_1, \ldots, U_n) = H(U_1) + H(U_2 \vert U_1) + \cdots + H(U_n \vert U_{n-1})
+    \]    
+\end{proposition}
+
+\begin{example}
+    $X$, $Y$, $Z$ are binary random variables
+    \begin{center}
+        \begin{tabular}{ccc||c}
+            $x$ & $y$ & $z$ & $p(x,y,z)$\\
+            \hline
+            0 & 0 & 0 & $\frac{1}{4}$\\
+            0 & 0 & 1 & 0\\
+            0 & 1 & 0 & 0\\
+            0 & 1 & 1 & $\frac{1}{4}$\\
+            1 & 0 & 0 & 0\\
+            1 & 0 & 1 & $\frac{1}{4}$\\
+            1 & 1 & 0 & $\frac{1}{4}$\\
+            1 & 1 & 1 & 0\\
+        \end{tabular}
+    \end{center}
+    
+    \[
+        \begin{aligned}
+            H(X) &= H(Y) = H(Z) = 1\\
+            I(X\vert Y) &= H(X) + H(Y) - H(X,Y) = 1 + 1 - 2 = 0\\
+            I(X,Y\vert Z) &= H(X\vert Z) - H(X \vert YZ) = 1 - 0 = 1
+        \end{aligned}
+    \]
+\end{example}
+
+\begin{theorem}[Data Processing]
+    Suppose $U \text{----} V \text{----} W$, then
+    \[
+        I(U,W) \leqslant I(U,V)    
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            I(U, VW) &= I(U,V) + I(U,W\vert V)\\
+            &= I(U,W) + I(U,V \vert W)\\
+            &\geqslant I(U,W)
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{corollary}
+    If $U \text{----} V \text{----} W \text{----} X$, then
+    \[
+        I(U,X) \leqslant I(V,W)    
+    \]
+\end{corollary}
+
+\section{Entropy rate}
+
+We observed that the quantity $\frac{1}{n}H(U_1,\ldots,U_n)$ as the number of bits/letters to represent a source that produce $U_1U_2\ldots$, when we encoded $n$ letters at a time, so it makes sense to study $\lim\limits_{n\to\infty} \frac{1}{n} H(U_1\ldots U_n)$.
+
+\begin{definition}
+    Given a stochastic process $U_1U_2U_3\ldots$, we define its entropy rate $\H(U) = \lim\limits_{n\to\infty} H(U_1\ldots U_n)$ if the limit exists.
+\end{definition}
+
+Recall that when $U_1,\ldots,U_n$ are iid, then
+\[
+    \begin{aligned}
+        H(U_1\ldots U_n) &= H(U_1)+ \cdots + H(U_n\vert U_1\ldots U_{n-1})\\
+        &= \sum\limits_{i=1}^n H(U_i)\\
+        &= \sum\limits_{i=1}^n H(U_1)\\
+        &= nH(U_1)\\
+        \Ra \lim\limits_{n\to\infty} \frac{1}{n} H(U_1\ldots U_n) &= H(U_1)
+    \end{aligned}
+\]
+
+So the entropy rate of an iid stochastic process is $H(U_1)$.
+
+\begin{definition}
+    A process $U_1,U_2,\ldots$ is said to be stationary if
+    \[
+        \forall (k,n)\in\NN^2, (U_1\ldots U_n) \sim (U_{k+1}\ldots U_{k+n})
+    \]
+\end{definition}
+
+\begin{theorem}
+    If $U_1U_2\ldots$ is a stationary process, then the entropy rate exists, and
+    \[
+        \lim\limits_{n\to\infty} \frac{1}{n} H(U_1\ldots U_n) = \lim\limits_{n\to\infty} H(U_n \vert U_1\ldots U_{n-1})
+    \]
+\end{theorem}
+\begin{proof}
+    Let $a_n := H(U_n \vert U_1 \ldots U_{n-1})$ and $b_n := \frac{1}{n} H(U_1 \ldots U_n)$.
+    
+    We are trying to show
+    \begin{enumerate}
+        \item $a = \lim\limits_{n\to\infty} a_n$ exists
+        \item $\lim\limits_{n\to\infty} b_n = a$
+    \end{enumerate}
+    
+    Let us start with (1). Observe $a_n \geqslant 0$, also
+    \[
+        \begin{aligned}
+            a_{n-1} &= H(U_{n-1} \vert U_1 \ldots U_{n-2})\\
+            &= H(U_n \vert U_2 \ldots U_{n-1})\\
+            &\geqslant H(U_n \vert U_1 U_2\ldots U_{n-1})\\
+            &= a_n
+        \end{aligned}            
+    \]
+    
+    So $a_n$ is a non increasing sequence which is low bounded $\Ra$ $\lim_{n\to\infty} a_n$, call
+    
+    To show (2), observe
+    \[
+        \begin{aligned}
+            b_n &= \frac{1}{n} H(U_1\ldots U_n)\\
+            &= \frac{1}{n} \left( H(U_1)+H(U_2 \vert U_1) + \cdots + H(U_n \vert U_1\ldots U_{n-2}) \right)\\
+            &= \frac{1}{n} \sum\limits_{i=1}^n a_i
+        \end{aligned}
+    \]
+    By the \textsc{Cesàro}'s theorem, $b_n\to a$.
+\end{proof}
