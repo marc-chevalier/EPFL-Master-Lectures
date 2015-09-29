@@ -604,5 +604,34 @@ This difference is the mutual information $I(U,V)$ between $U$ and $V$, and repr
 \end{theorem}
 
 \begin{theorem}
-    
+    \[
+        I(U_1\ldots U_n,V) = I(U_1,V) + I(U_2,V\vert U_1    ) + I(U_3,V\vert U_1, U_2) + \cdots + I(U_n, V \vert U_1\ldots U_n)
+    \]
 \end{theorem}
+\begin{proof}
+    \[
+        I(U_1\ldots U_n, V) = H(U_1\ldots U_n) - H(U_1\ldots U_n \vert V)    
+    \]
+    
+    \[
+        \begin{aligned}
+            H(U_1\ldots U_n) &= H(U_1) + H(U_2\vert U_1) + \cdots + H(U_n \vert U_1 \ldots U_{n-1})\\
+            H(U_1\ldots U_n \vert V) &= H(U_1 \vert V) + H(U_2\vert U_1 V) + \cdots + H(U_n \vert U_1 \ldots U_{n-1} V)\\
+            I(U_1\ldots U_n, V) &= I(U_1,V) + I(U_2 V \vert U_1) + \cdots + I(U_n V \vert U_1 \ldots U_{n-1})
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{remark}[\textsc{Markov} chains]
+    Suppose $X$, $Y$ and $Z$ are random variables.
+    
+    It is always true that
+    \[
+        p(x,y,z) = p(x)p(y\vert x) p(z\vert x,y)
+    \]
+    
+    If $X\-- Y\-- Z$, then
+    \[
+        p(x,y,z) = p(x)p(y\vert x) p(z\vert y)
+    \]
+\end{remark}
