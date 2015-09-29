@@ -11,6 +11,7 @@ install:
     - sudo apt-get install latex-xcolor
     - sudo apt-get install pgf
     - sudo apt-get install texlive-pstricks
+    - sudo apt-get install texlive-humanities
     - sudo apt-get install texlive-pictures
     - sudo apt-get install dot2tex
 
