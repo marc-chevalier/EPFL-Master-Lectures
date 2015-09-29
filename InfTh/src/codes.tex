@@ -139,22 +139,16 @@ We want our code to be uniquely decodable.
 Binary tree representation of source codes.
 
 \begin{center}
-	\begin{forest}
-    	[$\emptyset$ [0 [00 [000] [001]] [01 [010] [011]]] [1 [10 [100] [101]] [11 [110] [111]]]]
-	\end{forest}
+	\Tree [.$\emptyset$ [.0 [.00 [000 ] [001 ] ] [.01 [010 ] [011 ] ] ] [.1 [.10 [100 ] [101 ] ] [.11 [110 ] [111 ] ] ] ]
 \end{center}
 
 \begin{center}
-	\begin{forest}
-    	[ [$\C(b)$ [$\C(a)$] [$\C(c)$] ] [[] [[][]]]]
-	\end{forest}
+	\Tree [ [.$\C(b)$ [$\C(a)$ ] [$\C(c)$ ] ] [[ ] [[ ][ ] ] ] ]
 	$\ra$ not prefix free.
 \end{center}
 
 \begin{center}
-    \begin{forest}
-        [[[][$\C(a)$]][[$\C(b)$][[$\C(c)$][$\C(d)$]]]]
-    \end{forest}
+    \Tree [[[ ][$\C(a)$ ]][[$\C(b)$ ][[$\C(c)$ ][$\C(d)$ ] ] ] ]
     $\ra$ prefix free
 \end{center}
 
@@ -246,14 +240,10 @@ Binary tree representation of source codes.
     \]
 \end{proposition}
 \begin{proof}
-	\[
-	    l_{max}
-	    \left\lbrace
-	    \begin{forest}
-        	[  [  [  [ \vdots ] [ \vdots ]] [  [ \vdots ] [ \vdots ]]] [  [  [ \vdots ] [ \vdots ]] [  [ \vdots ] [ \vdots ]]]]
-	    \end{forest}
-	    \right.
-    \]
+    Let $l_{max}$ the height of the tree.
+    
+	    \Tree [  [  [  [ $\vdots$ ] [ $\vdots$ ] ] [  [ $\vdots$ ] [ $\vdots$ ] ] ] [  [  [ $\vdots$ ] [ $\vdots$ ] ] [  [ $\vdots$ ] [ $\vdots$ ] ] ] ]
+
     Height 0: $2^{-0} = 1$
     
     Height 1: $2^1 2^{-1} = 1$
