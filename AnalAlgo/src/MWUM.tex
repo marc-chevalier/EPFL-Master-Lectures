@@ -1,0 +1,224 @@
+ 
+$E_1, \ldots, E_n$ experts. Each expert decide $+1$ or $-1$.
+    
+\begin{tabular}{c|c|c|c}
+    &$E_1$ & $\cdots$ & $E_n$\\
+    \hline
+    &$\vdots$&&$\vdots$\\
+    \hline
+    $t$ & $+1$ & $\cdots$ & $-1$
+\end{tabular}
+
+Consider majority vote
+
+\[
+    \begin{aligned}
+        m_i^t &= \# \text{ of mistakes made by }E_i\text{ until }t\\
+        M^t &= \#\text{ of mistakes mabe by us}
+    \end{aligned}
+\]
+
+After your prediction get to see the real answer.
+
+How to measure our performance?
+
+$\frac{M^t}{t}$, $\boxed{M^t- \min\limits_i m_i^t}$
+
+Suppose $E_1, \ldots, E_n$ collude and $> \frac{1}{2}$ of them always output the opposite of the truth (they know). REALLY BAD!
+
+\begin{figure}[!ht]
+    \centering
+    \includegraphics[scale=0.5]{figures/twilight_is_crazy_by_ajdispirito-d52zjfp}
+    \caption{This expert want to see you fail}
+\end{figure}
+
+\FloatBarrier
+
+$w_i^t \geqslant 0$
+
+Start with $\forall i, w_i^t = 1$.
+
+Weighted majority:
+\[
+    \sum\limits_{i \text{ votes }+1} w_i^t \ ? \ \sum\limits_{i \text{ votes }-1} w_i^t
+\]
+
+How to update weights?
+
+\[
+    w_i^t = w_i^t(1-\varepsilon f_i^t)
+\]
+
+$f_i^t = [E \text{ is wrong at }t]\footnotemark$\footnotetext{\url{https://en.wikipedia.org/wiki/Iverson_bracket}}
+
+$0 < \varepsilon \leqslant \frac{1}{2}$.
+
+\begin{definition}[Potential]
+    \[
+        \begin{aligned}
+            \Phi^t &= \sum\limits_{i=1}^n w_i^t\\
+            \Phi^1 &= n
+        \end{aligned}
+    \]
+\end{definition}
+
+$\Phi^{t+1} \leqslant \Phi^t (?)$
+
+If we don't make a mistake at $t$ does not have to decrease.
+
+Let $t$ such that we made a mistake.
+
+\[
+    \begin{aligned}
+        \Phi^{t+1} &\leqslant \underbrace{\hspace{10pt}}_{\text{wrong}} + \overbrace{\underbrace{\sum\limits_i w_i^t}_{\text{right}}}^{=\theta}\\
+        &= \left( \Phi^t -\theta \right) \left( 1-\varepsilon \right) + \theta\\
+        &= \Phi^t(1-\varepsilon) + \theta\varepsilon\\
+        &\leqslant \Phi^t(1-\varepsilon) + \frac{\Phi^t}{2}\varepsilon\\
+        &= \Phi^t \left( 1- \frac{\varepsilon}{2}\right)
+    \end{aligned}
+\]
+Thus
+\[
+    \Phi^{t+1} \leqslant \Phi^t\left(1-\frac{\varepsilon}{2}\right)
+\]
+
+\[
+    \begin{aligned}
+        \Phi^{t+1} &\leqslant \Phi^1\left( 1-\frac{\varepsilon}{2}\right)^{M^t}\\
+        &= n\left( 1-\frac{\varepsilon}{2}\right)^{M^t}\\
+        &\leqslant n e^{-\frac{\varepsilon}{2}M^t}
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        \Phi^{t+1} &= \sum\limits_{i=1}^n w_i^{t+1}\\
+        &\overset{\forall i}{\geqslant} w_i^{t+1}\\
+        &=(1-\varepsilon)^{m_i^t}\\
+        &\overset{?}{=} e^{-\varepsilon m_i^t}
+    \end{aligned}
+\]
+
+Combining the two last results
+
+\[
+    \boxed{\forall i, M^t \leqslant 2 m_i^t + \frac{2\ln n}{\varepsilon}}
+\]
+
+\[
+    \boxed{t \geqslant \frac{2\ln n}{\varepsilon^2}}
+\]
+
+\begin{theorem}
+    If we run the WMA, then after $T= \frac{2\ln n}{\varepsilon^2}$,
+    \[
+        \forall i, \frac{1}{T} M^T \leqslant \frac{2m_i^T}{T} \left( 1+\varepsilon\right) + \varepsilon
+    \]
+\end{theorem}
+
+$f_i^t$ loss functions.
+
+$f_i^t \in [-1,1]$.
+
+Our strategy at time $t$
+
+$p^t \in \Delta_n$
+
+\[
+    \Delta_n = \set{x \vert x \geqslant 0, \sum\limits_{i=1}^n x_i = 1}
+\]
+
+Use $p^t$ to make a prediction. Consider $\angle{p^t, f^t}$ loss, $f^t = (f_i^t)^n_{i=1}$.
+
+Pick $i \la p^t$. Output the prediction of $i^\text{th}$  expert.
+
+$\angle{p^t, f^t} = $ probability of making a mistake.
+
+Game : 
+\begin{tabular}{ccc}
+    You & & Adversary\\
+    $p^t \in \Delta_n$ & & \\
+    & $\ra$ & \\
+    & & $f^t$, $\lVert f^t \rvert_\infty \leqslant 1$\\
+    & $\la$ & \\
+\end{tabular}
+
+Your loss: $\angle{f^t, p^t}$.
+
+Goal: Find a strategy such that 
+\[
+    \underbrace{\sum\limits_t \angle{f^t, p^t}}_{\text{your loss}} \leqslant \underbrace{\min_p \angle{f^t, p}}_{\text{Best loss}} + \underbrace{}_{\text{error}}
+\]
+
+\bigskip
+
+Algorithm:
+
+$\forall i, w_i^1 = 1$, $p^1 = \frac{w^1}{\Phi^1}$.
+
+$w_i^{t+1} = w_i^t\left( 1-\varepsilon f_i^t\right)$
+
+$p^{t+1} = \frac{w^{t+1}}{\Phi^{t+1}}$ (normalization).
+
+$\left( \Phi^t = \sum\limits_{i=1}^n w_i^t \right)$
+
+\bigskip
+
+Potential function: $\Phi^t= \sum\limits_{i=1}^n w_i^t$.
+
+\begin{enumerate}
+    \item $\Phi^{t+1} \leqslant \Phi^t \left( \quad \right)$
+        \[
+            \begin{aligned}
+                \Phi^{t+1} &= \sum\limits_{i=1}^nw_i^{t+1}\\
+                &= \sum\limits_{i=1}^nw_i^t\left( 1-\varepsilon f_i^t \right)\\
+                &= \sum\limits_{i=1}^nw_i^t- \sum\limits_{i=1}^nw_i^t \varepsilon f_i^t\\
+                &\leqslant \Phi^1 e^{-\varepsilon \sum\limits_{j=1}^t \angle{f^i, p^j}}\\
+            \end{aligned}       
+        \]
+    \item $\Phi^{t+1} = \sum\limits_{i=1}^n w_i^{t+1} \overset{\forall i}{\geqslant} w_i^{t+1}$
+        \[
+            \begin{aligned}
+                w_i^{t+1} &= \prod\limits_{j=1}^t \left( 1-\varepsilon f_i^j\right)\\
+                &\geqslant \prod\limits_{j=1}^t e^{-\varepsilon f_i^j - \varepsilon ^2(f_i^j)^2}\\
+                \Phi^{t+1} &\geqslant e^{-\sum\limits_{j=1}^t \varepsilon f_i^j - \varepsilon^2 \sum\limits_{j=1}^t (f_i^j)^2}
+            \end{aligned}
+        \]
+\end{enumerate}
+
+\[
+    e^{-\sum\limits_{j=1}^t \varepsilon f_i^j - \varepsilon^2 \sum\limits_{j=1}^t (f_i^j)^2}\leqslant \Phi^{t+1}\leqslant n e^{-\varepsilon \sum\limits_{j=1}^t \angle{f^i, p^j}}
+\]
+
+$\Ra$
+
+\[
+    -\sum\limits_{j=1}^t \varepsilon f_i^j - \varepsilon^2 \sum\limits_{j=1}^t (f_i^j)^2 \leqslant \ln n -\varepsilon \sum\limits_{j=1}^t \angle{f^i, p^j}
+\]
+
+If we forget $- \varepsilon^2 \sum\limits_{j=1}^t (f_i^j)^2$, we have
+\[
+    \begin{aligned}
+        \text{our loss} &\leqslant \text{loss of }E_i + \frac{\ln n}{\varepsilon}\\
+        &\leqslant\sum\limits_{j=1}^t \angle{f^j, p} + \frac{\ln n}{\varepsilon}
+    \end{aligned}
+\]
+
+How to use MWU? 
+
+Simple:
+
+labelled data $(a_1,l_1), \ldots ,(a_n,l_n)$\dots, labels $\in \set{-1,1}$, $a_i \in \RR^d$ feature vectors.
+
+Goal: find $x$ such that
+\[
+    \opname{sign}(\angle{x, a_i}) = l_i
+\]
+$x \geqslant 0$, $\sum\limits_{i=1}^n x_i = 1$
+
+Want $x \in \Delta_n$ such that $\opname{sign}(\angle{x, a_i}) = l_i$ By multiplying $a_i l_i$, we may assume $l_i = 1$.
+
+Problem: find $x\in\Delta_n$ such that $\forall i, \angle{a_i,x} \geqslant 0$. Linear programming\footnote{\url{http://builds.progval.net/ens/cours-m1/Optimisation/Optimisation.pdf}}!
+
+Assume that $\exists x^* : x^* \in \Delta_n, \forall i \angle{a_i, x^*} \geqslant \varepsilon$.
+

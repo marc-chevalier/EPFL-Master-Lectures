@@ -27,3 +27,23 @@ Start with $x_1$.
 
 Why is this algorithm good?
 
+
+\begin{theorem}
+    If $f$ is convex, differentiable, $\nabla f$ is $L$-Lipschitz start at $x_1$ such that $\left\lVert x_1-x^* \right\rVert \leqslant D$, is we pick $T = o\left( \frac{LD^2}{\varepsilon} \right)$, $f(x_T) \leqslant f(x^*) + \varepsilon$.
+\end{theorem}
+
+We are allows to change $f$ at time $t$. $f_t$ is convex and $\forall t, \forall x, \lVert \nabla f_t(x) \rVert \leqslant G$.
+
+\begin{corollary}
+    If $f_1, f_2,\ldots$, convex differentiable function, $\lVert \nabla f_t\rVert \leqslant G$, then given $\varepsilon > 0$, "good" $x_1$, then after $T \approx \left( \frac{G}{\varepsilon} \right)^2$ iterations, 
+    \[
+        \underbrace{\frac{1}{T} \sum\limits_{t=1}^T f_t(x_t)}_{\text{algo output}} \leqslant \underbrace{\inf\limits_x \sum_{t=1}^T f_t(x)}_{\text{Best possible}} + \varepsilon
+    \]
+\end{corollary}
+
+Online convex optimization.
+
+
+    $\lVert \nabla f \rVert_2 \leqslant \sqrt{n}\lVert \nabla f\rVert_\infty$ So we can use $\lVert\quad\rVert_\infty$\footnote{En dimension finie, toutes les normes sont équivalentes}.
+
+
