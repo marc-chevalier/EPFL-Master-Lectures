@@ -1,0 +1,85 @@
+We observed that the quantity $\frac{1}{n}H(U_1,\ldots,U_n)$ as the number of bits/letters to represent a source that produce $U_1U_2\ldots$, when we encoded $n$ letters at a time, so it makes sense to study $\lim\limits_{n\to\infty} \frac{1}{n} H(U_1\ldots U_n)$.
+
+\begin{definition}
+    Given a stochastic process $U_1U_2U_3\ldots$, we define its entropy rate $\H(U) = \lim\limits_{n\to\infty} H(U_1\ldots U_n)$ if the limit exists.
+\end{definition}
+
+Recall that when $U_1,\ldots,U_n$ are iid, then
+\[
+    \begin{aligned}
+        H(U_1\ldots U_n) &= H(U_1)+ \cdots + H(U_n\vert U_1\ldots U_{n-1})\\
+        &= \sum\limits_{i=1}^n H(U_i)\\
+        &= \sum\limits_{i=1}^n H(U_1)\\
+        &= nH(U_1)\\
+        \Ra \lim\limits_{n\to\infty} \frac{1}{n} H(U_1\ldots U_n) &= H(U_1)
+    \end{aligned}
+\]
+
+So the entropy rate of an iid stochastic process is $H(U_1)$.
+
+\begin{definition}
+    A process $U_1,U_2,\ldots$ is said to be stationary if
+    \[
+        \forall (k,n)\in\NN^2, (U_1\ldots U_n) \sim (U_{k+1}\ldots U_{k+n})
+    \]
+\end{definition}
+
+\begin{theorem}
+    If $U_1U_2\ldots$ is a stationary process, then the entropy rate exists, and
+    \[
+        \lim\limits_{n\to\infty} \frac{1}{n} H(U_1\ldots U_n) = \lim\limits_{n\to\infty} H(U_n \vert U_1\ldots U_{n-1})
+    \]
+\end{theorem}
+\begin{proof}
+    Let $a_n := H(U_n \vert U_1 \ldots U_{n-1})$ and $b_n := \frac{1}{n} H(U_1 \ldots U_n)$.
+    
+    We are trying to show
+    \begin{enumerate}
+        \item $a = \lim\limits_{n\to\infty} a_n$ exists
+        \item $\lim\limits_{n\to\infty} b_n = a$
+    \end{enumerate}
+    
+    Let us start with (1). Observe $a_n \geqslant 0$, also
+    \[
+        \begin{aligned}
+            a_{n-1} &= H(U_{n-1} \vert U_1 \ldots U_{n-2})\\
+            &= H(U_n \vert U_2 \ldots U_{n-1})\\
+            &\geqslant H(U_n \vert U_1 U_2\ldots U_{n-1})\\
+            &= a_n
+        \end{aligned}            
+    \]
+    
+    So $a_n$ is a non increasing sequence which is low bounded $\Ra$ $\lim_{n\to\infty} a_n$, call
+    
+    To show (2), observe
+    \[
+        \begin{aligned}
+            b_n &= \frac{1}{n} H(U_1\ldots U_n)\\
+            &= \frac{1}{n} \left( H(U_1)+H(U_2 \vert U_1) + \cdots + H(U_n \vert U_1\ldots U_{n-2}) \right)\\
+            &= \frac{1}{n} \sum\limits_{i=1}^n a_i
+        \end{aligned}
+    \]
+    By the \textsc{Cesàro}'s theorem, $b_n\to a$.
+\end{proof}
+
+\begin{theorem}
+    If $U_1U_2\ldots$ is a stochastic process with entropy rate $H$, then for any $\varepsilon > 0$, there exists a source code $\C^n : \U^n \to \set{0,1}^*$ such that the code uses $ \leqslant H + \varepsilon$ bits/source letter on the average
+\end{theorem}
+
+We know that for every $n$, there is a prefix free code
+\[
+    \C_n: \U^n \to \set{0,1}^*
+\]
+with the property that
+\[
+    \esp{\length{\C_c(U_1\ldots U_n}} \leqslant \frac{H(U_1\ldots U_n)+1}{n} \underset{n \to \infty}{\to   } H
+\]
+
+Consequently there exists some $n$ and a prefix code $\C_n$ such that
+\[
+    \begin{aligned}
+        \frac{1}{n}\esp{\length{\C_n(U_1\ldots U_n)}} &\leqslant H+\varepsilon\\
+        \frac{1}{n}\esp{\length{\C_n(U_{n+1}\ldots U_{2n})}} &\leqslant H+\varepsilon\\
+        \frac{1}{n}\esp{\length{\C_n(U_{2n+1}\ldots U_{3n})}} &\leqslant H+\varepsilon
+    \end{aligned}
+\]

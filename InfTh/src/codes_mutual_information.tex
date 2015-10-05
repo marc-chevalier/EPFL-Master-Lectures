@@ -1,0 +1,169 @@
+\begin{definition}
+\[
+    \begin{aligned}
+        H(U) + H(V) - H(UV) &= H(V) - H(V\vert U)\\
+        &= H(U) - H(U\vert V)
+    \end{aligned}
+\]
+
+This difference is the mutual information $I(U,V)$ between $U$ and $V$, and represent the reduction of the effort to guess $U$ by knowing $V$ (and vice-versa by symmetry).
+\end{definition}
+
+\begin{lemma}
+    Suppose $\W$ an alphabet and $p$ and $q$ are two probability distribution on $\W$, then
+    \[
+        \sum\limits_w p(w) \log \frac{p(w)}{q(w)}\geqslant 0
+    \]
+\end{lemma}
+\begin{proof}
+    We need to prove $\sum p(w) \log \frac{q(w)}{p(w)} \leqslant 0$.
+    
+    \[
+        \begin{aligned}
+            \sum p(w) \log \frac{q(w)}{p(w)} &\leqslant \sum p(w) (\frac{q(w)}{p(w)}-1)\\
+            &= \sum q(w) - p(w)\\
+            &= 1-1\\
+            &= 0
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{theorem}
+    \[
+        I(U,V) \geqslant 0    
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            I(U,V) &= H(U) + H(V) - H(U,V)\\
+            &= \esp{\log\frac{p(UV)}{p(U)p(V)}}\\
+            &= \sum\limits_{u,v} p(uv) \frac{p(uv)}{p(u)p(v)}\\
+          &\geqslant 0  
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{theorem}
+    \[
+        H(U_1\ldots U_n) = H(U_1) + H(U_2\vert U_1) + H(U_3\vert U_1 U_2) + \cdots + H(U_n \vert U_1\ldots U_{n-1})
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            p(u_1\ldots u_n) &= p(u_1) p(u_2 \vert u_1) p(u_3\vert u_1u_2) \cdots p(u_n \vert u_1\ldots u_1)\\
+            \Ra \log\frac{1}{p(u_1\ldots u_n)} &= \log\frac{1}{p(u_1)} +  \log\frac{1}{p(u_2 \vert u_1)}+ \log\frac{1}{p(u_3\vert u_1u_2)} + \cdots + \log\frac{1}{p(u_n \vert u_1\ldots u_1)}
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{definition}[Condition mutual information]
+    \[
+        \begin{aligned}
+            I(U,V \vert W) &= H(U\vert W) + H(V\vert W) - H(UV \vert W)\\
+             &= H(U \vert W) - H(U \vert V W)\\
+             &= H(V \vert W) - H(V \vert U W)
+        \end{aligned}
+    \]
+\end{definition}
+
+\begin{theorem}
+    \[
+        I(U,V \vert W) \geqslant 0
+    \]
+    with $=$ when $U$ and $V$ are independent conditional in $W$.
+\end{theorem}
+
+\begin{theorem}
+    \[
+        I(U_1\ldots U_n,V) = I(U_1,V) + I(U_2,V\vert U_1    ) + I(U_3,V\vert U_1, U_2) + \cdots + I(U_n, V \vert U_1\ldots U_n)
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        I(U_1\ldots U_n, V) = H(U_1\ldots U_n) - H(U_1\ldots U_n \vert V)    
+    \]
+    
+    \[
+        \begin{aligned}
+            H(U_1\ldots U_n) &= H(U_1) + H(U_2\vert U_1) + \cdots + H(U_n \vert U_1 \ldots U_{n-1})\\
+            H(U_1\ldots U_n \vert V) &= H(U_1 \vert V) + H(U_2\vert U_1 V) + \cdots + H(U_n \vert U_1 \ldots U_{n-1} V)\\
+            I(U_1\ldots U_n, V) &= I(U_1,V) + I(U_2 V \vert U_1) + \cdots + I(U_n V \vert U_1 \ldots U_{n-1})
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{remark}[\textsc{Markov} chains]
+    Suppose $X$, $Y$ and $Z$ are random variables.
+    
+    It is always true that
+    \[
+        p(x,y,z) = p(x)p(y\vert x) p(z\vert x,y)
+    \]
+    
+    If $X \text{----} Y \text{----} Z$, then
+    \[
+        p(x,y,z) = p(x)p(y\vert x) p(z\vert y)
+    \]
+\end{remark}
+
+\begin{proposition}
+    If
+    \[
+        U_1 \text{----} \cdots \text{----} U_n    
+    \]
+    then
+    \[
+    H(U_1, \ldots, U_n) = H(U_1) + H(U_2 \vert U_1) + \cdots + H(U_n \vert U_{n-1})
+    \]    
+\end{proposition}
+
+\begin{example}
+    $X$, $Y$, $Z$ are binary random variables
+    \begin{center}
+        \begin{tabular}{ccc||c}
+            $x$ & $y$ & $z$ & $p(x,y,z)$\\
+            \hline
+            0 & 0 & 0 & $\frac{1}{4}$\\
+            0 & 0 & 1 & 0\\
+            0 & 1 & 0 & 0\\
+            0 & 1 & 1 & $\frac{1}{4}$\\
+            1 & 0 & 0 & 0\\
+            1 & 0 & 1 & $\frac{1}{4}$\\
+            1 & 1 & 0 & $\frac{1}{4}$\\
+            1 & 1 & 1 & 0\\
+        \end{tabular}
+    \end{center}
+    
+    \[
+        \begin{aligned}
+            H(X) &= H(Y) = H(Z) = 1\\
+            I(X\vert Y) &= H(X) + H(Y) - H(X,Y) = 1 + 1 - 2 = 0\\
+            I(X,Y\vert Z) &= H(X\vert Z) - H(X \vert YZ) = 1 - 0 = 1
+        \end{aligned}
+    \]
+\end{example}
+
+\begin{theorem}[Data Processing]
+    Suppose $U \text{----} V \text{----} W$, then
+    \[
+        I(U,W) \leqslant I(U,V)    
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            I(U, VW) &= I(U,V) + I(U,W\vert V)\\
+            &= I(U,W) + I(U,V \vert W)\\
+            &\geqslant I(U,W)
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{corollary}
+    If $U \text{----} V \text{----} W \text{----} X$, then
+    \[
+        I(U,X) \leqslant I(V,W)    
+    \]
+\end{corollary}

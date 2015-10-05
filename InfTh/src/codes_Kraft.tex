@@ -1,0 +1,114 @@
+\begin{theorem}[\textsc{Kraft}'s inequality for prefix-free codes]
+    If $\C$ is prefix free, then
+    \[
+        \operatorname{KarftSum}(\C) := \sum\limits_{u\in\U} 2^{-\lvert \C(u) \rvert} \leqslant 1
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            1 &= \sum\limits_{l \in \text{leaves}} \prob{\text{squirrel reaches leaf } l}\\
+            &= \sum\limits_{l \in \text{leaves}} 2^{-\operatorname{height}(l)}\\
+            &\geqslant \sum\limits_{u\in\U} 2^{-\lvert \C(u)\rvert}
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{proposition}
+    \[
+        \opname{KraftSum}(\C^n) = (\opname{KraftSum}(\C))^n
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            \opname{KraftSum}(\C^n) &= \sum\limits_{u_1\ldots u_n\in\U^n} 2^{-\underbrace{\left\lvert\C^n(u_1\ldots u_n)\right\rvert}_{\C(u_1)\ldots\C(u_n)}}\\
+            &= \sum\limits_{u_1\ldots u_n\in\U^n} 2^{-\left(\sum\limits_{i=1}^n\left\lvert \C(u_i) \right\rvert\right)}\\
+            &= \sum\limits_{u_1\ldots u_n\in\U^n} \prod\limits_{i=1}^n 2^{-\left\lvert\C(u_i) \right\rvert}\\
+            &= \prod\limits_{i=1}^n \sum\limits_{u_i}2^{-\left\lvert \C(u_i)\right\rvert}\\
+            &= (\opname{KraftSum(\C)})^n
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{example}
+	\begin{center}
+	    \begin{tabular}{c|c|c}
+	        $u$ & $l(u)$ & $\C(u)$\\\hline
+	        $a$ & $1$ & \\
+	        $b$ & $2$ & \\
+	        $c$ & $3$ & \\
+	        $d$ & $3$ & \\
+	    \end{tabular}
+	\end{center}
+	
+    Is there a prefix free code $\C$ with $\left\lvert \C(u) \right\rvert = l(u)$.
+\end{example}
+
+\begin{theorem}["Reverse" \textsc{Kraft} inequality]
+    Given an alphabet $\U$ and a function $l:\U \to \NN$ such that $\sum\limits_{u\in\U} 2^{-l(u)} \leqslant 1$ then there exists a prefix free code $\C : \U \to \set{0,1}^*$ such that $\left\lvert \C(u)\right\rvert = l(u)$ for each $u\in\U$.
+\end{theorem}
+\begin{proof}
+    Suppose the alphabet $\U$ has $k$ letters, assume $\U = \llbracket 1;k \rrbracket$. Suppose also without loss of generality thaht $\forall i \in \llbracket 1; k-1 \rrbracket, l(i) \leqslant l(i+1)$.
+    
+    Consider the following algorithm:
+
+    \begin{enumerate}
+        \item Start with the binary tree of height $l(k)$ with all nodes unoccupied.
+        \item For $i = 1,\ldots,k$: place $\C(i)$ at an unoccupied node at height $l(i)$ and mark as occupied all nodes that descend from it.
+        \item Return $\C$.
+    \end{enumerate}
+    
+    When we try to find a free node in the tree, how many unoccupied nodes are there at height $l(i)$?
+    
+    \[
+        \begin{aligned}
+            &= \underbrace{2^{l(i)}}_{\text{we start with}} - \underbrace{2^{l(i)-l(1)}}_{\substack{\text{nodes eliminated}\\ \text{when placing }\C(1)}} - \cdots - \underbrace{2^{l(i)-l(i-1)}}_{\substack{\text{nodes eliminated}\\ \text{when placing }\C(i-1)}}\\
+            &= 2^{l(i)} \left( 1-\underbrace{\left(\sum\limits_{k=1}^{i-1} 2^{-l(k)} \right)}_{< 1} \right)\\
+            &> 0
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{proposition}[\textsc{Kraft}'s inequality for non-singular codes]
+    Suppose $\C : \U \to \set{0,1}^*$ is a non singular code then
+    \[
+        \begin{aligned}
+            \opname{KraftSum}(\C) &= \sum\limits_{u\in\U} 2^{-\left\lvert \C(u) \right\rvert}\\
+            &\leqslant 1+ \max\limits_n \left\lvert \C(u)\right\rvert
+        \end{aligned}
+    \]
+\end{proposition}
+\begin{proof}
+    Let $l_{max}$ the height of the tree.
+    
+	    \Tree [  [  [  [ $\vdots$ ] [ $\vdots$ ] ] [  [ $\vdots$ ] [ $\vdots$ ] ] ] [  [  [ $\vdots$ ] [ $\vdots$ ] ] [  [ $\vdots$ ] [ $\vdots$ ] ] ] ]
+
+    Height 0: $2^{-0} = 1$
+    
+    Height 1: $2^1 2^{-1} = 1$
+    
+    Height 2: $2^2 2^{-2} = 1$
+\end{proof}
+
+\begin{theorem}
+    If $\C$ is a uniquely decodable code then $\opname{KraftSum}(\C) \leqslant 1$.
+\end{theorem}
+\begin{proof}
+    Suppose $\C$ is uniquely decodable, in particular $\C^n$ is non singular.
+    \[
+        \begin{aligned}
+            \left (\opname{KraftSum}(\C)\right )^n &= \opname{KraftSum}(\C^n) \leqslant 1+\max\limits_{u_1\ldots u_n} \left \lvert \C(u_1)\ldots\C(u_n) \right \rvert\\
+            &= 1 + n \max\limits_u \left \lvert \C(u) \right \rvert\\
+            &= \cplx{n}
+        \end{aligned}
+    \]
+    
+    If $\opname{KraftSum}(\C)>1$ would be $\cplx{\exp(n)} \Ra \opname{KraftSum}(\C)\leqslant 1$.
+\end{proof}
+\begin{corollary}
+    If $\C$ is a uniquely decodable code, then there exists a prefix free code $\C'$ such that
+    \[
+        \forall u \in \U, \left\lvert \C'(u) \right\rvert = \left\lvert \C(u) \right\rvert    
+    \]
+\end{corollary}

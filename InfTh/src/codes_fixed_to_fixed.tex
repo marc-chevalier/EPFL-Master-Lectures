@@ -1,0 +1,133 @@
+So far we have seen codes of the type
+\[
+    \U^n \to \set{0,1}^*
+\]
+
+They are called Fixed-to-variable-length codes and all have error free recovery of the source from its representation.
+
+We now discuss "Fixed-to-fixed" codes, we want
+\[
+    \C: \U^n \to \set{0,1}^k
+\]
+
+\begin{example}
+    Suppose $\U=\set{a,b,c,d}$.
+    \[
+        \C: \U^n \to \set{0,1}^k
+    \]
+    $\card{\U^n} = 4^n$ and 
+    $\card{\set{0,1}^k} = 2^k$
+    
+    error free recover requires $k\geqslant 2n$.
+\end{example}
+
+To obtain efficient codes, we will give up error-free recovery replace this by recovery with very small probability of error. For this, we will have the code assign binary representation only to a subset $\S \subseteq \U^n$. We will choose this subset to ensure 
+\[
+    \prob{(U_1\ldots U_n)\in\S} \simeq 1 \wedge \card{\S} \leqslant 2^k
+\]
+
+\begin{example}
+    Suppose $\U = \set{a,b}p$, $p_a = 0.25$, $p_b = 0.75$. Source is memoryless stationary (iid) $U_1, U_2, \ldots$
+    
+    What kind of sequences $(u_1,\ldots,u_n)$ do we expect the source to produce?
+    
+    We expect that $(u_1,\ldots,u_n)$ to have $\simeq \frac{1}{4} n$ a's and $\simeq \frac{3}{4} n$ b's.
+    
+    Pick $\varepsilon > 0$ small. Let us define $\S = \set{\left.(u_1,\ldots,u_n) \middle\vert \length{(u_1,\ldots,u_n)}_a = \frac{1}{4}n(1\pm \varepsilon)\right.}$ .
+    
+    Intuitively, we expect $\set{(u_1,\ldots,u_n) \in \S}$ to be a high probability event.
+    
+    How about the size of $\S$?
+    
+    How many sequences $(u_1,\ldots,u_n)$ are there with $i$ a's and $n-i$ b's? 
+    \[
+        \binom{n}{i}
+    \]
+    So
+    \[
+        \begin{aligned}
+            \card{\S} &= \sum\limits_{i = \ceil{\frac{n}{4}(1-\varepsilon)}}^{\floor{\frac{n}{4}(1+\varepsilon)}} \binom{n}{i}\\
+            &\leqslant (n+1)\binom{n}{\floor{\frac{n}{4}(1+\varepsilon)}}
+        \end{aligned}
+    \]
+    \[
+        \begin{aligned}
+            1 &= (p + (1-p))^n\\
+            &=\sum\limits_{i=0}^n \binom{n}{i} p^i (1-p)^{n-i}\\
+            &\geqslant \binom{n}{i} p^i (1-p)^{n-i}\\
+            \Ra \binom{n}{i} &\leqslant \left(\frac{1}{p}\right)^i\left(\frac{1}{1-p}\right)^{n-i}\\
+            &\leqslant \left(\frac{n}{i}\right)^i\left(\frac{n}{n-i}\right)^{n-i} \qquad \text{ with } p=\frac{i}{n}
+        \end{aligned}
+    \]
+    
+    \[
+        \log\binom{n}{i} \leqslant n\left( \alpha \log\frac{1}{\alpha} + (1-\alpha)\log\frac{1}{1-\alpha} \right)
+    \]
+    \[
+        \binom{n}{\floor{\frac{n}{4}(1+\varepsilon)}} \leqslant 2^{nH(U')}
+    \]
+    where $U' = \begin{cases}
+        a & \text{ wp } \frac{1}{4}(1+\varepsilon)\\
+        b & \text{ wp } 1 - \frac{1}{4}(1+\varepsilon)
+    \end{cases}$.
+    
+    So $\card{\S} \leqslant (n+1)2^{nH(U')}$ so if we choose $k = aH(U') + \log(n+1)$ we will have $\card{} \leqslant 2^k$ with $\frac{k}{n} = \underbrace{H(U') + \frac{\log(n+1)}{n}}_{\simeq H(u) \text{if }\varepsilon\text{ is small and }n\text{ is large}}$ we will have "almost free" representation.
+\end{example}
+
+\subsection{General case}
+
+We are given an alphabet $\U$ and a distribution $p$ on $\U$, $\set{p(u) \vert u\in\U}$, and we have a source that produces iid letters $U_1,U_2,\ldots$ each with distribution $p$. We want to have a set $T_{n,\varepsilon, p} \subseteq \U^n$ with the properties
+\begin{enumerate}
+    \item $\prob{(U_1\ldots U_n) \in T_{n,\varepsilon,p}} \simeq 1$
+    \item $\card{T_{n,\varepsilon,p}} \leqslant ...$
+\end{enumerate}
+
+We say a sequence $(u_1\ldots u_n) \in \U^n$ to be $\varepsilon$-typical with respect to the distribution $p$ if for every $u\in\U, \frac{\card{\set{i \vert u_i = u}}}{n} = p(u) (1\pm \varepsilon)$.
+
+Set $T_{n,\varepsilon, p}$ to be set of $(u_1,\ldots u_n)$'s which are $\varepsilon$-typical wrt $p$.
+
+\begin{proposition}
+    \[
+        \prob{(U_1\ldots U_n) \not\in T_{n,\varepsilon,p}} \leqslant \frac{1}{n \varepsilon^2p_{\min}}
+    \]
+\end{proposition}
+\begin{proof}
+    Let $B_u$ be the vent that $\frac{1}{n}\length((U_1\ldots U_n))_u \not\in [p(u)(1-\varepsilon); p(u)(1+\varepsilon)]$. Then 
+    \[
+        \begin{aligned}
+            \prob{(U_1\ldots U_n) \not\in T_{n,\varepsilon,p}} &= \prob{\bigcup\limits_{u\in\U} B_u}\\
+            &\leqslant \sum\limits_{u\in\U} \prob{B_u}
+        \end{aligned}
+    \]
+    
+    $B_u$ is the event that $\left\lvert \frac{1}{n} \sum\limits_{i=1}^n \underbrace{\mathbb{1}\set{U_i = n}}_{X_i = \begin{cases}
+    1 & \text{ wp } p(u)\\
+    0 & \text{ wp } 1-p(u)
+    \end{cases}} - p(u) \right\rvert > \varepsilon p(u)$.
+    
+    ie. $\left\lvert \frac{1}{n} \sum\limits_{i=1}^n X_i - p(u) \right\rvert > \varepsilon p(u)$.
+    
+    \[
+        \prob{B_u} \leqslant \frac{1}{n\varepsilon^2 p_{\min}}
+    \]
+    where $p_{\min} = \min p(u)$.
+\end{proof}
+
+For the size of $T_{n, \varepsilon, p}$ observe first the followings
+\begin{itemize}
+    \item Fix a $(u_1,\ldots,u_n)$ in $T_{n,\varepsilon, p}$. Note that
+    \[
+        \begin{aligned}
+            \prob{(u_1 \ldots u_n)=(U_1 \ldots U_n)} &= p(u_1)\cdots p(u_n)\\
+            &= \prod\limits_{u\in\U}p(u)^{\overbrace{\length{u_1\ldots u_n}_u}^{np(n)(1\pm\varepsilon)}} \geqslant \prod\limits_u p(u)^{np(u)(1+\varepsilon)}\\
+            &= \prod\limits_u 2^{np(u)\log p(u)(1+\varepsilon)} = 2^{-n(1+\varepsilon)H(u)}\\
+            \Ra 1 &\geqslant \prob{(U_1\ldots U_n)\in T_{n,\varepsilon,p}}\\
+            &= \sum\limits_{(u_1\ldots u_n \in T_{n,\varepsilon,p})} \prob{(U_1\ldots U_n) = (u_1\ldots u_n)}\\
+            & \geqslant 2^{-n(1+\varepsilon)H(u)}\card{T_{n,\varepsilon,p}}\\
+            \Ra \card{T_{n,\varepsilon,p}} \leqslant 2 ^{(1+\varepsilon)nH(U)}
+        \end{aligned}
+    \]
+\end{itemize}
+
+
+

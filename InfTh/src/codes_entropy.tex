@@ -1,0 +1,250 @@
+\begin{definition}
+    Expected codeword length
+    \[
+        \sum\limits_i \prob{a_i} \left\lvert \C(a_i) \right\rvert
+    \]
+\end{definition}
+
+
+\begin{definition}[Entropy]
+    For a discrete random variable $X$ which has a mass function $P$
+    \[
+        H(X) := -\sum\limits_i P{x_i}\log(P(x_i))
+    \]
+\end{definition}
+
+\begin{theorem}
+   Expected codeword length $\geqslant$ Entropy
+\end{theorem}
+
+\begin{example}
+    $\U = \set{a,b,c,d}$.
+    \[
+        \begin{array}{cccc}
+            \prob{a} = \frac{1}{2} &
+            \prob{b} = \frac{1}{4} &
+            \prob{c} = \frac{1}{8} &
+            \prob{d} = \frac{1}{8}
+        \end{array}
+    \]
+    
+    \[
+        \begin{aligned}
+            a &\ra 0\\
+            b &\ra 10\\
+            c &\ra 110\\
+            d &\ra 111
+        \end{aligned}
+    \]
+    
+    \[
+        \esp{\left\lvert \C(\U) \right\rvert} = 1.75 = H(\U)
+    \]
+\end{example}
+
+\begin{theorem}
+    Given a source $\U$, there exists a prefix code $\C$ such that
+    
+    \[
+        \esp{\left\lvert \C(\U) \right\rvert}\leqslant H(\U) + 1
+    \]
+\end{theorem}
+\begin{proof}
+    Take $l(u) = \ceil{\log_2\frac{1}{p(u)}}$
+
+    \[
+        \log \frac{1}{p(u)} \leqslant l(u) \leqslant 1 + \log \frac{1}{p(u)}
+    \]
+    
+    Using the left inequality.
+    
+    \[
+        \begin{aligned}
+            2^{-l(u)} \leqslant p(u) &\Ra \sum\limits_u 2^{-l(u)} \leqslant \sum\limits p(u) = 1\\
+            &\Ra \exists \text{a prefix free }\C:\left\lvert \C(u)\right\rvert = l(u)
+        \end{aligned}            
+    \]    
+    
+    
+    Also
+    \[
+        \begin{aligned}
+            \esp{\left\lvert \C(\U) \right\rvert} &= \sum\limits_u p(u)l(u)\\
+            &\leqslant \sum\limits_u p(u) \left( 1+\log\frac{1}{p(u)}\right)\\
+            &=1+H(\U)
+        \end{aligned}
+    \]
+\end{proof}
+
+
+\begin{proposition}
+    \[
+        H(\U) \geqslant 0    
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            H(U) &= \sum \underbrace{p(u)}_{\geqslant 0} \overbrace{\log \underbrace{\frac{1}{p(u)}}_{\geqslant 1}}^{\geqslant 0}\\
+            &\geqslant 0
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{proposition}
+    \[
+        H(\U) \leqslant \log \left\lvert \U \right\rvert
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            \sum p(u) \log \frac{1}{p(u)} - \sum p(u) \log\left\lvert \U \right\rvert &= \sum p(u) \log \frac{1}{p(u) \left\lvert\U\right\rvert}\\
+            &= \left( \sum p(u) \log \frac{1}{p(u)\left\lvert \U \right\rvert} \right) \left( \log e\right)\\
+            &\leqslant \left( \log e\right)\left( \sum p(u)\left( \frac{1}{p(u)\left\lvert \U\right\rvert}-1\right) \right)\\
+            &=\left( \log e\right)\left( 1-1 \right)\\
+            &= 0
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{proposition}
+    Suppose $U$ and $V$ are independent random variables. Then 
+    \[
+        H(UV) = H(U) + H(V)
+    \]
+\end{proposition}
+\begin{proof}
+    We can consider $(U,V)$ as a new random variable.
+    
+    \[
+        \prob{(U,V) = (u,v)} = \frac{\prob{U = u} \prob{V = v}}{p(u,v)}
+    \]
+    
+    Then 
+    \[
+        \begin{aligned}
+            H(UV) &= \sum p(uv) \log \frac{1}{p(uv)}\\
+            &= \sum p(uv) \log \frac{1}{p(u)p(v)}\\
+            &= \sum p(uv) \left( \log \frac{1}{p(u)} + \log \frac{1}{p(v)}\right)\\
+            &= \sum\limits_{u,v} p(uv) \log \frac{1}{p(u)} + \sum\limits_{u,v} p(uv) \log \frac{1}{p(v)}\\
+            &= \sum\limits_{u} p(u) \log \frac{1}{p(u)} + \sum\limits_{v} p(v) \log \frac{1}{p(v)}\\
+        \end{aligned}
+    \]
+\end{proof}
+
+Suppose we have a memoryless, stationary source, producing $\U_1$, $\U_2$, $U_3$, $\U_4$...
+
+So fare, we choose to represent the source output in a letter to letter fashion. If instead, we use a code to represent $n$ letters at a time, we will have
+\[
+    H(\U_1\ldots \U_n) \leqslant \frac{\esp{\left\lvert \C(\U_1\ldots \U_n)\right\rvert}}{n} \leqslant \frac{H(\U_1\ldots \U_n) +1}{n}
+\]
+
+Also
+\[
+    \begin{aligned}
+        \frac{1}{n}H(\U_1\ldots \U_n) &= \frac{1}{n} \sum\limits_{i=1}^n H(\U_i)\\
+        &= \frac{1}{n}\sum\limits_{i=1}^n H(\U_1)\\
+        &= H(\U_1)
+    \end{aligned}
+\]
+
+So far we have seen bounds to the performance of code design, but we have not seen how to actually design a prefix code.
+
+Given $p:\U \to \RR$. 
+
+$\min\limits_{l:\U\to\NN} \sum p(u) l(u)$ 
+
+$\sum\limits_u 2^{-l(u)} \leqslant 1$
+
+Properties of optimal (in terms of minimizing $\sum p(u) \lvert\C(u)\rvert$ codes
+
+\begin{enumerate}
+    \item if $p(u) < p(v)$ then $l(u) \geqslant l(v)$.
+        \begin{proof}
+            Suppose not $p(u) < p(v)$ but $l(u) < l(v)$. Then swap the codewords for $u$ \& $v$. That improve the code.
+        \end{proof}
+        
+    \item In an optimal prefix code, there are at least 2 longest codewords.
+        \begin{proof}
+            If not, the longest codeword can be shortened without violating the prefix free condition.
+        \end{proof}
+        
+    \item Among optimal codes, there is one for which the two least probable symbols are siblings.
+        \begin{proof}
+            They have to be at the same height. We just need to permute in order to make the two least probable symbols siblings.
+        \end{proof}
+        
+    \item 1-to-1 correspondence between prefix free codes for an alphabet $\U$ and guessing strategies for $\U$.
+        \[
+            \esp{\#\text{ of question to guess}} = \esp{\lvert \text{codeword} \rvert}
+        \]
+\end{enumerate}
+
+Suppose $U$, $V$ are random variables. Suppose we know $V$ ($V = v$). How much entropy is in $\U$?
+
+We know that under the conditioning $V=v$, the probability that $U=u$ is now $\prob{U=u=\vert V=v} = \frac{p(uv)}{p(v)} =: p(u\vert v)$. So we define
+
+\[
+    \begin{aligned}
+        H(U\vert V=v) &= \sum_u p(u\vert v) \log \frac{1}{p(u\vert v)}\\
+        H(U\vert V) &= \sum_v p(v) H(U\vert V=v)\\
+    \end{aligned}
+\]
+
+\begin{conjecture}
+    \[
+        H(U\vert V) \leqslant H(U)
+    \]
+\end{conjecture}
+
+\begin{conjecture}
+    \[
+        H(UV) = H(U) + H(V \vert U) = H(V) + H(U \vert V)
+    \]
+\end{conjecture}
+
+\begin{example}
+    $U$, $V$ are binary random variables. $\U = \set{a,b}$, $\V = \set{0,1}$
+    
+    \begin{tabular}{c|cc}
+        $p(uv)$ & $0$ & $1$\\
+        \hline
+        a & $\frac{1}{2}$ & $\frac{1}{4}$\\
+        b & $0$ & $\frac{1}{4}$
+    \end{tabular}
+    
+    \[
+        \begin{aligned}
+            H(UV) &= \frac{1}{2} \log 2 + \frac{1}{4} \log 4 + \frac{1}{4} \log 4\\
+            &= 1.5
+        \end{aligned}
+    \]
+
+    \[
+        \begin{array}{lll}
+            H(V) = 1 & H(U\vert V=0) = 0 & H(V\vert U=b) = 0 \\
+            H(U) = \frac{3}{4} \log\frac{4}{3} + \frac{1}{4}\log 4 & H(U\vert V=1) = 1 & H(V\vert U=a) = 1 \\
+            & H(U\vert V) = \frac{1}{2} & H(V\vert U) = \frac{3}{4}\left( \frac{3}{4} \log\frac{4}{3} + \frac{1}{4}\log 4 \right)
+        \end{array}        
+    \]
+\end{example}
+
+\begin{proof}
+    \[
+        \begin{aligned}
+           p(uv) &= p(u) p(v\vert u)\\
+           \Ra \log \frac{1}{p(uv)} &= \log \frac{1}{p(u)} + \log \frac{1}{p(u\vert v)}\\
+           H(UV) &= \esp{\log \frac{1}{p(UV)}}\\
+           &= \underbrace{\esp{\log\frac{1}{p(U)}}}_{H(U)} + \underbrace{\esp{\log\frac{1}{p(V\vert U)}}}_{H(V\vert U)}
+        \end{aligned}            
+    \]
+
+    \[
+        \begin{aligned}
+            H(V\vert U) &= \sum_u p(u) H(V\vert U=u)\\
+            &= \sum_u p(u) \sum_v p(v\vert u) \log \frac{1}{p(v\vert u)}\\
+            &= \sum_{v,u} p(vu) \log \frac{1}{p(v\vert u)}
+        \end{aligned}
+    \]
+\end{proof}
