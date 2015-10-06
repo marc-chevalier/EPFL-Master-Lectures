@@ -124,10 +124,77 @@ For the size of $T_{n, \varepsilon, p}$ observe first the followings
             \Ra 1 &\geqslant \prob{(U_1\ldots U_n)\in T_{n,\varepsilon,p}}\\
             &= \sum\limits_{(u_1\ldots u_n \in T_{n,\varepsilon,p})} \prob{(U_1\ldots U_n) = (u_1\ldots u_n)}\\
             & \geqslant 2^{-n(1+\varepsilon)H(u)}\card{T_{n,\varepsilon,p}}\\
-            \Ra \card{T_{n,\varepsilon,p}} \leqslant 2 ^{(1+\varepsilon)nH(U)}
+            \Ra \card{T_{n,\varepsilon,p}} &\leqslant 2 ^{(1+\varepsilon)nH(U)}
         \end{aligned}
     \]
 \end{itemize}
 
+\begin{theorem}
+    If $U_1\ldots U_n$ are iid $\sim p$, then
+    \[
+        \forall \varepsilon > 0, \lim\limits_{n\to\infty}\prob{(U_1 \ldots U_n) \in T_{n, \varepsilon, p}} = 1
+    \]
+    
+    Furthermore if $(u_1 \ldots u_n)\in T_{n,\varepsilon, p}$, then
+    \[
+        \begin{aligned}
+            \prob{(U_1 \ldots U_n) = (u_1 \ldots u_n)} &= \prod\limits_{i=1}^n p(u_i)\\
+            &= \prod\limits_{u\in\U} p(u) ^{\overbrace{\length{u_i}_u}^{np(n)(1\pm\varepsilon)}}\\
+            &= 2^{-nH(u)(1\pm\varepsilon)}
+        \end{aligned}
+    \]
+    ie.
+    \[
+        2^{-nH(u)(1+\varepsilon)} \leqslant \prob{(U_1 \ldots U_n) = (u_1 \ldots u_n)} \leqslant 2^{-nH(u)(1-\varepsilon)}
+    \]
+    Also $\card{T_{n,\varepsilon,p}} \leqslant 2^{nH(u)(1+\varepsilon)}$ and $\card{T_{n,\varepsilon,p}} \geqslant (1-\varepsilon) 2^{nH(u)(1-\varepsilon)}$
+\end{theorem}
+
+\begin{theorem}
+    If $U_1\ldots U_n$ iid $\sim q$ and $(u_1\ldots u_n)\in T_{n,\varepsilon,p}$, then
+    \[
+        \begin{aligned}
+            \prob{(U_1\ldots U_n) = (u_1\ldots u_n)} &= \prod\limits_{i=1}^n q(u_i)\\
+            &= \prod\limits_{u\in\U} q(u)^{np(u)(1\pm \varepsilon)}\\
+            &= 2^{-n(1\pm\varepsilon)\sum\limits_u p(u) \log\frac{1}{q(u)}}
+        \end{aligned}
+    \]
+    But
+    \[
+        \begin{aligned}
+            \sum\limits_u p(u) \log\frac{1}{q(u)} &= \sum\limits_u p(u) \log\frac{1}{p(u)} + \sum\limits_u p(u) \log\frac{p(u)}{q(u)}\\
+            &= H(p) + \underbrace{D(p \Vert q)}_{\text{divergence}}
+        \end{aligned}
+    \]
+    So
+    \[
+        \prob{(U_1\ldots U_n) = (u_1\ldots u_n)} = 2^{-(1\pm\varepsilon)n(D(q\Vert p + H(p))}
+    \]
+\end{theorem}
+
+\begin{corollary}
+    If $U_1\ldots U_n$ iid $\sim q$
+    \[
+        \begin{aligned}
+            \prob{(U_1\ldots U_n)\in T_{n,\varepsilon,p}} &= \underbrace{2^{-(1\pm\varepsilon)n(H(p) + D(q\Vert p))}}_{\substack{\text{upper and lower bound on}\\\prob{(U_1\ldots U_n) = (u_1\ldots u_n)}}} \cdot \underbrace{(1\pm \varepsilon) 2 ^{nH(p)(1\pm \varepsilon)}}_{\substack{\text{upper and lower}\\\text{bound on }\card{T}}}\\
+            &= 2^{-n(1\pm \varepsilon) D(p\Vert q)}2^{\pm n\varepsilon H(p)} (1\pm\varepsilon) \\
+            &\doteq 2^{-nD(p\Vert q)}
+        \end{aligned}
+    \]
+\end{corollary}
+
+
+Recall also
+\[
+    \begin{aligned}
+        I(X,Y) &= \sum\limits_{x,y} p(x,y) \log\frac{p(x,y)}{p(x)p(y)}\\
+        &= D(p_{XY} \Vert p_X p_Y)
+    \end{aligned}
+\]
+
+Consequently if $(X_1,Y_1)\ldots(X_n,Y_n)$ iid $p_Xp_Y$ then
+\[
+    \prob{((X_1,Y_1)\ldots(X_n,Y_n)) \in T_{n,\varepsilon, p_{XY}}} \doteq 2^{-n\overbrace{I(X;Y)}^{\substack{\text{computed}\\\text{wrt. } p_{XY}}}}
+\]
 
 
