@@ -197,4 +197,62 @@ Consequently if $(X_1,Y_1)\ldots(X_n,Y_n)$ iid $p_Xp_Y$ then
     \prob{((X_1,Y_1)\ldots(X_n,Y_n)) \in T_{n,\varepsilon, p_{XY}}} \doteq 2^{-n\overbrace{I(X;Y)}^{\substack{\text{computed}\\\text{wrt. } p_{XY}}}}
 \]
 
+\bigskip
 
+"Application" of typical sequences in source coding. Given iid source $U_1U2\ldots$ $\sim p$. Pick $\varepsilon > 0$ (small) and $n$ (long) so that $T_{n,\varepsilon, p}$ has large probability ($>1-\varepsilon$). Pick $k = (1+\varepsilon)nH(u)$ so that $2^k$ is $\geqslant \card{T_{n,\varepsilon, p}}$. Consider the following source coding method.
+
+First, assign to every member of $T_{n,\varepsilon,p}$ a distinct element of $\set{0,1}^k$, call this $\C : T_{n,\varepsilon,p} \to \set{0,1}^k$.
+
+The source code is the following: if $(U_1\ldots U_n)\in T_{n,\varepsilon,p}$, represent it by $\C(U_1\ldots U_n)\in\set{0,1}^k$ else destroy the universe (it seems there is a nuclear button to do that).
+
+This method uses $(1+\varepsilon) H(u) + \frac{1}{n}$ bits/letter and has a probability of decoding failure $< \varepsilon$.
+
+
+\bigskip
+
+"Dual" of Fix-to-variable source coding $\equiv$ variable to fixed length source coding (dictionary based source coding).
+
+The idea: given an alphabet $\U$, we will find a dictionary $\D \subsetneq \U^*$, we will assign $\ceil{\log\card{\D}}$ bits binary representation to words in $\D$, wand then given $U_1U_2\ldots$ we will parse it into $w_1w_2\ldots$ of dictionary words, and represent each word by its binary description.
+
+\begin{example}\label{codes_fixed_to_fixed:ex:1}
+    $\U = \set{a,b,c}$, $\D = \set{\underbrace{a}_{000},\underbrace{ba}_{001},bb,bca,bcb,bcc,\underbrace{c}_{110}}$ requires no lookahead.
+    
+    \[
+        bcaababccab\ldots \to \underbrace{bca}_{011} \underbrace{a}_{000} \underbrace{ba}_{001}\underbrace{bcc}_{101}\underbrace{a}_{000}
+    \]
+\end{example}
+
+\begin{example}\label{codes_fixed_to_fixed:ex:2}
+    $\U = \set{a,b,c}$, $\D=\set{aa,ab,b,c}$ $\ra$ invalid because it cannot parse $ac$.
+\end{example}
+
+\begin{example}\label{codes_fixed_to_fixed:ex:3}
+    $\U = \set{a,b,c}$, $\D=\set{a,aa,aaa,b,c}$ requires lookahead.
+    \[
+        aabcab \to aa,b,c,a,b    
+    \]
+    first word as long as possible.
+\end{example}
+
+Tree representation of dictionaries.
+
+Example \ref{codes_fixed_to_fixed:ex:1}:
+\Tree [ [ $a$ ] [ [ $ab$ ][ $bb$ ][ [ $bca$ ][ $bcb$ ][ $bcc$ ] ] ] [ $c$ ] ]
+
+Example \ref{codes_fixed_to_fixed:ex:2}:
+\Tree [ [ [ $aa$ ] [ $ab$ ] ] [ $b$ ] [ $c$ ] ]
+
+Example \ref{codes_fixed_to_fixed:ex:3}:
+\Tree [ [ .$a$ [ .$aa$ [ .$aaa$ ] [ ] [ ] ] [ ] [ ] ] [] [ $c$ ] ]
+
+The words of a valid \& no-lookahead (=prefix free) dictionaries form the leaves of a complete $\card{\U}$-ary tree.
+
+Let us examine the working of a valid \& no-lookahead prefix-free dictionary.
+
+\[
+    \underbrace{U_1\ldots U_n}_{\text{iid.}} \to \underbrace{W_1}_{\in \D} \ldots W_m \ra \text{binary representation in }\ceil{\log\card{\D}}
+\]
+
+$W's$ are also iid.
+
+\# of bits/letters $=\frac{m\log\ceil{\card{\D}}}{\sum\limits_{i=1}^n\length{W_i}} \to \frac{\ceil{\card{\D}}}{\esp{\length{W_1}}}$.
