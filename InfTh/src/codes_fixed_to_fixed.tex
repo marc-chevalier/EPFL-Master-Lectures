@@ -293,3 +293,42 @@ Observation on the \# of word of a valid prefix free dictionary (=\# of leaves i
 \end{figure}
 
 \FloatBarrier
+
+\begin{lemma}
+    Suppose $\D$ is valid prefix-free, suppose $U_1,U_2,\ldots$ are iid, then
+    \[
+        H(W_1) = \esp{\length{W_1}} H(U_1)
+    \]
+\end{lemma}
+\begin{proof}
+    \[
+        \begin{aligned}
+            H(W_1) &= \sum\limits_{w\in \D} P(w) \log \frac{1}{P(w)}\\
+            &= \esp{\log\frac{1}{P(W_1)}}\\
+            &= -\esp{\log P(W_1)}
+        \end{aligned}            
+    \]
+
+    Also if $w=(w_1,\ldots,w_n)$ then
+    \[
+        \begin{aligned}
+            P(w) &= \prod\limits_{i=1}^l P_v(u_i)\\
+            \Ra P(W_1) &= \prod\limits_{i=1}^{\length{W_i}} P_v(U_i)\\
+            \Ra H(W_1) &= \esp{\sum\limits_{i=1}^{l(U_1,U_2,\ldots)} - \log p_u(U_i)}\\
+            &= \esp{\sum\limits_{i=0}^\infty (-\log p_u(U_i)) \mathbb{1}\set{i\leqslant l(U_1U_2\ldots)}}\\
+            &= \sum_{i=0}^\infty \esp{ (-\log p_u(U_i)) \mathbb{1}\set{i\leqslant l(U_1U_2\ldots)}}
+        \end{aligned}
+    \]
+\end{proof}
+
+Recall now 
+\[
+    \begin{aligned}
+        \text{\# bits/letter} &= \frac{ \ceil{\log\card{\D}}}{\esp{\length{W_1}}}\\
+        &= \frac{\ceil{\card{\D}}}{H(W_1)} H(U_1)
+    \end{aligned}
+\]
+
+To have any hope of showing that \# of bits/letter $\approx H(U_1)$ we need to show that $H(W_1) \geqslant \log \card{\D} - \text{something we can control}$.
+
+To show this, observe how the \textsc{Tunstall}'s procedure picks the interior nodes. Initially we have one interior node of weight 1 (root). Let $Q_1,Q_2,\ldots$ the weight of the interior nodes with $1=Q_1 \geqslant Q_2 \geqslant \ldots \geqslant Q_k$ $\ra$ last intermediate work picked. At the point that $k$-th intermediate word is picked, all words have $P(\text{word}) \leqslant Q_k$ the statement remains true after one pick. Also for any word $P(\text{word}) = Q_i P(\text{last letter of word}) \geqslant Q_k \min\limits_up_u(u)$.
