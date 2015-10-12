@@ -1,0 +1,39 @@
+\section{Matlab homework 1}
+
+$X$, $Y$ are independent random variables and square-integrable $\Ra$ $X$, $Y$ are uncorrelated.
+
+$X$, $Y$ jointly Gaussian: independent $\iff$ uncorrelated.
+
+$X$, $Y$ general square integrable random variables, independent, $\Var{X} = \Var{Y}$ $\Ra$ $\opname{Cov}(X+Y,X-Y) = 0$.
+
+$X$, $Y$ are independent Gaussian, $\Var{X} = \Var{Y}$ $\Ra$ $X+Y$ \& $X-Y$ are independent.
+
+$X$, $Y$ iid $\sim \N(0,1)$ $\Ra$ $(X,Y) = (R\cos \theta, R\sin \theta)$, $R$ and $\theta$ are also independent, $\theta \sim \U([0,2\pi])$, $R$ is \textsc{Rayleigh} $p_R(t) = r^{-\frac{r^2}{2}}$.
+
+$X$ and $Y$ are Gaussian and uncorrelated $\not\Ra$ independent.
+
+\begin{proposition}[Or not...]
+    In general, $X$, $Y$ are jointly Gaussian $\iff$ $\forall (\alpha,\beta) \in \RR^2, \alpha X + \beta Y$ is a Gaussian random variable (with the convention a constant $c\sim \N(c,0)$).
+\end{proposition}
+
+\section{Homework 3}
+    \subsection{Exercise 1}
+
+$p_X(x) = \frac{1}{\pi} \frac{1}{1+x}$
+
+$\esp{\lvert X \rvert} = \int_\RR\dd x \underbrace{\frac{\lvert x \rvert}{\pi(1+x^2)}}_{\sim\frac{1}{\pi x}} = +\infty$
+
+$\esp{X^2} = \int \dd x \frac{1}{\pi}\frac{\lambda x^2}{\lambda^2+x^2} = +\infty$
+
+    \subsection{Exercise 3}
+    
+$\prob{\set{X > t}} \geqslant \frac{(\esp{X}-t)^2}{\esp{X^2}}$ ($X$ sq-int, $X \geqslant 0$, $0 < t \leqslant \esp{X}$).
+
+\begin{proof}
+    $\esp{X1_{\set{X\geqslant t}}} \overset{\text{C-S}}{\leqslant} \ldots$
+\end{proof}
+
+    \subsection{Exercise 4b)}
+    
+$\prob{\set{X\geqslant b}} \leqslant \frac{\sigma^2}{\sigma^2+a^2}$.
+

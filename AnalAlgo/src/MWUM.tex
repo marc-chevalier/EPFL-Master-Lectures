@@ -222,3 +222,20 @@ Problem: find $x\in\Delta_n$ such that $\forall i, \angle{a_i,x} \geqslant 0$. L
 
 Assume that $\exists x^* : x^* \in \Delta_n, \forall i \angle{a_i, x^*} \geqslant \varepsilon$.
 
+Given $f^1, \ldots, f^t : \Delta_n \to \RR$ convex \& $\forall x \in \Delta_n,\forall t,\left\lVert\nabla f^t(x)\right\rVert_\infty \leqslant 1$.
+
+Use MWU, $l^t := \nabla f^t$. ($l$: loss function).
+
+\begin{corollary}
+    \[
+        \forall p \in\Delta_n, \frac{1}{T} \sum\limits_{t=1}^T \angle{\nabla f^t, p^t-p} \leqslant 2 \varepsilon
+    \]
+    for $T \geqslant \frac{\ln n}{\Sigma^2}$.
+\end{corollary}
+
+\begin{corollary}
+    Suppose $f:\Delta_n \to \RR$, convex,$\forall x \in \Delta_n, \lVert \nabla f(x) \rVert\infty \leqslant G$, then MWU produces $p^1,p^2,\ldots$ such that
+    \[
+        f\left( \frac{1}{T}\sum\limits_{k=1}^T  p^t\right) - f(p^*) \leqslant \varepsilon_i
+    \]
+\end{corollary}

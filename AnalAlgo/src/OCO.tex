@@ -1,0 +1,125 @@
+ $f^1, f^2,\ldots$ convex
+\[
+    f^t : K \to \RR
+\]
+
+Goal : $x^1,x^2,\ldots$ such that
+\[
+    \forall x\in \K, \frac{1}{T} \sum\limits_{t=1}^T \left( f^t(x^t) - f^t(x) \right) \leqslant \text{small}
+\]
+
+Suppose seen $f^1, \ldots, f^t$ chose $x^1, \ldots, x^t$.
+
+Decide $x^{t+1}$? (not yet seen $f^{t+1}$).
+
+Greedy strategy: Pick
+\[
+    x^{t+1} = \underset{x}{\opname{arginf}} \sum\limits_{j=1}^t f^j(x)
+\]
+
+Assume full-access to $f^1,\ldots, f^t$.
+
+Loss: $f^{t+1}(x^+1)$
+
+\begin{exercise}
+    Show that $\exists f^1\ldots f^t,\ldots $convex functions $f^t:[-1,1]^n \to \RR$ such that $\lVert \nabla f^t \rVert \leqslant 1$, $\esp{\text{regret}} \geqslant \Omega(1)$.
+\end{exercise}
+
+Regularize to give our $x^1,\ldots,x^t$ stability.
+
+$R:K\to\RR$ regularizer (convex).
+
+\bigskip
+
+Strategy:
+\[
+    x^{t+1} = \underset{x}{\opname{argmin}} \sum\limits_{j=1}^t f^j(x) + R(x)
+\]
+
+Derive gradient descent. $f^1,\ldots, f^t$ convex.
+
+\[
+    f^t(x) = \angle{g^t, x}
+\]
+linear function.
+
+GD update: $x^{t+1} = x^t - \eta g^t$.
+
+\[
+    \begin{aligned}
+        R(x) &= \frac{1}{2 \eta} \lVert x \rVert_2^2\\
+        &= \frac{1}{2 \eta} \angle{x,x}
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        x^{t+1} &= \underset{x\in\RR^n}{\opname{argmin}} \sum\limits_{j=1}^t \angle{g^j,x} + \frac{1}{2\eta} \angle{x,x}\\
+        \nabla \sum\limits_{j=1}^t \angle{g^j,x} + \frac{1}{2\eta} \angle{x,x} &= \sum\limits_{j=1}^t g^j + \frac{1}{\eta} x\\
+        &= 0\\
+        \Ra x &= -\eta \sum\limits_{j=1}^t g^j\\
+        x^{t+1} &= -\eta \sum\limits_{j=1}^t g^j\\
+        &= -\eta \sum\limits_{j=1}^{t-1} g^j - \eta g^t\\
+        &= x^t - \eta g^t\\
+        x^{t+1} &= -\eta \sum_{j=1}^t \nabla f^j(x)\\
+        x^{t+1} &= x^t - \eta \nabla f^t(x^t)
+    \end{aligned}
+\]
+
+\begin{theorem}
+    If $x^1,\ldots,x^t,\ldots$ are points produced using $f^1,\ldots,f^t,\ldots \& R$, $\forall x \in K, \sum_{t=1}^Tf^t(x^t)-f^t(x) \leqslant \sum\limits_{t=1}^T f^t(x^t) -f^t(x^{t+1}) - R(x^1) + R(x)$. 
+\end{theorem}
+\begin{proof}
+    To prove $\forall x$,
+    \[
+        \sum\limits_{t=1}^T f^t(x^{t+1}) + R(x^1) \leqslant \sum\limits_{t=1}^T f^t(x) + R(x)
+    \]
+    Induction on $T$.
+    
+    A bunch of uninteresting stuff.
+\end{proof}
+
+Computation of $x^{t+1}$: one strategy is to plug in $\angle{\nabla f^t(x^t),x} \simeq f^t(x)$.
+
+$x^{t+1} = \underset{x}{\opname{arginf}} \sum\limits_{j=1}^t \angle{\nabla f^t(x^t)x} + R(x)$ (first order oracle to $f^t$ suffices so easy).
+
+This method is called Online Mirror Descend.
+
+Back to MWU setting $f^1,\ldots, f^t$ convex $\Delta_n  \to \RR$. $\lVert \nabla f^t(x)\rVert_\infty \leqslant 1$.
+
+\begin{definition}[Strong convexity in $\lVert\quad\rVert_1$ norm]
+    $f$ is $\sigma$-strong convex if
+    \[
+        \forall x,y, \angle{\nabla f(x) - \nabla f(y),y-x} \geqslant \frac{\sigma}{2} \lVert x-y \rVert_2^2
+    \]
+    ie. $\nabla^2 f \succcurlyeq \sigma I$.
+\end{definition}
+
+Fact: $R$ is $1$-strongly convex in the $\lVert\quad \rVert_1$ norm.
+\[
+    \forall (x,y) \in (\Delta^n)^2, R(y) \geqslant R(x) + \angle{\nabla R(x), x-y} + \frac{1}{2} \lVert x-y \rVert_2^2
+\]
+
+When $R$ is strongly convex in $\lVert \quad \rVert_1$ while $\lVert \nabla f^t \rVert_{\infty} \leqslant 1$.
+
+Till now, we assumed given $x^t$, we can get $\nabla f^t(x^t) \in \RR^n$ eg. get the "whole" loss function at time $t$ (used to do our updates).
+
+In reality, pick $i$, get $l_i^t$ and none of $l_j^t$ for $j\neq i$.
+
+Redesign MWU with limited feedback setting (adversarial MAB). At each iteration $t$, pick $a_t \in \brackets{1, n}$, receive $l_{a_t}^t$. $a_t = j$ with probability $\frac{w_j^t}{\sum\limits_{i=1}^n w_i^t}$.
+\[
+    w_i^{t+1} = \begin{cases}
+        w_i^t e^{-\sum l_i^t} & i = a_t\\
+        w_i^t & i \neq a_t
+    \end{cases}
+\]
+
+What can we prove?
+
+In the full information model
+\[
+    \frac{1}{T} \text{Regret} \leqslant \varepsilon
+\]
+for $T \geqslant \frac{\log n}{\varepsilon^2}$.
+
+What to expect here? $T = \frac{n\log n}{\varepsilon^2}$.
