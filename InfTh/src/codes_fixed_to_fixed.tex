@@ -263,3 +263,25 @@ $W's$ are also iid.
         \esp{Z} = \sum\limits_{n=0}^{\infty} \prob{Z > n}
     \]
 \end{lemma}
+
+Observation on the \# of word of a valid prefix free dictionary (=\# of leaves in the tree representation of the dictionary) and the \# of interior nodes of the tree.
+
+\begin{tabular}{ccc}
+    Tree & \# of interior nodes & \# of dictionary words\\
+    \Tree [ [ $a$ ] [ $b$ ] [ $c$ ] ] & 1 & $\card{\U}$\\
+    \Tree [ [ [ $aa$ ] [ $ab$ ] [ $ac$ ] ] [ $b$ ] [ $c$ ] ] & 2 & $2\card{\U} -1$\\
+    \Tree [ [ $b$ ] [ [ $aa$ ] [ $ab$ ] [ [ $aca$ ] [ $acb$ ] [ $acc$ ] ] ] [ $c$ ] ] & 2 & $3\card{\U} - 2$
+\end{tabular}
+
+\# of words = $1 + (\card{\U} - 1) (\text{\# of interior nodes})$.
+
+
+
+\begin{algorithm}
+    \caption{\textsc{Tunstall}'s procedure to construct such a tree}
+    \DontPrintSemicolon
+    Start with $\D = \U$ with $\card{\U}$ words and 1 interior node (root)\;
+    \While{$\card{\D} < M$}{
+        convert the most probable word (leaf) into an interior node, grow $\U$ leaves from it.
+    }
+\end{algorithm}
