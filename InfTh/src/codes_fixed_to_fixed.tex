@@ -332,3 +332,47 @@ Recall now
 To have any hope of showing that \# of bits/letter $\approx H(U_1)$ we need to show that $H(W_1) \geqslant \log \card{\D} - \text{something we can control}$.
 
 To show this, observe how the \textsc{Tunstall}'s procedure picks the interior nodes. Initially we have one interior node of weight 1 (root). Let $Q_1,Q_2,\ldots$ the weight of the interior nodes with $1=Q_1 \geqslant Q_2 \geqslant \ldots \geqslant Q_k$ $\ra$ last intermediate work picked. At the point that $k$-th intermediate word is picked, all words have $P(\text{word}) \leqslant Q_k$ the statement remains true after one pick. Also for any word $P(\text{word}) = Q_i P(\text{last letter of word}) \geqslant Q_k \min\limits_up_u(u)$.
+
+\[
+    2p_0 \leqslant \prob{W=w} \leqslant q
+\]
+where
+$p_0= \min\limits_x p_u(x)$ and $q$ the weight of the last picked interior node.
+
+\begin{lemma}
+    If $W$ is a random variable taking values in $\D$ and if for each $w\in\D$
+    \[
+        qp_0 \leqslant \prob{W=w}\leqslant q
+    \]
+    then
+    \[
+        \log \card{\D}  - \log \frac{1}{p_0} \leqslant H(W) \leqslant \log \card{\D}
+    \]
+\end{lemma}
+\begin{proof}
+    \[
+        \begin{aligned}
+            H(W) &= \sum\limits_w p(w) \log \frac{1}{p(w)}\\
+            &\geqslant \sum_w p(w) \log \frac{1}{q}\\
+            &< \log \frac{1}{q}
+        \end{aligned}
+    \]
+    Note also
+    \[
+        \begin{aligned}           
+            qp_0 \leqslant \prob{W=w} &\Ra qp_0\card{\D}\sum\limits_{w\in\D} qp_0 \leqslant \sum\limits_{w \in D}\prob{W=w} = 1\\
+            &\Ra q\leqslant \frac{1}{p_0\card{D}}\\
+            &\Ra \log \frac{1}{q} \geqslant \log\card{\D} + \log p_0
+        \end{aligned}
+    \]
+\end{proof}
+
+Using the lemma, we have $H(W) \geqslant \log\card{D} - \log \frac{1}{p_0}$. So, for the $\D$ constructed by \textsc{Tunstall}
+\[
+    \text{\# of bits/lettre} = H(U) \frac{\ceil{\log\card{\D}}}{H(W)} \leqslant H(W) \frac{\log\card{\D}+1}{\log\card\D - \log\frac{1}{p_0}} \underset{\card\D \to \infty}{\longra} 1
+\]
+
+Consequently, we have
+\begin{corollary}
+    Given $\U$, and $p_u$, $\varepsilon > 0$, there exists a dictionary based code for which \# bits/letter $\leqslant H(u)(1+\varepsilon)$.
+\end{corollary}
