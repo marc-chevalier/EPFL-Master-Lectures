@@ -13,16 +13,47 @@ Inspired by \textsc{Tunstall},
 
 \begin{example}
     $\U = \set{a,b,c}$, source = $bbaacbaa$.
-    
+
     $\D = \set{\underset{\underset{00}{\downarrow}}{a},\underset{\underset{01}{\downarrow}}{b},\underset{\underset{10}{\downarrow}}{c}}$, source = $\textcolor{blue}{b}baacbaa$, output = \textcolor{blue}{01}.
-    
+
     $\D = \set{\underset{\underset{000}{\downarrow}}{a},\underset{\underset{001}{\downarrow}}{ba},\underset{\underset{010}{\downarrow}}{bb},\underset{\underset{011}{\downarrow}}{bc},\underset{\underset{100}{\downarrow}}{c}}$ source = $\textcolor{blue}{ba}acbaa$, output = 01\textcolor{blue}{001}
-    
+
     $\D = \set{\underset{\underset{000}{\downarrow}}{a},\underset{\underset{001}{\downarrow}}{baa},\underset{\underset{010}{\downarrow}}{bab},\underset{\underset{011}{\downarrow}}{bac},\underset{\underset{100}{\downarrow}}{bb},\underset{\underset{101}{\downarrow}}{bc},\underset{\underset{110}{\downarrow}}{c}}$ source = $\textcolor{blue}{a}cbaa$, output = 01001\textcolor{blue}{000}
-    
+
     \bigskip    
-    
+
     At the decoder side, we have $\U = \set{a,b,c}$ and the representation $\underbrace{01}_b\underbrace{001}_{ba}\underbrace{000}_{a}\ldots$
-    
-    
 \end{example}
+
+Analysis of the performance of L-Z.
+
+We will show LZ perform well by showing that is is competitive vs a class of adversary.
+
+The class we choose is the class of finite-state-automaton compressors.
+
+We will define, given a finite state machine compressor, $E$, and a sequence $u_1u_2\ldots \in \U^\infty$, let
+\[
+    \rho(E,u_1u_2\ldots) = \limsup\limits_{n\to\infty} \frac{\text{\# of bits }E\text{ has produces upon reading }u_1u_2\ldots}{n}
+\]
+be the compressibility of $u_1u_2\ldots$ by the machine $E$.
+
+\[
+    \begin{aligned}
+        \rho_{FSA}(u) &= \inf\limits_{E\text{ FSA}} \rho(E,u)\\
+        &= \lim\limits_{s \to \infty}\min\limits_{\substack{E\text{ FSA}\\\text{with less that }n \text{ states}}} \rho(E,u)\\
+    \end{aligned}
+\]
+
+Define also
+\[
+        \rho_{LZ}(u) = \limsup\limits_{n\to\infty} \frac{\text{\# of bits LZ has produced upon reading }u}{n}
+\]
+We sill show $\rho_{LZ}(u) = \rho_{FSA}(u)$.
+
+\begin{definition}[Finite State Automaton]
+    Cf. \textit{Introduction à la calculabilité}, \textsc{Chevalier} \footnote{\url{http://perso.ens-lyon.fr/marc.chevalier/Calculabilite/Calculabilite.pdf}} pp.273 sqq.
+\end{definition}
+
+We add an output function: $f:S\times \Sigma \to \set{0,1}^*$. Such an automaton output a binary word at each transition.
+
+If you really want a figure, be my guest. I don't want to have to (be) fuck (by) Tikz one time more.
