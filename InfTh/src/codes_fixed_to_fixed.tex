@@ -208,7 +208,7 @@ The source code is the following: if $(U_1\ldots U_n)\in T_{n,\varepsilon,p}$, r
 This method uses $(1+\varepsilon) H(u) + \frac{1}{n}$ bits/letter and has a probability of decoding failure $< \varepsilon$.
 
 
-\bigskip
+\subsection{Dictionaries}
 
 "Dual" of Fix-to-variable source coding $\equiv$ variable to fixed length source coding (dictionary based source coding).
 
@@ -374,5 +374,8 @@ Using the lemma, we have $H(W) \geqslant \log\card{D} - \log \frac{1}{p_0}$. So,
 
 Consequently, we have
 \begin{corollary}
-    Given $\U$, and $p_u$, $\varepsilon > 0$, there exists a dictionary based code for which \# bits/letter $\leqslant H(u)(1+\varepsilon)$.
+    Given $\U$, and $p_u$, $\varepsilon > 0$, there exists a dictionary based code for which 
+    \[
+        \text{\# of bits/letter} \leqslant H(u)(1+\varepsilon)
+    \]
 \end{corollary}

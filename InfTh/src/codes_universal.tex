@@ -1,0 +1,28 @@
+Inspired by \textsc{Tunstall}, 
+
+\begin{algorithm}
+    \DontPrintSemicolon
+    Set $\D=\U$\;
+    \While{The text is not entirely coded}{
+        Associate to each $w \in \D$ a $\ceil{\log\card\D}$-bit binary representation, based on dictionary order.\;
+        Parse the next word $w$ from the source sequence using $\D$.\;
+        Emit the binary representation of $w$.\;
+        $\D \la \D\setminus\set{w} \cup \set{wu\vert u\in\U}$\;
+    }
+\end{algorithm}
+
+\begin{example}
+    $\U = \set{a,b,c}$, source = $bbaacbaa$.
+    
+    $\D = \set{\underset{\underset{00}{\downarrow}}{a},\underset{\underset{01}{\downarrow}}{b},\underset{\underset{10}{\downarrow}}{c}}$, source = $\textcolor{blue}{b}baacbaa$, output = \textcolor{blue}{01}.
+    
+    $\D = \set{\underset{\underset{000}{\downarrow}}{a},\underset{\underset{001}{\downarrow}}{ba},\underset{\underset{010}{\downarrow}}{bb},\underset{\underset{011}{\downarrow}}{bc},\underset{\underset{100}{\downarrow}}{c}}$ source = $\textcolor{blue}{ba}acbaa$, output = 01\textcolor{blue}{001}
+    
+    $\D = \set{\underset{\underset{000}{\downarrow}}{a},\underset{\underset{001}{\downarrow}}{baa},\underset{\underset{010}{\downarrow}}{bab},\underset{\underset{011}{\downarrow}}{bac},\underset{\underset{100}{\downarrow}}{bb},\underset{\underset{101}{\downarrow}}{bc},\underset{\underset{110}{\downarrow}}{c}}$ source = $\textcolor{blue}{a}cbaa$, output = 01001\textcolor{blue}{000}
+    
+    \bigskip    
+    
+    At the decoder side, we have $\U = \set{a,b,c}$ and the representation $\underbrace{01}_b\underbrace{001}_{ba}\underbrace{000}_{a}\ldots$
+    
+    
+\end{example}
