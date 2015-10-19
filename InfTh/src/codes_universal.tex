@@ -83,10 +83,10 @@ Suppose we have an FSA, suppose it has a state $q$ and two sequences $u_1\ldots 
 \begin{theorem}
     The following two infinite sequences are indistinguishable at the output
     \begin{itemize}
-        \item $h \Vert u_1 \ldots u_m \Vert t$
-        \item $h \Vert v_1 \ldots v_n \Vert t$
+        \item $p \Vert u_1 \ldots u_m \Vert s$
+        \item $p \Vert v_1 \ldots v_n \Vert s$
     \end{itemize}
-    where $h$ is a special string to take the machine from $q_0$ to $q$ and $t$ is any infinite sequence.
+    where $p$ is a special string to take the machine from $q_0$ to $q$ and $s$ is any infinite sequence.
 \end{theorem}
 
 Such machine consequently is not legitimate (its output does not determine its input).
@@ -100,3 +100,20 @@ Such machine consequently is not legitimate (its output does not determine its i
 such machines are called information-lossless.
 
 Legitimate FSA are information lossless. But the reverse is not true.
+
+We will use the information-lossless property of legitimate FSA to show that they can't emit too few bits. Consider a sequence $u_1\ldots u_n$ being fed to an IL machine.
+
+Suppose we parse $u_1\ldots u_n$ into a sequence $w_1 \ldots w_k$ of distinct words ($w_i \neq w_j$ when $i\neq j$). Let $\W_{s,t} = \set{i \vert w_i \text{ finds the machine at state }s\text{, leaves the machine at state }t}$.
+
+So $\brackets{1;k} = \bigcup\limits_{s,t} \W_{s,t}$ (disjoint union).
+
+Let $Y_i \in \set{0,1}^*$ be the binary sequence emitted during the reading of $w_i$. Observe that if $i$ and $j$ are both in $\W_{st}$ then $Y_i \neq Y_j$. So if $\lvert \W_{s,t}\rvert = m$ then in the output produced by the machine we have $m$ distinct binary sequences.
+
+\[
+    \sum\limits_{i \in \W_{st}} \length{Y_i} \geqslant m\log\frac{m}{8}
+\]
+
+
+So the machine having read $u_1\ldots u_n$ ($=w_1\ldots w_k$) has produces $y_1\ldots y_k$ with $\length{y_1\ldots y_k} = \sum\limits_{k=1}^k \length{y_i} = \sum\limits_{s,t}\sum\limits_{i\in W_{s,t}} \length{y_i} \geqslant \sum\limits_{s,t} \card{\W_{s,t}} \log\frac{\card{\W_{s,t}}}{8}\geqslant k\log\frac{k}{8\card{Q}^2}$.
+
+
