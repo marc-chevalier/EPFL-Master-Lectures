@@ -57,3 +57,46 @@ We sill show $\rho_{LZ}(u) = \rho_{FSA}(u)$.
 We add an output function: $f:S\times \Sigma \to \set{0,1}^*$. Such an automaton output a binary word at each transition.
 
 If you really want a figure, be my guest. I don't want to have to (be) fuck (by) Tikz one time more.
+
+\begin{notation}
+    We extend the transition function on $Q \times \Sigma^*$
+    \[
+        \delta(s, u_1\ldots u_k) = \delta(\ldots\delta(s, u_1),\ldots,u_k)
+    \]
+    
+    Similarly, we extend the output function
+    \[
+        f(s,u_1\ldots u_k) = f(s,u_1) \Vert f(\delta(s, u_1), u_2\ldots u_k)    
+    \]
+\end{notation}
+
+Assume further that every state $q$ is reachable from $s_0$.
+
+Suppose we have an FSA, suppose it has a state $q$ and two sequences $u_1\ldots u_m$ and $v_1,\ldots,v_n$ such that
+\[
+    \begin{aligned}
+        g(q, u_1\ldots u_m) &= g(q, v_1\ldots v_n)\\
+        f(q, u_1\ldots u_m) &= f(q, v_1\ldots v_n)
+    \end{aligned}
+\]
+
+\begin{theorem}
+    The following two infinite sequences are indistinguishable at the output
+    \begin{itemize}
+        \item $h \Vert u_1 \ldots u_m \Vert t$
+        \item $h \Vert v_1 \ldots v_n \Vert t$
+    \end{itemize}
+    where $h$ is a special string to take the machine from $q_0$ to $q$ and $t$ is any infinite sequence.
+\end{theorem}
+
+Such machine consequently is not legitimate (its output does not determine its input).
+
+\begin{corollary}
+    So a legitimate machine has to have the following property: for any $q\in Q$ and any $u_1\ldots u_m \neq v_1\ldots v_n$
+    \[
+            g(q,u_1\ldots u_m) = g(q,v_1\ldots v_m) \Ra f(q,u_1\ldots u_m) \neq f(q,v_1\ldots v_n)
+    \]
+\end{corollary}
+such machines are called information-lossless.
+
+Legitimate FSA are information lossless. But the reverse is not true.
