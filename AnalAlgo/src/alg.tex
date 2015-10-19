@@ -1,0 +1,125 @@
+\section{Matrices}
+
+$A \in \RR^{m \times n} \Ra$ $m$ lines and $n$ columns.
+
+Basic blabla about linear algebra\dots.
+
+Spectral theorem.
+
+Ok\dots worst linear algebra course ever. When the base field is $\RR$, there is an infinity of eigenvectors. Moreover, there is $n$ eigenvalues with multiplicity order!
+
+$u^H$ can be replace by $\overline{u}$.
+
+Really, you want more answers? Do you realize the number of major errors on your crappy blackboard? Do not try to make us believe you're good at mathematics. It's a big ball of approximations!
+
+\begin{proposition}
+    $u_1,\ldots,u_n$, linearly independent and unit eigenvectors of $A$. $(u_1,\ldots,u_n)$ is an orthonormal for $\RR^n$.
+    \[
+        \begin{aligned}
+            A &= \sum\limits_{i=1}^n \lambda_i u_i u_i^T\\
+            A^k &= \sum\limits_{i=1}^n \lambda_i^k u_i u_i^T
+        \end{aligned}
+    \]
+\end{proposition}
+
+\begin{proposition}
+    $A \in \M_n(\RR)$ symmetric
+    \[
+        \begin{aligned}
+            \lambda_n(A) &= \max\limits_{v\neq 0} \frac{v^TAv}{v^Tv}\\
+            \lambda_1(A) &= \min\limits_{v\neq 0} \frac{v^TAv}{v^Tv}
+        \end{aligned}            
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            \max\limits_{v \neq 0} \frac{v^TAv}{v^Tv} &\geqslant \frac{u_n^TAu_n}{u_n^Tu_n}\\
+            &=\lambda_n
+        \end{aligned}
+    \]
+    $\forall v \in \RR^n, v = \sum\limits_i \alpha_i u_i$
+    \[
+        v^T A v = \sum\limits_i \alpha_i^2 \lambda_i \leqslant \lambda_n \sum\limits_i \alpha_i^2
+    \]
+\end{proof}
+
+\begin{theorem}
+    Let $A \in \RR^{n\times n}$ symmetric. $\lambda_1\leqslant \cdots\leqslant \lambda_n$, then
+    \[
+        \lambda_k = \max\limits_{\substack{v\neq 0\\ v\perp \set{u_{k+1},\ldots,u_n}}} \frac{v^TAv}{v^Tv}
+    \]
+\end{theorem}
+
+How to compute $\lambda_n$?
+
+Starting point:
+Pick $v$ uniformly  at random unit vector in $\RR^n$. With high probability $\lvert \angle{v,u_n} \rvert \geqslant \frac{1}{2\sqrt{n}}$.
+
+\[
+    \lVert A \rVert = \max\set{\lvert \lambda_1 \rvert, \lvert \lambda_n \rvert}
+\]
+
+\begin{theorem}
+    Given $Z\in\RR^{n\times n}$ symmetric, $\varepsilon > 0$ then if $v$ is such that $\lvert \angle{v,u_n} \rvert \geqslant \frac{1}{2\sqrt{n}}$,
+    \[
+        \frac{\lVert A^{k+1} v \rVert}{\lVert A^k v \rVert} \geqslant (1-\varepsilon) \lvert \lambda_n(A) \rvert
+    \]
+    for $k = \frac{\log n}{\varepsilon}$.
+\end{theorem}
+
+\section{Graphs}
+
+$G = (\underbrace{V}_{\text{vertices}}, \overbrace{E}^{\text{edges}})$ undirected, weighted $w: E\to\RR^+$
+
+Adjacency matrix
+$A \in \RR^{\card{V} \times \card{V}}$, $a_{u,v} = \begin{cases}
+    w_{u,v} & uv \in E\\
+    0 & uv \not\in E
+\end{cases}$.
+
+$d_{uv} = [d(u)][u=v]$.
+    
+\begin{figure}[!ht]
+    \centering
+    \digraph[scale=0.5]{STP}{
+        edge [dir=none, color=black]
+        1->2->3->4->1;
+        1->3;
+}
+\end{figure}
+\FloatBarrier
+\[
+    A = \left(
+        \begin{matrix}
+            0 & 1 & 1 & 1\\
+            1 & 0 & 1 & 0\\
+            1 & 1 & 0 & 1\\
+            1 & 0 & 1 & 0
+        \end{matrix}
+    \right)
+\]
+\[
+    D = \left(
+        \begin{matrix}
+            3 & 0 & 0 & 0\\
+            0 & 2 & 0 & 0\\
+            0 & 0 & 3 & 0\\
+            0 & 0 & 0 & 2
+        \end{matrix}
+    \right)
+\]
+
+\begin{definition}
+    $L = D - A$ laplacian of $G$.
+\end{definition}
+
+What can we say about eigenvalues of $L$? No.
+
+$L \succcurlyeq 0$
+
+$L 1 = 0$.
+
+\begin{theorem}
+    $\lambda_2(L) > 0 \LRa G$ is connected.
+\end{theorem}
