@@ -30,6 +30,25 @@ Website: \url{http://ipg.epfl.ch/doku.php?id=en:courses:2015-2016:itc}
     \section[Universal Source Coding]{Universal Source Coding \---- \textsc{Lempel}-\textsc{Ziv} data compression}
         \input{src/codes_universal.tex}
 
+\chapter{Channel}
+
+Discrete-time channel, discrete valued input/output.
+
+$x_1,x_2\ldots \ra y_1, y_2\ldots$
+
+$x_i \in \X$, $y_i \in \Y$, $\card{X} < \infty$, $\card{Y} < \infty$
+
+Channel will be described by 
+
+\[
+    \prob{\underbrace{Y_i = y}_{\substack{\text{Current}\\\text{output}}} | \underbrace{X_i=x_i}_{\substack{\text{Current}\\\text{input}}}, \underbrace{\ldots, X_1 = x_1,Y_{i-1}=y_{i-1},\ldots, Y_1=y_1}_{\text{Events in the past}}}
+\]
+
+A channel is said to be memoryless if
+\[
+    \prob{Y_i = y | X_i=x_i, \ldots, X_1 = x_1,Y_{i-1}=y_{i-1},\ldots, Y_1=y_1} = \prob{Y_i = y | X_i=x_i} = \PP_i{y\vert x_i}
+\]
+
 \bibliographystyle{alpha}
 \bibliography{bibliography}
 \nocite{*}

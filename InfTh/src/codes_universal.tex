@@ -117,3 +117,63 @@ Let $Y_i \in \set{0,1}^*$ be the binary sequence emitted during the reading of $
 So the machine having read $u_1\ldots u_n$ ($=w_1\ldots w_k$) has produces $y_1\ldots y_k$ with $\length{y_1\ldots y_k} = \sum\limits_{k=1}^k \length{y_i} = \sum\limits_{s,t}\sum\limits_{i\in W_{s,t}} \length{y_i} \geqslant \sum\limits_{s,t} \card{\W_{s,t}} \log\frac{\card{\W_{s,t}}}{8}\geqslant k\log\frac{k}{8\card{Q}^2}$.
 
 
+Suppose we feed $u_1u_2\ldots$ to the LZ algorithm. LZ will parer the word into $\underbrace{w_1}_{\in \D_1} \underbrace{w_2}_{\in \D_2} \underbrace{w_3}_{\in \D_3} \ldots$.
+
+By LZ construction all $w_i$'s are distinct. And 
+\[
+    \begin{aligned}
+        \card{\D_i} &= \begin{cases} \card{\U} & i=1 \\ \card{\D_{i-1}} + \card{\U} - 1 & i > 1\end{cases}\\
+        &= 1+i(\card{\U} -1 )
+    \end{aligned}
+\]
+
+and will produce upon seeing $w_1 \ldots w_k$ 
+
+\[
+    \begin{aligned}
+        \sum\limits_{i=1}^k \ceil{\log\card{D_i}} &\leqslant k \ceil{\log(1+k(\card{\U}-1))}\\
+        &\leqslant k \log(2k\card{\U})
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        \frac{ \text{\# of bits produces by LZ} - \text{ \# of bits produces by an FSA}}{\text{\# of letters read}} &\leqslant \frac{k \log(k2\card{\U}) - k \log \frac{k}{8s^2}}{\sum\limits_{i=1}^k \length{w_i}}\\
+        &= \frac{k \log(16 s^2 \card{\U})}{\sum\limits_{i=1}^k \length{w_i}}
+    \end{aligned}
+\]
+
+As the length of the sequence $u_1\ldots u_n$ gets larger so does $k$, and
+\[
+    \rho_{LZ}(u_1u_2\ldots) - \rho_s(u_1u_2\ldots) \leqslant \lim\limits_{k\to+\infty} \frac{k}{\sum\limits_{i=1}^k \length{w_i}} \log (16\card{\U}s^2)
+\]
+Consider $a_i = \length{w_i}$ and $b_i = \frac{\sum\limits_{k=1}^ia_k}{i}$.
+
+Question: can $\lim\limits_i a_i$ be finite? No, \textsc{Cesàro}'s theorem, again.
+
+
+Thus
+\[
+    \begin{aligned}
+        \forall s\in\NN, \rho_{LZ}(u_1u_2\ldots) &\leqslant \rho_s(u_1u_2\ldots)\\
+        &\leqslant \lim\limits_{s \to \infty} \rho_s(u_1u_2\ldots)\\
+        &= \rho_{FSA}(u_1u_2\ldots)
+    \end{aligned}
+\]
+
+\begin{corollary}
+    If $U_1U_2\ldots$ is a stationary process with entropy rate $H$, then $\esp{\rho_{LZ}(U_1U_2\ldots)} \leqslant H$.
+\end{corollary}
+\begin{proof}
+    We know that $\forall \varepsilon >0$, we can find a fixed-to-variable code $\C_n : \U^n \set{0,1}^*$ such that
+    \[
+        H \leqslant \frac{1}{n} \esp{\length{\C_n(U_1\ldots U_n)}} \leqslant H + \varepsilon
+    \]
+    $\C_n$ can be implemented by a FSA $\Ra$ $\esp{\rho_{FSA}(U_1U_2\ldots)} \leqslant H + \varepsilon$ $\Ra$ $\esp{\rho_{LZ}(U_1U_2\ldots)} \leqslant H + \varepsilon $.
+\end{proof}
+
+$\frac{\esp{\text{\# of bits emitted after }U_1\ldots U_n}}{n} - H = o(\underline{\qquad})$.
+
+
+
+
