@@ -1,5 +1,3 @@
-[![Build Status](https://travis-ci.org/s-i-newton/EPFL-Master-Lectures.svg?branch=master)](https://travis-ci.org/s-i-newton/EPFL-Master-Lectures)
-
 # Readme
 
 The latex sources of master courses reviewed, improved and translated.
