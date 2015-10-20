@@ -1,19 +1,58 @@
 \documentclass[a4paper,10pt]{article}
 
-\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+\makeatletter
+\newcounter {subsubsubsection}[subsubsection]
+\renewcommand\thesubsubsubsection{\thesubsubsection .\@arabic\c@subsubsubsection}
+\newcommand\subsubsubsection{\@startsection{subsubsubsection}{4}
+    {\z@}%
+    {-3.25ex\@plus -1ex \@minus -.2ex}%
+    {1.5ex \@plus .2ex}%
+    {\normalfont\normalsize\bfseries}
+}
+\renewcommand\paragraph{\@startsection{paragraph}{5}
+    {\z@}%
+    {3.25ex \@plus1ex \@minus.2ex}%
+    {-1em}%
+    {\normalfont\normalsize\bfseries}
+}
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}
+    {\parindent}%
+    {3.25ex \@plus1ex \@minus .2ex}%
+    {-1em}%
+    {\normalfont\normalsize\bfseries}
+}
+\newcommand*\l@subsubsubsection{\@dottedtocline{4}{10.0em}{4.1em}}
+\renewcommand*\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\renewcommand*\l@subparagraph{\@dottedtocline{6}{12em}{6em}}
+\newcommand*{\subsubsubsectionmark}[1]{}
+\makeatother
+
+\usepackage[colorlinks=true]{hyperref} %http://www.ctan.org/tex-archive/macros/latex/contrib/hyperref/
+\hypersetup{urlcolor=black,linkcolor=black}
+
+\makeatletter
+\def\toclevel@subsubsubsection{4}
+\def\toclevel@paragraph{5}
+\def\toclevel@subparagraph{6}
+\makeatother
+
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage[table]{xcolor}
 \usepackage{mathpazo} %http://www.ctan.org/tex-archive/fonts/mathpazo
 \usepackage{stmaryrd} %http://www.ctan.org/pkg/stmaryrd
 \usepackage{amsmath} %http://www.ctan.org/pkg/amsmath
 \usepackage{amssymb}
 \usepackage{mathrsfs}
+\usepackage{boiboites}
 
 \usepackage{amsthm} %http://www.ctan.org/pkg/amsthm
 \usepackage{proof}
-
-\usepackage[colorlinks=true]{hyperref} %http://www.ctan.org/tex-archive/macros/latex/contrib/hyperref/
-\hypersetup{urlcolor=black,linkcolor=black}
+\usepackage{auto-pst-pdf}
 
 \usepackage{footmisc} %http://www.ctan.org/tex-archive/macros/latex/contrib/footmisc
 
@@ -26,74 +65,77 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{\medskipamount}
 
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
 \usepackage{pgffor}
 \usepackage{tikz}
 \usetikzlibrary{arrows,shapes.arrows, chains, positioning, automata, graphs}
-\usepackage{graphviz}
 
 \usepackage[ruled,vlined,english]{algorithm2e}
 \providecommand{\SetAlgoLined}{\SetLine}
 \providecommand{\DontPrintSemicolon}{\dontprintsemicolon}
 
-\usepackage{forest}
-\usepackage{placeins}
 \usepackage{comment} %http://www.ctan.org/tex-archive/macros/latex/contrib/comment
 \usepackage{multirow} %http://www.ctan.org/tex-archive/macros/latex/contrib/multirow
-\usepackage{diagbox} %http://www.ctan.org/tex-archive/macros/latex/contrib/diagbox
 
-\usepackage{textcomp} %http://www.ctan.org/pkg/textcomp
+\usepackage{placeins}
+\usepackage{wasysym}
+\usepackage{qtree}
+\usepackage{graphviz}
 
-\usepackage{listings} %http://www.ctan.org/tex-archive/macros/latex/contrib/listings/
-\lstset{numbers=left,language=Caml}
+\newboxedtheorem[boxcolor=red, background=red!5, titlebackground=red!50,titleboxcolor = black]{theorem}{Theorem}{TheC}
+\newboxedtheorem[boxcolor=orange, background=orange!5, titlebackground=orange!50,titleboxcolor = black]{definition}{Definition}{DefC}
+\newboxedtheorem[boxcolor=blue, background=blue!5, titlebackground=blue!20,titleboxcolor = black]{proposition}{Proposition}{TheC}
+\newboxedtheorem[boxcolor=cyan, background=cyan!5, titlebackground=cyan!20,titleboxcolor = black]{corollary}{Corollary}{TheC}
+\newboxedtheorem[boxcolor=black, background=black!0, titlebackground=black!20,titleboxcolor = black]{remark}{Remark}{RemC}
+\newboxedtheorem[boxcolor=green!70!black, background=green!70!black!5, titlebackground=green!70!black!30,titleboxcolor = black]{notation}{Notation}{NotC}
+\newboxedtheorem[boxcolor=yellow, background=yellow!0, titlebackground=yellow!30,titleboxcolor = black]{example}{Example}{ExeC}
+\newboxedtheorem[boxcolor=magenta, background=magenta!5, titlebackground=magenta!30,titleboxcolor = black]{lemma}{Lemma}{TheC}
+\newboxedtheorem[boxcolor=magenta, background=magenta!5, titlebackground=magenta!30,titleboxcolor = black]{fact}{Fact}{TheC}
+\newboxedtheorem[boxcolor=cyan, background=cyan!5, titlebackground=cyan!20,titleboxcolor = black]{consequence}{Consequence}{TheC}
+\newboxedtheorem[boxcolor=black, background=black!0, titlebackground=black!20,titleboxcolor = black]{algo}{Algorithm}{AlgoC}
+\newboxedtheorem[boxcolor=black, background=black!0, titlebackground=black!20,titleboxcolor = black]{conjecture}{Conjecture}{ConjC}
+\newboxedtheorem[boxcolor=black, background=black!0, titlebackground=black!20,titleboxcolor = black]{exercise}{Exercise}{ExC}
 
-\newcounter{ThComp}
-\newcounter{DefComp}
-
-\newtheorem*{fact}{Fact}
-\newtheorem*{csq}{Consequence}
-\newtheorem{thm}[ThComp]{Theorem}
-\newtheorem{theorem}[ThComp]{Theorem}
-\newtheorem{propo}[ThComp]{Proposition}
-\newtheorem{proposition}[ThComp]{Proposition}
-\newtheorem{lemma}[ThComp]{Lemma}
-\newtheorem*{corol}{Corollary}
-\newtheorem{prop}[ThComp]{Property}
-\newtheorem{property}[ThComp]{Property}
-\theoremstyle{definition}
-\newtheorem*{ex}{Example}
-\newtheorem*{exs}{Examples}
-\newtheorem{exo}{Exercise}
-\newtheorem{defi}[DefComp]{Definition}
-\newtheorem*{notation}{Notation}
-\newtheorem{definition}[DefComp]{Definition}
-\newtheorem{algo}{Algorithm}
-\theoremstyle{remark}
-\newtheorem*{Rq}{Remark}
-\newcommand{\ra}{\rightarrow}
-\newcommand{\la}{\leftarrow}
-
-
-\newcommand{\RR}{\mathbb{R}}
-\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\GG}{\mathbb{G}}
+\newcommand{\KK}{\mathbb{K}}
 \newcommand{\NN}{\mathbb{N}}
 \newcommand{\PP}{\mathbb{P}}
-\newcommand{\EE}{\mathbb{E}}
-\newcommand{\IE}{\mathbb{E}}
-\newcommand{\IR}{\mathbb{R}}
-\newcommand{\IZ}{\mathbb{Z}}
-\newcommand{\IN}{\mathbb{N}}
-\newcommand{\IP}{\mathbb{P}}
+\newcommand{\QQ}{\mathbb{Q}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
 
-\newcommand{\cF}{\mathcal{F}}
-\newcommand{\ck}{\mathcal{K}}
-\newcommand{\cL}{\mathcal{L}}
-\newcommand{\cN}{\mathcal{N}}
-\newcommand{\cNU}{\mathcal{NU}}
 \newcommand{\A}{\mathcal{A}}
 \newcommand{\B}{\mathcal{B}}
+\newcommand{\C}{\mathcal{C}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\E}{\mathcal{E}}
 \newcommand{\F}{\mathcal{F}}
+\newcommand{\G}{\mathcal{G}}
+\renewcommand{\H}{\mathcal{H}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\K}{\mathcal{K}}
 \renewcommand{\L}{\mathcal{L}}
+\newcommand{\M}{\mathcal{M}}
 \newcommand{\N}{\mathcal{N}}
+\newcommand{\R}{\mathcal{R}}
+\renewcommand{\S}{\mathcal{S}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\V}{\mathcal{V}}
+\newcommand{\W}{\mathcal{W}}
+\newcommand{\X}{\mathcal{X}}
+\newcommand{\Y}{\mathcal{Y}}
+
+\newcommand{\bA}{\mathbf{A}}
+\newcommand{\bE}{\mathbf{E}}
+\newcommand{\bF}{\mathbf{F}}
+\newcommand{\bG}{\mathbf{G}}
+\newcommand{\bN}{\mathbf{N}}
+\newcommand{\bU}{\mathbf{U}}
+\newcommand{\bX}{\mathbf{X}}
 
 \newcommand{\ens}[1]{\left\{ #1 \right\}}
 \newcommand{\set}[1]{\left\{ #1 \right\}}
@@ -105,6 +147,7 @@
 \newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
 \newcommand{\brackets}[1]{\left\llbracket #1 \right\rrbracket}
+\renewcommand{\angle}[1]{\left\langle #1 \right\rangle}
 \newcommand{\donne}{\rightarrow}
 \newcommand{\gives}{\rightarrow}
 \newcommand{\dans}{\to}
@@ -116,6 +159,7 @@
 \newcommand{\trans}[1]{\xrightarrow{#1}}
 \newcommand{\rules}[1]{\xrightarrow{#1}}
 \newcommand{\todo}[1]{\Large\textcolor{red}{#1}\normalsize}
+\newcommand{\wtf}[1]{\Large\textcolor{red}{WTF ?! #1}\normalsize}
 \newcommand{\argmin}{\text{argmin}}
 \newcommand{\rainbowdash}{\vdash}
 \newcommand{\notrainbowdash}{\nvdash}
@@ -124,15 +168,71 @@
 \newcommand{\Rainbowdash}{\Vdash}
 \newcommand{\notRainbowdash}{\nVdash}
 \newcommand{\bottom}{\bot}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\Ra}{\Rightarrow}
+\newcommand{\longra}{\longrightarrow}
+\newcommand{\longRa}{\Longrightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\La}{\Leftarrow}
+\newcommand{\longla}{\longleftarrow}
+\newcommand{\longLa}{\Longleftarrow}
+\newcommand{\lra}{\leftrightarrow}
+\newcommand{\LRa}{\Leftrightarrow}
+\newcommand{\longlra}{\longleftrightarrow}
+\newcommand{\longLRa}{\Longleftrightarrow}
+\newcommand{\opname}[1]{\operatorname{#1}}
+\newcommand{\suml}{\sum\limits}
+\newcommand{\prodl}{\prod\limits}
+\newcommand{\liml}{\lim\limits}
+\newcommand{\supl}{\sup\limits}
+\newcommand{\infl}{\inf\limits}
+\newcommand{\maxl}{\max\limits}
+\newcommand{\minl}{\min\limits}
+\newcommand{\bigcapl}{\bigcap\limits}
+\newcommand{\bigcupl}{\bigcup\limits}
+\newcommand{\card}[1]{\left\lvert#1\right\rvert}
 
-%TD/TP
-\newenvironment{answer}{\color{blue}}{}
+
+%InfTh
+\newcommand{\length}[1]{\left\lvert#1\right\rvert}
+
+%Optim
+\newcommand{\Det}{\operatorname{Det}}
+\newcommand{\TU}{\mathcal{TU}}
+
+%Verif
+\newcommand{\ifb}{\mathbf{\ if \ }}
+\newcommand{\thenb}{\mathbf{\ then \ }}
+\newcommand{\elseb}{\mathbf{\ else \ }}
+\newcommand{\dob}{\mathbf{\ do \ }}
+\newcommand{\whileb}{\mathbf{\ while \ }}
+\newcommand{\abortb}{\mathbf{\ abort \ }}
+\newcommand{\skipb}{\mathbf{\ skip \ }}
+\newcommand{\inb}{\mathbf{\ in \ }}
+\newcommand{\withb}{\mathbf{\ with \ }}
+\newcommand{\raiseb}{\mathbf{\ raise \ }}
+\newcommand{\trapb}{\mathbf{\ trap \ }}
+
+%CalcForm
+\newcommand{\DFT}{\operatorname{DFT}}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\Ker}{\operatorname{Ker}}
+\newcommand{\pgcd}{\operatorname{pgcd}}
+\newcommand{\Tr}{\operatorname{Tr}}
+
+%Compil
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+
+%AlgoPar
+\newcommand{\forto}{\text{\bf\ to\ }}
 
 
 %EvalPerf
-\newcommand{\Var}{\text{Var}}
+\newcommand{\Var}[1]{\text{Var}\left( #1 \right)}
 \newcommand{\prob}[1]{\PP\left( #1 \right)}
-\newcommand{\esp}[1]{\EE\left( #1 \right)}
+\newcommand{\esp}[1]{\EE\left[ #1 \right]}
+\newcommand{\dd}{\mathrm{d}}
 
 
 %SystDist
@@ -145,6 +245,7 @@
 \newcommand{\betared}{\vartriangleright_\beta}
 \newcommand{\parabetared}{\vartriangleright_{||\beta}}
 \newcommand{\Ackermann}{\A}
+\newcommand{\Ter}{\mathcal{T}er}
 
 
 %Cplx
@@ -160,6 +261,7 @@
 \newcommand{\NTime}{\textsc{NTime}}
 
 \renewcommand{\P}{\textsc{P}}
+\newcommand{\coP}{co\text{-}\textsc{P}}
 
 \newcommand{\pTime}{\textsc{PTime}}
 \newcommand{\PTime}{\textsc{PTime}}
@@ -207,8 +309,17 @@
 
 \newcommand{\TISP}{\textsc{TISP}}
 
+\newcommand{\Ppoly}{P_{/poly}}
+
+\newcommand{\BPP}{\textsc{BPP}}
+\newcommand{\RP}{\textsc{RP}}
+\newcommand{\ZPP}{\textsc{ZPP}}
+\newcommand{\coBPP}{co\text{-}\textsc{BPP}}
+\newcommand{\coRP}{co\text{-}\textsc{RP}}
+\newcommand{\coZPP}{co\text{-}\textsc{ZPP}}
+\newcommand{\MA}{\textsc{MA}}
+
 \newcommand{\Size}{\textsc{Size}}
 \newcommand{\SIZE}{\textsc{Size}}
 
-
-
+\newcommand{\dIP}{\mathrm{d}\textsc{IP}}
