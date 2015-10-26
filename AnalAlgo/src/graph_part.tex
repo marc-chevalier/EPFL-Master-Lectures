@@ -1,0 +1,285 @@
+%\begin{figure}[!ht]
+%    \centering
+%    \psfrag{1}[cc][cc]{$\frac{x^2}{\pi}$}
+%    \digraph[scale=0.5]{test}{
+%        1 [color=blue]
+%        6 [style=filled, color=magenta, fillcolor=cyan]
+%        node0 [label="{left|right}", shape=record];
+%        node1 [shape=rectangle, label="node 1"];
+%        subgraph A{
+%            edge [dir=none, color=black]
+%            4[shape=box]
+%            1->2->3->4->1;
+%            1->3 [color=green];
+%        }
+%        subgraph B{
+%            edge [color=red]
+%            2 -> 4 [style=dotted, label="f"];
+%        }
+%        subgraph B{
+%            edge [color=red, style=dotted]
+%            6 -> node0 [style=dashed, label="m"];
+%            node0 -> node0 [color=brown, style=filled, label="l"];
+%            node0 -> node1 [label="k"];
+%            node1 -> 6;
+%        }
+%}
+%\end{figure}
+
+Reminder:
+
+\begin{proposition}
+    $\lambda_2(G) > 0 \LRa G$ is connected.
+\end{proposition}
+
+Today:
+
+The next level, we will see a very important property of graph: conductance.
+
+We will define graph conductance and use linear algebra to give algorithmic solution to this. The problem will be \NP-hard.
+
+
+\begin{notation}
+    $G = (V,E)$ undirected, unweighted, $m=\lvert E\rvert$, $n=\lvert V\rvert$.
+\end{notation}
+
+\begin{notation}[Cut]
+    $(S,\overline{S})$: the two part of the cut.
+\end{notation}
+    
+\begin{notation}
+    $E(S,\overline{S}) = \set{uv\vert (u,v)\in S\times\overline{S}}$
+\end{notation}    
+    
+\begin{definition}[Bad definition of conductance of a cut]
+    \[
+        \Phi(S) := \frac{\card{E(S,\overline{S})}}{\min\left(\card{S},\card{\overline{S}}\right)}
+    \]
+\end{definition}
+
+This definition is not dimension free. For example, if we replace each edge by two copy of itself, the conductance will double. So, it's a bad definition.
+
+\begin{definition}[Volume]
+    \[
+        \opname{vol} S = \sum\limits_{v\in S}d_v
+    \]
+\end{definition}
+    
+\begin{definition}[Good definition of conductance of a cut]
+    \[
+        \Phi(S) := \frac{\card{E(S,\overline{S})}}{\min\left(\opname{vol} S,\opname{vol} \overline{S}\right)}
+    \]
+\end{definition}
+
+Very useful in machine learning (normalised cut), VLST % ???
+
+\begin{definition}[Graph conductance]
+    \[
+        \Phi(G) := \min\limits_{\emptyset \neq S \subsetneq V} \Phi(S)
+    \]
+\end{definition}
+
+\begin{theorem}
+    Find the cut minimizing the conductance is \NP-hard.
+\end{theorem}
+Indeed, the index of $\min$ is over an exponential set ($\mathcal{P}(V)$) $\Ra$ combinatorial explosion of cuts in discrete setting.
+
+NDLR: We can notive with problem is obviously \NP, thus, it is \NP-complete. Indeed the decision problem associated is to find a cut with conductance $\leqslant K$, for any $K$. Such a cut is a polynomial certificate.
+
+We will going to embed $G$ into $\RR$. We will find some mapping with fine property from $G$ to the real line.
+
+\begin{definition}
+    \[
+        h(S) := \frac{\card{E(S,\overline{S})}}{(\opname{vol} S)(\opname{vol} \overline{S})} \opname{vol} G
+    \]
+\end{definition}
+
+$\opname{vol} G = \opname{vol} V = \sum\limits_{v\in V} d_v = 2m$.
+
+$\opname{vol} S + \opname{vol} \overline{S} = \opname{vol} G$.
+
+Assuming $\opname{vol} S \leqslant \opname{vol} \overline{S}$,
+\[
+    1 \geqslant \frac{\opname{vol} \overline{S}}{\opname{vol} G} \geqslant \frac{1}{2}
+\]
+
+\begin{definition}
+    \[
+        h(G) := \min\limits_{S\subseteq V} h(S)
+    \]
+\end{definition}
+
+\[
+    \forall S, \Phi(S) \leqslant h(S) \leqslant 2 \Phi(S)
+\]
+$\Ra$
+\[
+    \Phi(G) \leqslant \underbrace{h(G)}_{\text{hard}} \leqslant 2 \Phi(G)
+\]
+
+
+\[
+    h(G) = \min\limits_S \frac{\card{E(S,\overline{S})}}{(\opname{vol} S)(\opname{vol} \overline{S})} \opname{vol} G
+\]
+
+\[
+    \begin{aligned}
+        \nu : E&\to [0,1]\\
+        e &\mapsto \frac{1}{m}
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        \mu : V&\to [0,1]\\
+        i &\mapsto \frac{d_i}{2m}
+    \end{aligned}
+\]
+
+
+$F\subseteq E$, $\nu(F) = \sum\limits_{e\in F} \nu(e)$
+
+$S\subseteq V$, $\mu(S)=\sum\limits_{i\in S} \mu(i)$
+
+\begin{notation}
+    $1_S \in \RR^V$
+    \[
+        1_S(i) = [i\in S]\footnotemark = \begin{cases}
+            0 & i\not\in S\\
+            1 & i\in S
+        \end{cases}         
+    \]
+    
+    $\mathbb{1}_S$ ?
+\end{notation}
+\footnotetext{\url{https://en.wikipedia.org/wiki/Iverson_bracket}}
+
+$\card{E(S,\overline{S})} = \sum\limits_{ij\in E} (1_S(i)-1_S(j))$
+
+
+$\frac{\opname{vol} S}{\opname{vol} G} = \esp{1_S(i)} = \esp{(1_S(i)-1_S(j))^2}$.
+
+\begin{proposition}
+    \[
+        h(S) = \frac{\underset{ij\la \nu}{\EE}(1_S(i)-1_S(j))^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2}    
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \frac{\card{E(S,\overline{S})}}{m} = \boxed{\frac{2\card{E(S,\overline{S})}}{\opname{vol} G}}
+    \]
+
+\[
+    \begin{aligned}
+        \underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2 &= \underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)+1_S(j)-21_S(i)1_S(j))\\
+        &= 2 \frac{\vol S}{\vol G} -2\underset{(i,j)\la\mu\times\mu}{\EE}1_S(i)1_S(j)
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        2\frac{\vol S}{\vol G} - 2 \left( \frac{\vol S}{\vol G}\right)^2 &= 2 \frac{\vol S}{\vol G}\left( 1- \frac{\vol S}{\vol G}\right)\\
+        &= \boxed{\frac{2 \vol S \vol \overline{S}}{\vol G \vol G}}
+    \end{aligned}
+\]
+\end{proof}
+
+\begin{proposition}
+    \[
+        \begin{aligned}
+            h(G) &= \min\limits_{S} \frac{\overbrace{\underset{ij\la \nu}{\EE}(1_S(i)-1_S(j))^2}^{\text{laplacian of the graph}}}{\underbrace{\underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2}_{\text{laplacian of the complete graph}}}\\
+            &=\min\limits_{x\in\set{0,1}^n} \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2}\\
+            &\geqslant \min\limits_{x\in\RR^n} \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^{\overbrace{2}^{\substack{\text{quadratic}\\\text{form}}}}}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} \text{\qquad relaxation}
+        \end{aligned}
+    \]
+\end{proposition}
+
+
+\[
+    \begin{aligned}
+        \underset{ij\la\nu}{\EE} (x_i-x_j)^2 &= \frac{1}{m} \sum\limits_{ij\in E} (x_i-x_j)^2\\
+        &= \frac{1}{m} x^T L x
+    \end{aligned}
+\]
+
+\[
+    \min\limits_{x\in\RR^n} \frac{\underset{\nu}{\EE}(x_i-x_j)^2}{\underset{\mu\times\mu}{\EE}(x_i-x_j)^2}
+\]
+
+
+\[
+    \begin{aligned}
+        \underset{(i,j) \la \mu\times\mu}{\EE} (x_i-x_j)^2 &= \underbrace{(i,j)\la\mu\times\mu} ({x_i}^2+{x_j}^2-2x_ix_j)\\
+        &= 2\underset{i\la \mu}{\EE} {x_i}^2 - 2\left( \underset{i\la \mu}{\EE}\right)^2\\
+        &= \frac{2}{\vol G} x^t D x
+    \end{aligned}
+\]
+
+\[
+    \min\limits_{\substack{x\in\RR^n\\\angle{x,D1}=0}} \frac{x^TLx}{x^TDx}
+\]
+
+
+Let's define $y = D^{\frac{1}{2}} x$ where 
+\[
+    D^{\frac{1}{2}} = \left(\begin{matrix}
+         \ddots \\
+         & \sqrt{d_i}\\
+         &&\ddots
+    \end{matrix}\right)
+\]
+
+since $\forall i, d_i >0$.
+
+\[
+    \begin{aligned}
+        \min\limits_{\substack{y\in\RR^n\\\angle{D^{- \frac{1}{2}}y,D1}=0}} \frac{(D^{-\frac{1}{2}} y)^T L (D^{-\frac{1}{2}}y)}{y^Ty} &= \min\limits_{\angle{y, D^{\frac{1}{2}}1}=0} \frac{y^T(D^{-\frac{1}{2}}LD^{-\frac{1}{2}})y}{y^T y}\\
+        &= \lambda_2 (\L)
+    \end{aligned}
+\]
+where $\L = D^{-\frac{1}{2}} L D^{-\frac{1}{2}}$ is the normalized laplacian, since $D^{\frac{1}{2}}1$ is an eigenvector associated to the smallest eigenvalue of $\L$.
+
+$\L D^{\frac{1}{2}} 1 =0$
+\[
+    \boxed{\L_{i,j} = \frac{L_{i,j}}{\sqrt{d_id_j}}}
+\]
+
+\[
+    \lambda_2(\L) = h_\RR(G) \leqslant h(G) \leqslant 2\Phi(G)
+\]
+
+Just proved: $\lambda_2(\L) \leqslant 2\Phi(G)$.
+
+Now: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$ (\textsc{Cheeger}'s inequality).
+
+\paragraph{Part 1}
+
+Reformulate $\Phi(G)$ in term of embeddings.
+
+% Droite réelle avec des y_i dans l'ordre. 
+
+$\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We use square distance.
+
+\[
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} = \Phi(G)
+\]
+
+where $\mu_{\frac{1}{2}}$ (median) is any $t$ such that $\mu\set{i\vert y_i < t} \leqslant \frac{1}{t}$ and $\mu\set{i\vert y_i >t} \leqslant \frac{1}{2}$. This value is not well defined. In fact $\mu_{\frac{1}{2}}(i)$ must be a set.
+
+
+\paragraph{Part 2}
+
+\[
+    \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} \rightsquigarrow x^*
+\]
+
+
+
+To prove,
+\[
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} = \Phi(G)
+\]
+we will prove two inequalities ($\leqslant$, $\geqslant$).
+
+
+Say $S$ is such that $\Phi(S) = \Phi(G)$: is achieve the optimal cut.
