@@ -1,0 +1,126 @@
+Discrete-time channel, discrete valued input/output.
+
+$x_1,x_2\ldots \ra y_1, y_2\ldots$
+
+$x_i \in \X$, $y_i \in \Y$, $\card{X} < \infty$, $\card{Y} < \infty$
+
+Channel will be described by 
+
+\[
+    \prob{\underbrace{Y_i = y}_{\substack{\text{Current}\\\text{output}}} | \underbrace{X_i=x_i}_{\substack{\text{Current}\\\text{input}}}, \underbrace{\ldots, X_1 = x_1,Y_{i-1}=y_{i-1},\ldots, Y_1=y_1}_{\text{Events in the past}}}
+\]
+
+A channel is said to be memoryless if
+\[
+    \prob{Y_i = y | X_i=x_i, \ldots, X_1 = x_1,Y_{i-1}=y_{i-1},\ldots, Y_1=y_1} = \prob{Y_i = y | X_i=x_i} = \PP_i(y\vert x_i)
+\]
+
+The channel is a \textsc{Markov} chain.
+
+There is a sequence of events:
+\begin{enumerate}
+    \item $x_1$ is produced $\prob{x_1}$
+    \item $y_1$ is produced $\sim \prob{y_1 \vert x_1}$
+    \item $x_2$ is produced $\prob{x_2\vert x_1 (y_1)}$
+    \item $y_1$ is produced $\sim \prob{y_2 \vert x_2, x_1, y_1}$
+\end{enumerate}
+
+We say that the transmission is performed without feedback if
+\[
+    \prob{x_i \vert x_{i-1} ldots x_1 y_{i-1}\ldots y_1} = \prob{x_i \vert x_{i-1}\ldots x_1}
+\]
+
+\begin{theorem}
+    If a memoryless channel is used without feedback, then
+    \[
+        \prob{y_1\ldots y_n\vert x_1\ldots x_n} = \prob{y_1 \vert x_1} \cdots \prob{y_n \vert x_n}
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            \prob{y_1\ldots y_n\vert x_1\ldots x_n} &= \prob{y_1 \vert x_1} \cdots \prob{y_n \vert x_n}\\
+            &= \prob{x_1} \prob{y_1\vert x_1} \prob{x_2\vert x_1 y_1}\prob{y_2\vert y_1, x_1, x_2} \ldots\\
+            &= \prob{x_1} \prob{y_1\vert x_1} \prob{x_2\vert x_1}\prob{y_2\vert y_1, x_1, x_2} \ldots\\
+            &= \prob{x_1} \prob{y_1\vert x_1} \prob{x_2\vert x_1}\prob{y_2\vert x_2} \ldots\\
+            &= \prob{x_1\ldots x_n} \prod\limits_{i=1}^n p(y_i \vert x_i)
+        \end{aligned}
+    \]
+    Thus
+    \[
+        \prob{y_1\ldots y_n \vert x_1\vert x_n} = \prod\limits_{i=1}^n p(y_i \vert x_i)
+    \]
+\end{proof}
+
+If the source produces a letter each $\tau_S$ seconds (rate of $\rho_S = \frac{1}{\tau_S}$ letters/s) channel accepts input symbols every $\tau_C$ second (rate of $\rho_C = \frac{1}{\tau_C}$), we better have $\tau_S L = \tau_C n$ (where $L$ letters of the sources are encoded into $n$ symbols).
+
+\begin{proposition}
+    For a memoryless channel used without feedback 
+    \[
+        I(X_1\ldots X_n , Y_1 \ldots Y_n) \leqslant \sum\limits_{i=1}^n I(X_i, Y_i)
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \begin{aligned}
+            I(X_1\ldots X_n , Y_1 \ldots Y_n) &= \underbrace{H(Y_1\ldots Y_n)}_{\leqslant \sum\limits_{i=1}^n H(Y_i)} - \underbrace{H(Y_1 \ldots Y_n \vert X_1 \ldots X_n)}_{ \begin{aligned}&= \esp{\log\frac{1}{\prob{Y_1\ldots Y_n\vert X_1\ldots X_n}}}\\&=\esp{\log\frac{1}{\prod\limits_{i=1}^n \prob{Y_i\vert X_i}}}\\&=\sum\limits_{i=1}^n\underbrace{\esp{\log\frac{1}{\prob{Y_i\vert X_i}}}}_{H(Y_i\vert X_i}\end{aligned}}\\
+            &\leqslant \sum\limits_{i=1}^n H(Y_i) - H(Y_i \vert X_i)\\
+            &=\sum\limits_{i=1}^nI(X_i,Y_i)
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{definition}
+    Given a discrete, memoryless channel $\set{p(y\vert x)}$, define its capacity as
+    \[
+        C := \max\limits_{p(x)} I(X,Y)
+    \]
+\end{definition}
+
+\[
+    \text{Source} \ra U_1\ldots U_L \overset{\text{Code}}{\longra} X_1\ldots X_n\overset{\text{Channel}}{\longra} Y_1\ldots Y_n \overset{\text{Decode}}{\longra} V_1\ldots V_L
+\]
+
+ie $(U_1\ldots U_l) \--- (X_1\ldots X_n) \--- (Y_1\ldots Y_n) \--- (V_1\ldots V_L)$
+
+\begin{theorem}
+    Suppose $U_1U_2\ldots$ is a stationary source with entropy rate $H$, and we have the diagram above then
+    \[
+        \frac{1}{L} H(U_1\ldots U_L\vert V_1\ldots V_l) \geqslant H - \frac{n}{L} C = H - \frac{\tau_S}{\tau_C} C
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            \frac{1}{L} H(U_1\ldots U_L \vert V_1 \ldots V_L) &= \frac{1}{L} H(U_1\ldots U_L) - \frac{1}{L} I(U_1\ldots U_L,V_1\ldots V_L)\\
+            & \geqslant H - \frac{n}{L} C
+        \end{aligned}
+    \]
+\end{proof}
+
+\begin{proposition}
+    \[
+        \frac{1}{L} \sum\limits_{i=1}^n H(U_i \vert V_i) \geqslant \frac{1}{L} H(U_1\ldots U_L \vert V_1\ldots V_L)
+    \]
+\end{proposition}
+
+\begin{theorem}[\textsc{Fano}'s inequality]
+    Suppose $U, V$ are random variable with the same support. Let $p=\prob{U\neq V}$ then
+    \[
+        H(U\vert V) \leqslant h_2(p) + p\log(\lvert \U \rvert - 1)    
+    \]
+    where $h_2(p) = p \log \frac{1}{p} + (1-p) \log\frac{1}{1-p}$ is the binary entropy function.
+\end{theorem}
+\begin{proof}
+    Let $W = [U\neq V]$. $H(W) = h_2(p)$.
+    
+    \[
+        \begin{aligned}
+            H(UW \vert V) &= H(U\vert V) + H(W\vert UV)\\
+            &= H(W\vert V) + H(I\vert WV)\\
+            &\leqslant H(W) + H(U\vert WV)\\
+            &=h_2(p) + \prob{X=0}H(U\vert W=0,V) + \prob{X=1}H(U\vert W=1,V)
+        \end{aligned}            
+    \]
+\end{proof}
+
