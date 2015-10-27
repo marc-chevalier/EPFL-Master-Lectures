@@ -1,0 +1,539 @@
+%%Do not change font size
+\documentclass[12pt]{article}
+\usepackage{amsthm,amssymb,fullpage}
+
+
+\pdfoutput=1
+\usepackage{mathpazo}
+\usepackage{color}
+%\usepackage{etoolbox}
+%\newbool{submit}
+%\setbool{submit}{true}
+%\newbool{havealerts}
+%\newbool{fullversion}
+%\setbool{fullversion}{true}
+
+
+%\newcommand{\defeq}{\stackrel{\textup{def}}{=}}
+%\newcommand{\nfrac}{\nicefrac}
+\newcommand{\eps}{\epsilon}
+\newcommand{\avg}{{\ensuremath{\mathsf{avg}}\xspace}}
+\renewcommand{\epsilon}{\varepsilon}
+
+
+\usepackage{nicefrac}
+\newcommand{\flatfrac}[2]{#1/#2}
+\newcommand{\ffrac}{\flatfrac}
+\newcommand{\nfrac}{\nicefrac}
+
+
+\usepackage[compact]{titlesec}
+\usepackage{mdwlist}
+\usepackage{mathrsfs}
+\usepackage{hyperref, geometry, tabularx,graphicx}
+\usepackage{amsmath, amsthm, amssymb, enumerate}
+\usepackage{fullpage}
+\usepackage{latexsym}
+\usepackage[capitalize]{cleveref}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing}
+
+
+%Macros
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}[lemma]{Theorem}
+\newtheorem{informaltheorem}[lemma]{Informal Theorem}
+\newtheorem{informallemma}[lemma]{Informal Lemma}
+\newtheorem{corollary}[lemma]{Corollary}
+\newtheorem{definition}[lemma]{Definition}
+\newtheorem{proposition}[lemma]{Proposition}
+\newtheorem{question}{Question}
+\newtheorem{example}[lemma]{Example}
+\newtheorem{remark}[lemma]{Remark}
+\newtheorem{claim}{Claim}
+\newtheorem{fact}{Fact}
+\newtheorem{challenge}{Challenge}
+\newtheorem{observation}{Observation}
+\newtheorem{openproblem}{Open Problem}
+\newtheorem{openquestion}{Open question}
+\newtheorem{homework}{Homework}
+\newcommand{\todo}[1]{\noindent \colorbox{green}{\begin{minipage}{\linewidth}{\bf TODO:} #1\end{minipage}}}
+
+\newcommand{\beq}{\begin{equation}}
+\newcommand{\eeq}{\end{equation}}
+%\newcommand{\beas}{\begin{eqnarray*}}
+%\newcommand{\eeas}{\end{eqnarray*}}
+%
+%\newcommand{\poly}{\mathrm{poly}}
+%\newcommand{\eps}{\epsilon}
+\newcommand{\e}{\epsilon}
+%\newcommand{\polylog}{\mathrm{polylog}}
+%\newcommand{\rob}[1]{\left( #1 \right)} %Round Brackets
+%\newcommand{\sqb}[1]{\left[ #1 \right]} %square Brackets
+%\newcommand{\cub}[1]{\left\{ #1 \right\} } %curly brackets
+%\newcommand{\rb}[1]{\left( #1 \right)} %Round
+%\newcommand{\abs}[1]{\left| #1 \right|} %| |
+%\newcommand{\zo}{\{0, 1\}}
+%\newcommand{\zonzo}{\zo^n \to \zo}
+%\newcommand{\zokzo}{\zo^k \to \zo}
+%\newcommand{\zot}{\{0,1,2\}}
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+%
+%\newcommand{\en}[1]{\marginpar{\textbf{#1}}}
+%\newcommand{\efn}[1]{\footnote{\textbf{#1}}}
+\newcommand{\bR}{\mathbb{R}}
+\newcommand{\bE}{\mathbb{E}}
+
+%End macros
+
+\newcommand{\defeq}{\stackrel{{\rm def}}{=}}
+
+
+
+\begin{document}
+
+\begin{center}
+\begin{tabular}{|c|}
+\hline
+\\
+{\bf CS 435, 2015} \\
+ Lecture ??, Date: ??\\
+Instructor: Nisheeth Vishnoi \\  \\
+{\bfseries \large Topic} \\ \\ \hline
+\end{tabular}
+\end{center}
+
+%\tableofcontents
+
+%\begin{figure}[!ht]
+%    \centering
+%    \psfrag{1}[cc][cc]{$\frac{x^2}{\pi}$}
+%    \digraph[scale=0.5]{test}{
+%        1 [color=blue]
+%        6 [style=filled, color=magenta, fillcolor=cyan]
+%        node0 [label="{left|right}", shape=record];
+%        node1 [shape=rectangle, label="node 1"];
+%        subgraph A{
+%            edge [dir=none, color=black]
+%            4[shape=box]
+%            1->2->3->4->1;
+%            1->3 [color=green];
+%        }
+%        subgraph B{
+%            edge [color=red]
+%            2 -> 4 [style=dotted, label="f"];
+%        }
+%        subgraph B{
+%            edge [color=red, style=dotted]
+%            6 -> node0 [style=dashed, label="m"];
+%            node0 -> node0 [color=brown, style=filled, label="l"];
+%            node0 -> node1 [label="k"];
+%            node1 -> 6;
+%        }
+%}
+%\end{figure}
+
+Reminder:
+
+\begin{proposition}
+    $\lambda_2(G) > 0 \LRa G$ is connected.
+\end{proposition}
+
+Today:
+
+The next level, we will see a very important property of graph: conductance.
+
+We will define graph conductance and use linear algebra to give algorithmic solution to this. The problem will be \NP-hard.
+
+
+\begin{notation}
+    $G = (V,E)$ undirected, unweighted, $m=\lvert E\rvert$, $n=\lvert V\rvert$.
+\end{notation}
+
+\begin{notation}[Cut]
+    $(S,\overline{S})$: the two part of the cut.
+\end{notation}
+    
+\begin{notation}
+    $E(S,\overline{S}) = \set{uv\vert (u,v)\in S\times\overline{S}}$
+\end{notation}    
+    
+\begin{definition}[Bad definition of conductance of a cut]
+    \[
+        \Phi(S) := \frac{\card{E(S,\overline{S})}}{\min\left(\card{S},\card{\overline{S}}\right)}
+    \]
+\end{definition}
+
+This definition is not dimension free. For example, if we replace each edge by two copy of itself, the conductance will double. So, it's a bad definition.
+
+\begin{definition}[Volume]
+    \[
+        \opname{vol} S = \sum\limits_{v\in S}d_v
+    \]
+\end{definition}
+    
+\begin{definition}[Good definition of conductance of a cut]
+    \[
+        \Phi(S) := \frac{\card{E(S,\overline{S})}}{\min\left(\opname{vol} S,\opname{vol} \overline{S}\right)}
+    \]
+\end{definition}
+
+Very useful in machine learning (normalised cut), VLST % ???
+
+\begin{definition}[Graph conductance]
+    \[
+        \Phi(G) := \min\limits_{\emptyset \neq S \subsetneq V} \Phi(S)
+    \]
+\end{definition}
+
+\begin{theorem}
+    Find the cut minimizing the conductance is \NP-hard.
+\end{theorem}
+Indeed, the index of $\min$ is over an exponential set ($\mathcal{P}(V)$) $\Ra$ combinatorial explosion of cuts in discrete setting.
+
+NDLR: We can notive with problem is obviously \NP, thus, it is \NP-complete. Indeed the decision problem associated is to find a cut with conductance $\leqslant K$, for any $K$. Such a cut is a polynomial certificate.
+
+We will going to embed $G$ into $\RR$. We will find some mapping with fine property from $G$ to the real line.
+
+\begin{definition}
+    \[
+        h(S) := \frac{\card{E(S,\overline{S})}}{(\opname{vol} S)(\opname{vol} \overline{S})} \opname{vol} G
+    \]
+\end{definition}
+
+$\opname{vol} G = \opname{vol} V = \sum\limits_{v\in V} d_v = 2m$.
+
+$\opname{vol} S + \opname{vol} \overline{S} = \opname{vol} G$.
+
+Assuming $\opname{vol} S \leqslant \opname{vol} \overline{S}$,
+\[
+    1 \geqslant \frac{\opname{vol} \overline{S}}{\opname{vol} G} \geqslant \frac{1}{2}
+\]
+
+\begin{definition}
+    \[
+        h(G) := \min\limits_{S\subseteq V} h(S)
+    \]
+\end{definition}
+
+\[
+    \forall S, \Phi(S) \leqslant h(S) \leqslant 2 \Phi(S)
+\]
+$\Ra$
+\[
+    \Phi(G) \leqslant \underbrace{h(G)}_{\text{hard}} \leqslant 2 \Phi(G)
+\]
+
+
+\[
+    h(G) = \min\limits_S \frac{\card{E(S,\overline{S})}}{(\opname{vol} S)(\opname{vol} \overline{S})} \opname{vol} G
+\]
+
+\[
+    \begin{aligned}
+        \nu : E&\to [0,1]\\
+        e &\mapsto \frac{1}{m}
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        \mu : V&\to [0,1]\\
+        i &\mapsto \frac{d_i}{2m}
+    \end{aligned}
+\]
+
+
+$F\subseteq E$, $\nu(F) = \sum\limits_{e\in F} \nu(e)$
+
+$S\subseteq V$, $\mu(S)=\sum\limits_{i\in S} \mu(i)$
+
+\begin{notation}
+    $1_S \in \RR^V$
+    \[
+        1_S(i) = [i\in S]\footnotemark = \begin{cases}
+            0 & i\not\in S\\
+            1 & i\in S
+        \end{cases}         
+    \]
+    
+    $\mathbb{1}_S$ ?
+\end{notation}
+\footnotetext{\url{https://en.wikipedia.org/wiki/Iverson_bracket}}
+
+$\card{E(S,\overline{S})} = \sum\limits_{ij\in E} (1_S(i)-1_S(j))$
+
+
+$\frac{\opname{vol} S}{\opname{vol} G} = \esp{1_S(i)} = \esp{(1_S(i)-1_S(j))^2}$.
+
+\begin{proposition}
+    \[
+        h(S) = \frac{\underset{ij\la \nu}{\EE}(1_S(i)-1_S(j))^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2}    
+    \]
+\end{proposition}
+\begin{proof}
+    \[
+        \frac{\card{E(S,\overline{S})}}{m} = \boxed{\frac{2\card{E(S,\overline{S})}}{\opname{vol} G}}
+    \]
+
+\[
+    \begin{aligned}
+        \underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2 &= \underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)+1_S(j)-21_S(i)1_S(j))\\
+        &= 2 \frac{\vol S}{\vol G} -2\underset{(i,j)\la\mu\times\mu}{\EE}1_S(i)1_S(j)
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        2\frac{\vol S}{\vol G} - 2 \left( \frac{\vol S}{\vol G}\right)^2 &= 2 \frac{\vol S}{\vol G}\left( 1- \frac{\vol S}{\vol G}\right)\\
+        &= \boxed{\frac{2 \vol S \vol \overline{S}}{\vol G \vol G}}
+    \end{aligned}
+\]
+\end{proof}
+
+\begin{proposition}
+    \[
+        \begin{aligned}
+            h(G) &= \min\limits_{S} \frac{\overbrace{\underset{ij\la \nu}{\EE}(1_S(i)-1_S(j))^2}^{\text{laplacian of the graph}}}{\underbrace{\underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2}_{\text{laplacian of the complete graph}}}\\
+            &=\min\limits_{x\in\set{0,1}^n} \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2}\\
+            &\geqslant \min\limits_{x\in\RR^n} \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^{\overbrace{2}^{\substack{\text{quadratic}\\\text{form}}}}}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} \text{\qquad relaxation}
+        \end{aligned}
+    \]
+\end{proposition}
+
+
+\[
+    \begin{aligned}
+        \underset{ij\la\nu}{\EE} (x_i-x_j)^2 &= \frac{1}{m} \sum\limits_{ij\in E} (x_i-x_j)^2\\
+        &= \frac{1}{m} x^T L x
+    \end{aligned}
+\]
+
+\[
+    \min\limits_{x\in\RR^n} \frac{\underset{\nu}{\EE}(x_i-x_j)^2}{\underset{\mu\times\mu}{\EE}(x_i-x_j)^2}
+\]
+
+
+\[
+    \begin{aligned}
+        \underset{(i,j) \la \mu\times\mu}{\EE} (x_i-x_j)^2 &= \underbrace{(i,j)\la\mu\times\mu} ({x_i}^2+{x_j}^2-2x_ix_j)\\
+        &= 2\underset{i\la \mu}{\EE} {x_i}^2 - 2\left( \underset{i\la \mu}{\EE}\right)^2\\
+        &= \frac{2}{\vol G} x^t D x
+    \end{aligned}
+\]
+
+\[
+    \min\limits_{\substack{x\in\RR^n\\\angle{x,D1}=0}} \frac{x^TLx}{x^TDx}
+\]
+
+
+Let's define $y = D^{\frac{1}{2}} x$ where 
+\[
+    D^{\frac{1}{2}} = \left(\begin{matrix}
+         \ddots \\
+         & \sqrt{d_i}\\
+         &&\ddots
+    \end{matrix}\right)
+\]
+
+since $\forall i, d_i >0$.
+
+\[
+    \begin{aligned}
+        \min\limits_{\substack{y\in\RR^n\\\angle{D^{- \frac{1}{2}}y,D1}=0}} \frac{(D^{-\frac{1}{2}} y)^T L (D^{-\frac{1}{2}}y)}{y^Ty} &= \min\limits_{\angle{y, D^{\frac{1}{2}}1}=0} \frac{y^T(D^{-\frac{1}{2}}LD^{-\frac{1}{2}})y}{y^T y}\\
+        &= \lambda_2 (\L)
+    \end{aligned}
+\]
+where $\L = D^{-\frac{1}{2}} L D^{-\frac{1}{2}}$ is the normalized laplacian, since $D^{\frac{1}{2}}1$ is an eigenvector associated to the smallest eigenvalue of $\L$.
+
+$\L D^{\frac{1}{2}} 1 =0$
+\[
+    \boxed{\L_{i,j} = \frac{L_{i,j}}{\sqrt{d_id_j}}}
+\]
+
+\[
+    \lambda_2(\L) = h_\RR(G) \leqslant h(G) \leqslant 2\Phi(G)
+\]
+
+Just proved: $\lambda_2(\L) \leqslant 2\Phi(G)$.
+
+Now: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$ (\textsc{Cheeger}'s inequality).
+
+\paragraph{Part 1}
+
+Reformulate $\Phi(G)$ in term of embeddings.
+
+% Droite réelle avec des y_i dans l'ordre. 
+
+$\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We use square distance.
+
+\[
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} = \Phi(G)
+\]
+
+where $\mu_{\frac{1}{2}}$ (median) is any $t$ such that $\mu\set{i\vert y_i < t} \leqslant \frac{1}{t}$ and $\mu\set{i\vert y_i >t} \leqslant \frac{1}{2}$. This value is not well defined. In fact $\mu_{\frac{1}{2}}(i)$ must be a set.
+
+
+\paragraph{Part 2}
+
+\[
+    \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} \rightsquigarrow x^*
+\]
+
+
+
+To prove,
+\[
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} = \Phi(G)
+\]
+we will prove two inequalities ($\leqslant$ and $\geqslant$).
+
+
+Say $S$ is such that $\Phi(S) = \Phi(G)$: is achieve the optimal cut.
+
+\[
+    \begin{aligned}
+        \frac{\underset{ij\la\nu}{\EE}\lvert1_S(i)-1_S(j)\rvert}{\underset{i\la\mu}{\EE}\lvert 1_S(i)\rvert} &= \frac{\frac{1}{m}\lvert E(S,\overline{S})\rvert}{\frac{\vol S}{2m}}\\
+        &= \frac{2\lvert E(S,\overline{S}) \rvert}{\min\set{\vol S, \vol \overline{S}}}\\
+        &= 2 \Phi(G)
+    \end{aligned}
+\]
+
+\bigskip
+
+To prove the other directed, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$. We assume that $\forall (i,j), i\neq j \Ra y_i \neq y_j$.
+
+$\mu_{\frac{1}{2}}(y) = 0$.
+
+% Blabla que je comprends pas pour en arrievr à Chasles.
+
+\begin{notation}
+    $S_i = \brackets{1,i}$ and $\overline{S_i} = \brackets{i+1,n}$
+\end{notation}
+
+$S_1, S_2,\ldots, S_{n-1}$ "sweep cuts".
+
+\paragraph{Numerator:}
+
+\[
+    \sum\limits_{e=ij} \lvert y_i-y_j \rvert = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \lvert E(S_i, \overline{S_i} \rvert
+\]
+
+So we have written things in this way\dots.
+
+\paragraph{Denominator:}
+
+
+\[
+    \sum\limits_{i=1}^n \overset{?}{=} \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \min(\vol S_i, \vol \overline{S_i})
+\]
+
+\[
+    \frac{\sum\limits_i \alpha_i n_i}{\sum\limits_i \alpha_i d_i} \geqslant \min\limits_i \frac{n_i}{d_i}
+\]
+
+because $\frac{a_1+a_2}{b_1+b_2} \geqslant \min\set{\frac{a_1}{b_1},\frac{a_2}{b_2}}$ which is true if $b_i > 0$.
+
+
+$\hat{S}$ denotes the cut with min $\Phi$ among $(S_i)_{i\in\brackets{1,n-1}}$.
+
+
+\[
+    \begin{aligned}
+        \frac{\sum\limits_i \alpha_i n_i}{\sum\limits_i \alpha_i d_i} \geqslant \min\limits_i \frac{n_i}{d_i} = \min_i \frac{\card{E(S_i,\overline{S_i})}}{\min\set{\vol S_i,\vol \overline{S_i}}} &= \Phi(\hat{S})\\
+        &\geqslant \Phi(G)
+    \end{aligned}
+\]
+
+So, it remains 
+\[
+    \sum\limits_{i=1}^n \overset{?}{=} \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \min(\vol S_i, \vol \overline{S_i})
+\]
+to prove.
+
+
+% Encore la droite réelle des y_i. Avec 0 en y_k.
+
+We make the assumption that $\exists k : y_k = 0$. This is just a simplification. We keep the name $k$ for this index.
+
+\[
+    \begin{aligned}
+        \sum\limits_i d_i\lvert y_i \rvert &= \sum\limits_{i\leqslant k} d_i(-y_i) + \sum\limits_{i > k}d_i y_i\\
+       d_i &= \vol S_i - \vol S_{i-1}\\
+       \sum\limits_i d_i\lvert y_i \rvert &= \sum\limits_{i\leqslant k} (\vol S_i - \vol S_{i-1})(-y_i) + \sum\limits_{i>k} \left(\vol \overline{S_i} \vol \overline{S_{i+1}} \right)y_i\\
+       % On groupe différemment les termes. C'est pas un truc comme Abel ?
+       &= \sum\limits_{i\leqslant k} \vol S_i (y_{i+1} -y_i) + \sum\limits_{i>k} \vol \overline{S_i} (y_{i+1} - y_i)
+    \end{aligned}
+\]
+
+What we have done, to summarize, $\underset{\underset{y(=1_S)}{\downarrow}}{S}$ opt of $\Phi(G)$.
+
+\[
+    \min\limits_y \frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}} \leqslant \Phi(G)
+\]
+Thus, $=$.
+
+Goal $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. Start with $x$ which obtains $\lambda_2(\L)$.
+
+\[
+    \frac{\underset{ij\la \nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} = \lambda_2(\L)
+\]
+
+Produce a $y$ (from $x$) such that
+\begin{enumerate}[(1)]
+    \item $\mu_{\frac{1}{2}}(y) = 0$
+    \item $\frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{2\underset{i}{\EE}\lvert y_i \rvert} \leqslant (\overset{?}{=}) \sqrt{\lambda_2(\L)}$
+\end{enumerate}
+
+$y_i = {x_i}^2 \opname{sgn}(x_i)$
+
+\[
+    \begin{aligned}
+        \underset{ij\la\nu}{\EE} \lvert y_i - y_j \rvert &= \underset{ij \la \nu}{\EE} \lvert \sgn(x_i){x_i}^2 - \sgn(x_j){x_j}^2\rvert\\
+        &\leqslant \underset{ij\la \nu}{\EE} \lvert x_i-x_j \rvert(\lvert x_i \rvert + \lvert x_j \rvert)\\
+        &\leqslant \sqrt{\underset{ij\la\nu}{\EE}(x_i-x_j)^2} \sqrt{\underset{ij\la \nu}{\EE} (\lvert x_i \rvert + \lvert x_j \rvert)^2}\\
+        &\leqslant \sqrt{\underset{ij\la\nu}{\EE}(x_i-x_j)^2} \sqrt{2\underset{ij\la \nu}{\EE} \lvert x_i \rvert^2 + \lvert x_j \rvert^2}\\
+        &\leqslant \sqrt{\underset{ij\la\nu}{\EE}(x_i-x_j)^2} \sqrt{4\underset{i\la \mu}{\EE} \lvert y_i \rvert}
+    \end{aligned}
+\]
+
+
+So
+
+\[
+    \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j \rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} \leqslant \sqrt{\frac{4 \underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{i\la\mu}{\EE}\lvert y_i \rvert}} \leqslant\sqrt{8\lambda_2(\L)}
+\]
+
+\[
+    \Phi(G) \leqslant \sqrt{2\lambda_2(\L)}
+\]
+
+\begin{algorithm}[!ht]
+    \DontPrintSemicolon
+    Compute $x$\;
+    $y_i = \sgn(x_i){x_i}^2$\;
+    \Return the cut which minimize $\Phi(S_i)$.
+\end{algorithm}
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
