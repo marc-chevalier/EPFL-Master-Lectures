@@ -338,7 +338,7 @@
 {\bf CS 435, 2015} \\
  Lecture 5, Date: 26 October 2015\\
 Instructor: Nisheeth Vishnoi \\
-Scribes: Marc Chevalier, Jean-Baptiste Cordonnier, Thibaut Loiseleur \\ \\
+Scribes: Marc \textsc{Chevalier}, Jean-Baptiste \textsc{Cordonnier}, Thibaut \textsc{Loiseleur} \\ \\
 {\bfseries \large Graphs and conductance} \\ \\ \hline
 \end{tabular}
 \end{center}
@@ -431,7 +431,7 @@ Very useful in machine learning (normalised cut), VLST % ???
 \end{theorem}
 Indeed, the index of $\min$ is over an exponential set ($\mathcal{P}(V)$) $\Ra$ combinatorial explosion of cuts in discrete setting.
 
-NDLR: We can notive with problem is obviously \NP, thus, it is \NP-complete. Indeed the decision problem associated is to find a cut with conductance $\leqslant K$, for any $K$. Such a cut is a polynomial certificate.
+NDLR: We can notice with problem is obviously \NP, thus, it is \NP-complete. Indeed the decision problem associated is to find a cut with conductance $\leqslant K$, for any $K$. Such a cut is a polynomial certificate.
 
 We will going to embed $G$ into $\RR$. We will find some mapping with fine property from $G$ to the real line.
 
@@ -570,9 +570,9 @@ $\frac{\opname{vol} S}{\opname{vol} G} = \esp{1_S(i)} = \esp{(1_S(i)-1_S(j))^2}$
 Let's define $y = D^{\frac{1}{2}} x$ where 
 \[
     D^{\frac{1}{2}} = \left(\begin{matrix}
-         \ddots \\
+         \ddots&&0 \\
          & \sqrt{d_i}\\
-         &&\ddots
+         0&&\ddots
     \end{matrix}\right)
 \]
 
