@@ -373,21 +373,19 @@ Scribes: Marc \textsc{Chevalier}, Jean-Baptiste \textsc{Cordonnier}, Thibaut \te
 %}
 %\end{figure}
 
-Reminder:
+Last time, we have proved that $\lambda_2(G) > 0 \LRa G$ is connected.
 
-\begin{proposition}
-    $\lambda_2(G) > 0 \LRa G$ is connected.
-\end{proposition}
+The today's lecture will be about the fundamental problem of finding a cut of least conductance in a graph, called \textsc{Sparsest Cut} in the literature.
 
-Today:
-
-The next level, we will see a very important property of graph: conductance.
-
-We will define graph conductance and use linear algebra to give algorithmic solution to this. The problem will be \NP-hard.
+As the problem is known to be \NP-hard, we will consider a relaxation of this problem in order to solve it with an acceptable complexity.
 
 
-\begin{notation}
-    $G = (V,E)$ undirected, unweighted, $m=\lvert E\rvert$, $n=\lvert V\rvert$.
+\begin{notation}[Graph]
+    $G = (V,E)$ an undirected and unweighted graph. $m=\lvert E\rvert$, $n=\lvert V\rvert$.
+\end{notation}
+
+\begin{notation}[Complementary]
+    $\overline{S}\defeq V\backslash S$
 \end{notation}
 
 \begin{notation}[Cut]
@@ -395,7 +393,7 @@ We will define graph conductance and use linear algebra to give algorithmic solu
 \end{notation}
     
 \begin{notation}
-    $E(S,\overline{S}) = \set{uv\vert (u,v)\in S\times\overline{S}}$
+    We define $\lVert E(S,\overline{S})\rVert$ as the number of edges that cross the cut  $(S,\overline{S})$, i.e., have one end point in $S$ and the other in $\overline{S}$.
 \end{notation}    
     
 \begin{definition}[Bad definition of conductance of a cut]
@@ -411,6 +409,7 @@ This definition is not dimension free. For example, if we replace each edge by t
         \opname{vol} S = \sum\limits_{v\in S}d_v
     \]
 \end{definition}
+
     
 \begin{definition}[Good definition of conductance of a cut]
     \[
@@ -418,7 +417,9 @@ This definition is not dimension free. For example, if we replace each edge by t
     \]
 \end{definition}
 
-Very useful in machine learning (normalised cut), VLST % ???
+This definition of $\Phi(S)$ is a \emph{dimension-less} quantity and lies always between $0$ and $1$.
+
+Looking for the conductance of a graph has also crucial real-world applications. Indeed, it plays a central role in the design of recursive algorithms, image segmentation, community detection, and clustering.
 
 \begin{definition}[Graph conductance]
     \[
@@ -431,9 +432,11 @@ Very useful in machine learning (normalised cut), VLST % ???
 \end{theorem}
 Indeed, the index of $\min$ is over an exponential set ($\mathcal{P}(V)$) $\Ra$ combinatorial explosion of cuts in discrete setting.
 
-NDLR: We can notice with problem is obviously \NP, thus, it is \NP-complete. Indeed the decision problem associated is to find a cut with conductance $\leqslant K$, for any $K$. Such a cut is a polynomial certificate.
+NDLR: We can notice this problem is obviously \NP, thus, it is \NP-complete. Indeed the decision problem associated is to find a cut with conductance $\leqslant K$, for any $K$. Such a cut is a polynomial certificate.
 
 We will going to embed $G$ into $\RR$. We will find some mapping with fine property from $G$ to the real line.
+
+We will now define an other quantity related to $\Phi(S)$ but usually easier to manipulate.
 
 \begin{definition}
     \[
@@ -450,31 +453,40 @@ Assuming $\opname{vol} S \leqslant \opname{vol} \overline{S}$,
     1 \geqslant \frac{\opname{vol} \overline{S}}{\opname{vol} G} \geqslant \frac{1}{2}
 \]
 
+We define the h-value as following :
+
 \begin{definition}
     \[
-        h(G) := \min\limits_{S\subseteq V} h(S)
+        h(G) := \min\limits_{\emptyset \neq S \subsetneq V} h(S)
     \]
 \end{definition}
 
 \[
     \forall S, \Phi(S) \leqslant h(S) \leqslant 2 \Phi(S)
 \]
-$\Ra$
+In particular,
 \[
     \Phi(G) \leqslant \underbrace{h(G)}_{\text{hard}} \leqslant 2 \Phi(G)
 \]
-
 
 \[
     h(G) = \min\limits_S \frac{\card{E(S,\overline{S})}}{(\opname{vol} S)(\opname{vol} \overline{S})} \opname{vol} G
 \]
 
-\[
-    \begin{aligned}
-        \nu : E&\to [0,1]\\
-        e &\mapsto \frac{1}{m}
-    \end{aligned}
-\]
+We just proved that the h-value lead us to capture the conductance of a graph up to a factor 2. But the problem remains \NP-hard.
+
+We will now show that this problem in terms of graph can be expressed in terms of functions $\textbf{x} \in \{0,\,1\}^{n}$, easier to manipulate.
+
+So, let us define some probability measures on vertices and cuts as vectors :
+
+\begin{center}
+$\begin{aligned}
+\nu & : & E & \to & [0,1] \\
+ & & e & \mapsto & \frac{1}{m} \\
+\end{aligned}$
+\end{center}
+
+$\nu$ is the uniform probability measure defined on the set of edges $E$.
 
 \[
     \begin{aligned}
@@ -483,10 +495,17 @@ $\Ra$
     \end{aligned}
 \]
 
+$\mu$ is the uniform probability measure defined on the set of vertices $V$ induced by the degrees.
 
-$F\subseteq E$, $\nu(F) = \sum\limits_{e\in F} \nu(e)$
+Then, we can extend these definitions to the subsets $F \subseteq E$ and $S \subseteq V$:
 
-$S\subseteq V$, $\mu(S)=\sum\limits_{i\in S} \mu(i)$
+\[
+F\subseteq E, \nu(F) = \sum\limits_{e\in F} \nu(e)
+\]
+
+\[
+S\subseteq V, \mu(S) = \sum\limits_{i\in S} \mu(i)
+\]
 
 \begin{notation}
     $1_S \in \RR^V$
@@ -757,22 +776,3 @@ So
 
 
 \end{document}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
