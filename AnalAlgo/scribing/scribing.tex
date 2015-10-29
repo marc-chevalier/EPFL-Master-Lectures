@@ -154,7 +154,7 @@
 \newcommand{\blank}{\texttt{\char32}}
 \newcommand{\trans}[1]{\xrightarrow{#1}}
 \newcommand{\rules}[1]{\xrightarrow{#1}}
-\newcommand{\wtf}[1]{\Large\textcolor{red}{WTF ?! #1}\normalsize}
+\newcommand{\wtf}[1]{\Huge\textcolor{red}{WTF ?! #1}\normalsize}
 \newcommand{\argmin}{\text{argmin}}
 \newcommand{\rainbowdash}{\vdash}
 \newcommand{\notrainbowdash}{\nvdash}
@@ -380,14 +380,14 @@ This definition is not dimension free. For example, if we replace each edge by t
 \begin{definition}[Volume]
     The volume of a set of vertex $S$ is the sum of degree of the vertexes in $S$. Equivalently, it is twice the number of edges in the induced graph plus the number of edges through the cut.
     \[
-        \opname{vol} S = \sum\limits_{v\in S}d_v
+        \vol S = \sum\limits_{v\in S}d_v
     \]
 \end{definition}
 
    
 \begin{definition}[Good definition of conductance of a cut]
     \[
-        \Phi(S) \defeq \frac{\card{E(S,\overline{S})}}{\min\left(\opname{vol} S,\opname{vol} \overline{S}\right)}
+        \Phi(S) \defeq \frac{\card{E(S,\overline{S})}}{\min\left(\vol S,\vol \overline{S}\right)}
     \]
 \end{definition}
 
@@ -459,24 +459,24 @@ We will now define an other quantity related to $\Phi(S)$ but usually easier to 
 
 \begin{definition}
     \[
-        h(S) \defeq \frac{\card{E(S,\overline{S})}}{(\opname{vol} S)(\opname{vol} \overline{S})} \opname{vol} G
+        h(S) \defeq \frac{\card{E(S,\overline{S})}}{(\vol S)(\vol \overline{S})} \vol G
     \]
 \end{definition}
 
 As we have noticed above
 \[
-    \opname{vol} G = \opname{vol} V = \sum\limits_{v\in V} d_v = 2m
+    \vol G = \vol V = \sum\limits_{v\in V} d_v = 2m
 \]
 
 Moreover volume is linear for disjoints sets:
 \[
-    \opname{vol} S + \opname{vol} \overline{S} = \opname{vol} G
+    \vol S + \vol \overline{S} = \vol G
 \]
 We can deduce such properties by considering volume as cardinal of multisets.
 
-Assuming $\opname{vol} S \leqslant \opname{vol} \overline{S}$,
+Assuming $\vol S \leqslant \vol \overline{S}$,
 \[
-    \frac{1}{2} \leqslant \frac{\opname{vol} \overline{S}}{\opname{vol} G} \leqslant 1
+    \frac{1}{2} \leqslant \frac{\vol \overline{S}}{\vol G} \leqslant 1
 \]
 
 We define the h-value as following :
@@ -485,7 +485,7 @@ We define the h-value as following :
     \[
         \begin{aligned}
             h(G) &\defeq \min\limits_{\emptyset \neq S \subsetneq V} h(S)\\
-            &=\min\limits_S \frac{\card{E(S,\overline{S})}}{(\opname{vol} S)(\opname{vol} \overline{S})} \opname{vol} G
+            &=\min\limits_S \frac{\card{E(S,\overline{S})}}{(\vol S)(\vol \overline{S})} \vol G
         \end{aligned}
     \]
 \end{definition}
@@ -558,7 +558,7 @@ indeed, we can part $E$ in 3 sets: $\set{ij \vert i\in S \wedge j \in S}$ (edges
 We notice that
 \[
     \begin{aligned}
-        \frac{\opname{vol} S}{\opname{vol} G} &= \frac{\sum\limits_{i\in S} d_i}{\sum\limits_{i\in G} d_i}\\
+        \frac{\vol S}{\vol G} &= \frac{\sum\limits_{i\in S} d_i}{\sum\limits_{i\in G} d_i}\\
         &= \sum\limits_{i\in S}\frac{d_i}{2m}\\
         &= \esp[i\la\mu]{1_S(i)}
     \end{aligned}
@@ -566,28 +566,26 @@ We notice that
 
 Moreover
 \[
-    \begin{aligned}
-        \frac{\opname{vol} S}{\opname{vol} G} &= \frac{\sum\limits_{i\in S} d_i}{\sum\limits_{i\in G} d_i}\\
-        &= \sum\limits_{i\in S}\frac{d_i}{2m}\\
-        &= \esp[ij\la\nu]{(1_S(i)-1_S(j))^2}
-    \end{aligned}
+    \esp[ij\la\nu]{(1_S(i)-1_S(j))^2}
 \]
+is the fraction of edges which go through the cut.
 
 
 \begin{proposition}
     \[
-        h(S) = \frac{\underset{ij\la \nu}{\EE}(1_S(i)-1_S(j))^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2}    
+        h(S) = \frac{\esp[ij\la \nu]{(1_S(i)-1_S(j))^2}}{\esp[(i,j)\la\mu\times\mu]{(1_S(i)-1_S(j))^2}}
     \]
 \end{proposition}
 \begin{proof}
+    \wtf{expliquer un peu mieux la preuve}
     \[
-        \frac{\card{E(S,\overline{S})}}{m} = \boxed{\frac{2\card{E(S,\overline{S})}}{\opname{vol} G}}
+        \frac{\card{E(S,\overline{S})}}{m} = \boxed{\frac{2\card{E(S,\overline{S})}}{\vol G}}
     \]
 
 \[
     \begin{aligned}
-        \underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2 &= \underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)+1_S(j)-21_S(i)1_S(j))\\
-        &= 2 \frac{\vol S}{\vol G} -2\underset{(i,j)\la\mu\times\mu}{\EE}1_S(i)1_S(j)
+        \esp[(i,j)\la\mu\times\mu]{(1_S(i)-1_S(j))^2} &= \esp[(i,j)\la\mu\times\mu]{(1_S(i)+1_S(j)-21_S(i)1_S(j))}\\
+        &= 2 \frac{\vol S}{\vol G} -2\esp[(i,j)\la\mu\times\mu]{1_S(i)1_S(j)}
     \end{aligned}
 \]
 
@@ -599,47 +597,38 @@ Moreover
 \]
 \end{proof}
 
-\begin{Huge}
-    \textcolor{red}{Ca, c'est dégueulasse, mais je sais pas quoi en faire.}
-\end{Huge}
-
 \begin{proposition}
     \[
         \begin{aligned}
-            h(G) &= \min\limits_{S} \frac{\overbrace{\underset{ij\la \nu}{\EE}(1_S(i)-1_S(j))^2}^{\text{laplacian of the graph}}}{\underbrace{\underset{(i,j)\la\mu\times\mu}{\EE}(1_S(i)-1_S(j))^2}_{\text{laplacian of the complete graph}}}\\
-            &=\min\limits_{x\in\set{0,1}^n} \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2}\\
-            &\geqslant \min\limits_{x\in\RR^n} \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^{\overbrace{2}^{\substack{\text{quadratic}\\\text{form}}}}}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} \text{\qquad relaxation}
+            h(G) &= \min\limits_{S} \frac{\overbrace{\esp[ij\la \nu]{(1_S(i)-1_S(j))^2}}^{\text{laplacian of the graph}}}{\underbrace{\esp[(i,j)\la\mu\times\mu]{(1_S(i)-1_S(j))^2}}_{\text{laplacian of the complete graph}}}=\min\limits_{x\in\set{0,1}^n} \frac{\esp[ij\la\nu]{(x_i-x_j)^2}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}}\\
+            &\geqslant \min\limits_{x\in\RR^n} \frac{\esp[ij\la\nu]{(x_i-x_j)^{2}}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}}
         \end{aligned}
     \]
+    The last expression is the relaxation of the problem of the $h$-value of $G$.
 \end{proposition}
 
-
-\begin{Huge}
-    \textcolor{red}{Expliquer ce que sont les $x_i$}
-\end{Huge}
+$x_i$ replaces $1_S(i)$, so the relaxation is about $[i\in S]$. We keep a square in the relaxation instead of absolute value. So, we have a quadratic form and it will be useful to embed $G$ in $\RR$ instead of $\RR^n$.
 
 \[
     \begin{aligned}
-        \underset{ij\la\nu}{\EE} (x_i-x_j)^2 &= \frac{1}{m} \sum\limits_{ij\in E} (x_i-x_j)^2\\
+        \esp[ij\la\nu]{(x_i-x_j)^2} &= \frac{1}{m} \sum\limits_{ij\in E} (x_i-x_j)^2\\
         &= \frac{1}{m} x^T L x
     \end{aligned}
 \]
 
 \[
-    \min\limits_{x\in\RR^n} \frac{\underset{\nu}{\EE}(x_i-x_j)^2}{\underset{\mu\times\mu}{\EE}(x_i-x_j)^2}
-\]
-
-
-\[
     \begin{aligned}
-        \underset{(i,j) \la \mu\times\mu}{\EE} (x_i-x_j)^2 &= \underset{(i,j)\la\mu\times\mu}{\EE} ({x_i}^2+{x_j}^2-2x_ix_j)\\
-        &= 2\underset{i\la \mu}{\EE} {x_i}^2 - 2\left( \underset{i\la \mu}{\EE}\right)^2\\
-        &= \frac{2}{\vol G} x^t D x
+        \esp[(i,j) \la \mu\times\mu]{(x_i-x_j)^2} &= \esp[(i,j)\la\mu\times\mu]{{x_i}^2+{x_j}^2-2x_ix_j}\\
+        &= 2\esp[i\la \mu]{{x_i}^2} - 2\left( \esp[i\la \mu]{x_i}\right)^2\\
+        &= \frac{2}{\vol G} x^T D x\\
+        &= \frac{1}{m} x^T D x
     \end{aligned}
 \]
 
+So, the relaxation can be rewrite
+
 \[
-    \min\limits_{\substack{x\in\RR^n\\\angle{x,D1}=0}} \frac{x^TLx}{x^TDx}
+    \min\limits_{x\in\RR^n} \frac{\esp[ij\la\nu]{(x_i-x_j)^{2}}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}} = \min\limits_{\substack{x\in\RR^n\\\angle{x,D1}=0}} \frac{x^TLx}{x^TDx}
 \]
 
 
@@ -671,45 +660,47 @@ $\L D^{\frac{1}{2}} 1 =0$
     \lambda_2(\L) = h_\RR(G) \leqslant h(G) \leqslant 2\Phi(G)
 \]
 
-Just proved: $\lambda_2(\L) \leqslant 2\Phi(G)$.
+We have just prove a lower bound on conductance: $\lambda_2(\L) \leqslant 2\Phi(G)$. The bound is an eigenvalue which is a value that we can compute in polytime.
 
-Now: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$ (\textsc{Cheeger}'s inequality).
+Now, we will prove an upper bound of conductance the \textsc{Cheeger}'s inequality: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. This inequality is convenient since it involve the same eigenvalue.
 
 \paragraph{Part 1}
 
 Reformulate $\Phi(G)$ in term of embeddings.
 
 % Droite réelle avec des y_i dans l'ordre. 
+\wtf{}
 
 $\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We use square distance.
 
 \[
-    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} = \Phi(G)
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
 \]
 
-where $\mu_{\frac{1}{2}}$ (median) is any $t$ such that $\mu\set{i\vert y_i < t} \leqslant \frac{1}{t}$ and $\mu\set{i\vert y_i >t} \leqslant \frac{1}{2}$. This value is not well defined. In fact $\mu_{\frac{1}{2}}(i)$ must be a set.
+where $\mu_{\frac{1}{2}}$ is the median: any $t$ such that $\mu\set{i\vert y_i < t} \leqslant \frac{1}{2}$ and $\mu\set{i\vert y_i >t} \leqslant \frac{1}{2}$. This value is not well defined. In fact $\mu_{\frac{1}{2}}(i)$ must be a set. But whatever, we will use this notation to designate any element of this set.
 
 
 \paragraph{Part 2}
-
+\wtf{C'est quoi ce truc ?}
 \[
-    \frac{\underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} \rightsquigarrow x^*
+    \frac{\esp[ij\la\nu]{(x_i-x_j)^2}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}} \rightsquigarrow x^*
 \]
 
 
 
 To prove,
 \[
-    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} = \Phi(G)
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
 \]
 we will prove two inequalities ($\leqslant$ and $\geqslant$).
 
+\bigskip
 
-Say $S$ is such that $\Phi(S) = \Phi(G)$: is achieve the optimal cut.
+Say $S:=\underset{S}{\argmin}\,\Phi(S)$ ie. the cut achieving the optimal conductance ($\Phi(S) = \Phi(G)$).
 
 \[
     \begin{aligned}
-        \frac{\underset{ij\la\nu}{\EE}\lvert1_S(i)-1_S(j)\rvert}{\underset{i\la\mu}{\EE}\lvert 1_S(i)\rvert} &= \frac{\frac{1}{m}\lvert E(S,\overline{S})\rvert}{\frac{\vol S}{2m}}\\
+        \frac{\esp[ij\la\nu]{\lvert1_S(i)-1_S(j)\rvert}}{\esp[i\la\mu]{\lvert 1_S(i)\rvert}} &= \frac{\frac{1}{m}\lvert E(S,\overline{S})\rvert}{\frac{\vol S}{2m}}\\
         &= \frac{2\lvert E(S,\overline{S}) \rvert}{\min\set{\vol S, \vol \overline{S}}}\\
         &= 2 \Phi(G)
     \end{aligned}
@@ -717,7 +708,7 @@ Say $S$ is such that $\Phi(S) = \Phi(G)$: is achieve the optimal cut.
 
 \bigskip
 
-To prove the other directed, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$. We assume that $\forall (i,j), i\neq j \Ra y_i \neq y_j$.
+To prove the other inequality, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$. We assume that $\forall (i,j), i\neq j \Ra y_i \neq y_j$.
 
 $\mu_{\frac{1}{2}}(y) = 0$.
 
@@ -801,7 +792,7 @@ Produce a $y$ (from $x$) such that
     \item $\frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{2\underset{i}{\EE}\lvert y_i \rvert} \leqslant (\overset{?}{=}) \sqrt{\lambda_2(\L)}$
 \end{enumerate}
 
-$y_i = {x_i}^2 \opname{sgn}(x_i)$
+$y_i = {x_i}^2 \sgn(x_i)$
 
 \[
     \begin{aligned}
