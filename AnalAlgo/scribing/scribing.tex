@@ -577,7 +577,10 @@ Moreover
 \[
     \esp[ij\la\nu]{(1_S(i)-1_S(j))^2}
 \]
-is the fraction of edges which go through the cut.=
+is the fraction of edges which go through the cut, that we can write as
+\[
+    \frac{\card{E(S,\overline{S})}}{m}
+\]
 
 
 \begin{proposition}
@@ -586,24 +589,34 @@ is the fraction of edges which go through the cut.=
     \]
 \end{proposition}
 \begin{proof}
-    \wtf{expliquer un peu mieux la preuve}
+    In one hand, we compute the numerator:
     \[
-        \frac{\card{E(S,\overline{S})}}{m} = \boxed{\frac{2\card{E(S,\overline{S})}}{\vol G}}
+        \begin{aligned}
+            \esp[ij\la\nu]{(1_S(i)-1_S(j))^2} &= \frac{\card{E(S,\overline{S})}}{m}\\
+            &= \frac{2\card{E(S,\overline{S})}}{\vol G}
+        \end{aligned}
     \]
-
-\[
-    \begin{aligned}
-        \esp[(i,j)\la\mu\times\mu]{(1_S(i)-1_S(j))^2} &= \esp[(i,j)\la\mu\times\mu]{(1_S(i)+1_S(j)-21_S(i)1_S(j))}\\
-        &= 2 \frac{\vol S}{\vol G} -2\esp[(i,j)\la\mu\times\mu]{1_S(i)1_S(j)}
-    \end{aligned}
-\]
-
-\[
-    \begin{aligned}
-        2\frac{\vol S}{\vol G} - 2 \left( \frac{\vol S}{\vol G}\right)^2 &= 2 \frac{\vol S}{\vol G}\left( 1- \frac{\vol S}{\vol G}\right)\\
-        &= \boxed{\frac{2 \vol S \vol \overline{S}}{\vol G \vol G}}
-    \end{aligned}
-\]
+    
+    In the other hand, the denominator:
+    \[
+        \begin{aligned}
+            \esp[(i,j)\la\mu\times\mu]{(1_S(i)-1_S(j))^2} &= \esp[(i,j)\la\mu\times\mu]{(1_S(i)+1_S(j)-2\cdot 1_S(i)1_S(j))}\\
+            &= 2 \frac{\vol S}{\vol G} -2\esp[(i,j)\la\mu\times\mu]{1_S(i)1_S(j)}\\
+            &=2\frac{\vol S}{\vol G} - 2 \left( \frac{\vol S}{\vol G}\right)^2\\
+            &\text{\qquad\qquad since }i\text{ and }j\text{ are drawn independently}\\
+            &= 2 \frac{\vol S}{\vol G}\left( 1- \frac{\vol S}{\vol G}\right)\\
+            &= \frac{2 \vol S \vol \overline{S}}{\vol G \vol G}
+        \end{aligned}
+    \]
+    
+    Hence, the ratio is
+    \[
+        \begin{aligned}
+            \frac{\frac{2\card{E(S,\overline{S})}}{\vol G}}{\frac{2 \vol S \vol \overline{S}}{\vol G \vol G}} &= \frac{2\card{E(S,\overline{S})}}{\frac{2 \vol S \vol \overline{S}}{\vol G}}\\
+            &= \frac{2\card{E(S,\overline{S})}}{2 \vol S \vol \overline{S}}\vol G\\
+            &= h(S)
+        \end{aligned}
+    \]
 \end{proof}
 
 \begin{proposition}
