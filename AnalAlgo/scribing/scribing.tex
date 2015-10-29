@@ -338,8 +338,8 @@
 \\
 {\bf CS 435, 2015} \\
  Lecture 5, Date: 26 October 2015\\
-Instructor: Nisheeth \textsc{Vishnoi} \\
-Scribes: Marc \textsc{Chevalier}, Jean-Baptiste \textsc{Cordonnier}, Thibaut \textsc{Loiseleur} \\ \\
+Instructor: Nisheeth Vishnoi \\
+% Scribes: Marc \textsc{Chevalier}, Jean-Baptiste \textsc{Cordonnier}, Thibaut \textsc{Loiseleur} \\ \\
 {\bfseries \large Graphs and conductance} \\ \\ \hline
 \end{tabular}
 \end{center}
@@ -453,7 +453,7 @@ We can notice that the decision problem associated to this optimization problem 
 
 \bigskip
 
-We will going to embed $G$ into $\RR$. We will find some mapping with fine property from $G$ to the real line. We chose $\RR$ because we can hope that the approximation algorithm will work by run through $\RR$ a constant number of times.
+We are going to embed $G$ into $\RR$. We will find some mapping with fine property from $G$ to the real line. We chose $\RR$ because we can hope that the approximation algorithm will work by run through $\RR$ a constant number of times.
 
 We will now define an other quantity related to $\Phi(S)$ but usually easier to manipulate.
 
@@ -479,7 +479,7 @@ Assuming $\vol S \leqslant \vol \overline{S}$,
     \frac{1}{2} \leqslant \frac{\vol \overline{S}}{\vol G} \leqslant 1
 \]
 
-We define the h-value as following :
+We define the h-value as follow :
 
 \begin{definition}
     \[
@@ -549,11 +549,20 @@ Then, we can extend these definitions to the subsets $F \subseteq E$ and $S \sub
 \end{notation}
 \footnotetext{\url{https://en.wikipedia.org/wiki/Iverson_bracket}}
 
-We can express as $\card{E(S,\overline{S})}$ as
+We can express $\card{E(S,\overline{S})}$ as
 \[
-    \card{E(S,\overline{S})} = \sum\limits_{ij\in E} \lvert 1_S(i)-1_S(j)\rvert
+    \card{E(S,\overline{S})} = \sum\limits_{ij\in E} \lvert 1_S(i)-1_S(j)\rvert = \sum\limits_{ij\in E} \left( 1_S(i)-1_S(j)\right)^2 = m \EE_{ij \leftarrow \nu} \left[ \left( 1_S(i)-1_S(j)\right)^2 \right]
 \]
-indeed, we can part $E$ in 3 sets: $\set{ij \vert i\in S \wedge j \in S}$ (edges in the graph induced by $S$), $\set{ij \vert i\not\in S \wedge j \not\in S}$ (edges in the graph induced by $\overline{S}$) and $\set{ij \vert i\in S \oplus j \in S}$. For the two firsts, $1_S(i) = 1_S(j)$. But for the last one, $\lvert 1_S(i) - 1_S(j)\rvert = 1$. Moreover, this set is exactly $E(S,\overline{S})$, hence the formula.
+indeed, we can partition $E$ in 3 sets: $\set{ij \vert i\in S \wedge j \in S}$ (edges in the graph induced by $S$), $\set{ij \vert i\not\in S \wedge j \not\in S}$ (edges in the graph induced by $\overline{S}$) and $\set{ij \vert i\in S \oplus j \in S}$. For the two firsts, $1_S(i) = 1_S(j)$. But for the last one, $\lvert 1_S(i) - 1_S(j)\rvert = 1$. Moreover, this set is exactly $E(S,\overline{S})$, hence the formula.
+
+We can then express the volume of $S$ as follow:
+\[
+    \frac{\opname{vol} S}{\opname{vol} G} = \EE_{i \leftarrow \mu} \left[  1_S(i)\right]
+\]
+because
+\[
+    \EE_{i \leftarrow \mu} \left[  1_S(i)\right] = \sum_{i\in V} \frac {d_i} {2m} 1_S(i) = \frac { \sum_{i\in S} d_i} {2m} = \frac {\vol S} {\vol G}
+\]
 
 We notice that
 \[
@@ -568,7 +577,7 @@ Moreover
 \[
     \esp[ij\la\nu]{(1_S(i)-1_S(j))^2}
 \]
-is the fraction of edges which go through the cut.
+is the fraction of edges which go through the cut.=
 
 
 \begin{proposition}
