@@ -6,7 +6,7 @@
 \pdfoutput=1
 \usepackage{mathpazo}
 \usepackage{color}
-\usepackage{placeins}
+\usepackage{placeins, stmaryrd}
 %\usepackage{etoolbox}
 %\newbool{submit}
 %\setbool{submit}{true}
@@ -142,7 +142,7 @@
 \newcommand{\cplx}[1]{\mathcal O \left( #1 \right)}
 \newcommand{\floor}[1]{\left \lfloor #1 \right \rfloor}
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
-\newcommand{\brackets}[1]{\left[ #1 \right]}
+\newcommand{\brackets}[1]{\left\llbracket #1 \right\rrbracket}
 \renewcommand{\angle}[1]{\left\langle #1 \right\rangle}
 \newcommand{\donne}{\rightarrow}
 \newcommand{\gives}{\rightarrow}
@@ -369,10 +369,10 @@ As the problem is known to be \NP-hard, we will consider a relaxation of this pr
     We define $E(S,\overline{S})$ as the set of edges that cross the cut  $(S,\overline{S})$, i.e., have one end point in $S$ and the other in $\overline{S}$. The cardinal of this set is denoted by $\card{E(S,\overline{S})}$
 \end{notation}    
     
-\begin{definition}[Bad definition of conductance of a cut]
-    \[
+\begin{definition}[\textcolor{red}{Bad definition of conductance of a cut}]
+    \textcolor{red}{\[
         \Phi(S) \defeq \frac{\card{E(S,\overline{S})}}{\min\left(\card{S},\card{\overline{S}}\right)}
-    \]
+    \]}
 \end{definition}
 
 This definition is not dimension free. For example, if we replace each edge by two copy of itself, the conductance will double. Indeed, the cardinal of the cut will not change since it is a set of vertexes. But the cardinal of $E(S,\overline{S})$ will double, as a set of edges. We would like a definition which make the conductance invariant by such meaningless transformation.
@@ -385,10 +385,11 @@ This definition is not dimension free. For example, if we replace each edge by t
 \end{definition}
 
    
-\begin{definition}[Good definition of conductance of a cut]
+\begin{definition}[\textcolor{green!50!black}{Good definition of conductance of a cut}]
+    \textcolor{green!50!black}{
     \[
         \Phi(S) \defeq \frac{\card{E(S,\overline{S})}}{\min\left(\vol S,\vol \overline{S}\right)}
-    \]
+    \]}
 \end{definition}
 
 This definition of $\Phi(S)$ is a \emph{dimension-less} quantity and lies always between $0$ and $1$. We have solved the previous problem by involving only cardinal of set of edges.
@@ -421,14 +422,14 @@ This definition of $\Phi(S)$ is a \emph{dimension-less} quantity and lies always
     we have
     \[
         \begin{aligned}
-            E(S,\overline{S}) &= \set{(1,4),(3,5), (2,6)}\\
-            \vol \textcolor{cyan}{S} &= 7\\
+            E(\textcolor{cyan!50!blue}{S},\textcolor{red}{\overline{S}}) &= \set{(1,4),(3,5), (2,6)}\\
+            \vol \textcolor{cyan!50!blue}{S} &= 7\\
             \vol \textcolor{red}{\overline{S}} &= 9
         \end{aligned}
     \]
     So
     \[
-        \Phi(\textcolor{cyan}{S}) = \frac{3}{7}
+        \Phi(\textcolor{cyan!50!blue}{S}) = \frac{3}{7}
     \]
 \end{example}
 
@@ -687,7 +688,7 @@ Reformulate $\Phi(G)$ in term of embeddings.
 $\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We use square distance.
 
 \[
-    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}}(y)=0}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
 \]
 
 where $\mu_{\frac{1}{2}}$ is the median: any $t$ such that $\mu\set{i\vert y_i < t} \leqslant \frac{1}{2}$ and $\mu\set{i\vert y_i >t} \leqslant \frac{1}{2}$. This value is not well defined. In fact $\mu_{\frac{1}{2}}(i)$ must be a set. But whatever, we will use this notation to designate any element of this set.
@@ -703,7 +704,7 @@ where $\mu_{\frac{1}{2}}$ is the median: any $t$ such that $\mu\set{i\vert y_i <
 
 To prove,
 \[
-    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}}(y)=0}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
 \]
 we will prove two inequalities ($\leqslant$ and $\geqslant$).
 
@@ -721,33 +722,33 @@ Say $S:=\underset{S}{\argmin}\,\Phi(S)$ ie. the cut achieving the optimal conduc
 
 \bigskip
 
-To prove the other inequality, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$. We assume that $\forall (i,j), i\neq j \Ra y_i \neq y_j$.
-
-$\mu_{\frac{1}{2}}(y) = 0$.
+\wtf{C'était quoi la première inégalité ?}
+To prove the other inequality, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$\wtf{Il manque un bout ?}. We assume that the $y_i$ are pairwise distinct and that $\mu_{\frac{1}{2}}(y) = 0$.
 
 % Blabla que je comprends pas pour en arrievr à Chasles.
 
 \begin{notation}
-    $S_i = \brackets{1,i}$ and $\overline{S_i} = \brackets{i+1,n}$
+    $S_i = \llbracket 1,i \rrbracket$ and $\overline{S_i} = \brackets{i+1,n}$
 \end{notation}
 
-$S_1, S_2,\ldots, S_{n-1}$ "sweep cuts".
+$S_1, S_2,\ldots, S_{n-1}$ are called the "sweep cuts".
 
 \paragraph{Numerator:}
 
 \[
-    \sum\limits_{e=ij} \lvert y_i-y_j \rvert = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \lvert E(S_i, \overline{S_i} \rvert
+    \sum\limits_{e=ij} \lvert y_i-y_j \rvert = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \lvert E(S_i, \overline{S_i}) \rvert
 \]
 
-So we have written things in this way\dots.
+In other words, instead of summing the length of each edge, we can count the number of edges which cross each possible interval. 
 
 \paragraph{Denominator:}
 
-
+\wtf{C'est quoi cette somme vide ? Qui revient plus loin en plus...}
 \[
     \sum\limits_{i=1}^n \overset{?}{=} \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \min(\vol S_i, \vol \overline{S_i})
 \]
 
+And we have
 \[
     \frac{\sum\limits_i \alpha_i n_i}{\sum\limits_i \alpha_i d_i} \geqslant \min\limits_i \frac{n_i}{d_i}
 \]
@@ -755,12 +756,12 @@ So we have written things in this way\dots.
 because $\frac{a_1+a_2}{b_1+b_2} \geqslant \min\set{\frac{a_1}{b_1},\frac{a_2}{b_2}}$ which is true if $b_i > 0$.
 
 
-$\hat{S}$ denotes the cut with min $\Phi$ among $(S_i)_{i\in\brackets{1,n-1}}$.
+$\widehat{S}$ denotes the cut with minimal conductance among $(S_i)_{i\in\brackets{1,n-1}}$.
 
 
 \[
     \begin{aligned}
-        \frac{\sum\limits_i \alpha_i n_i}{\sum\limits_i \alpha_i d_i} \geqslant \min\limits_i \frac{n_i}{d_i} = \min_i \frac{\card{E(S_i,\overline{S_i})}}{\min\set{\vol S_i,\vol \overline{S_i}}} &= \Phi(\hat{S})\\
+        \frac{\sum\limits_i \alpha_i n_i}{\sum\limits_i \alpha_i d_i} \geqslant \min\limits_i \frac{n_i}{d_i} = \min_i \frac{\card{E(S_i,\overline{S_i})}}{\min\set{\vol S_i,\vol \overline{S_i}}} &= \Phi(\widehat{S})\\
         &\geqslant \Phi(G)
     \end{aligned}
 \]
@@ -771,64 +772,80 @@ So, it remains
 \]
 to prove.
 
+\bigskip
 
 % Encore la droite réelle des y_i. Avec 0 en y_k.
 
-We make the assumption that $\exists k : y_k = 0$. This is just a simplification. We keep the name $k$ for this index.
+We make the assumption that $\exists k : y_k = 0$. This is just a simplification for the proof, but it can be generalized even when $\forall k, y_k \neq 0$. We name $k$ the index such that $y_k = 0$.
 
 \[
     \begin{aligned}
         \sum\limits_i d_i\lvert y_i \rvert &= \sum\limits_{i\leqslant k} d_i(-y_i) + \sum\limits_{i > k}d_i y_i\\
        d_i &= \vol S_i - \vol S_{i-1}\\
        \sum\limits_i d_i\lvert y_i \rvert &= \sum\limits_{i\leqslant k} (\vol S_i - \vol S_{i-1})(-y_i) + \sum\limits_{i>k} \left(\vol \overline{S_i} \vol \overline{S_{i+1}} \right)y_i\\
-       % On groupe différemment les termes. C'est pas un truc comme Abel ?
+       % On groupe différemment les termes. C'est pas un truc comme Abel ? Non, pas du tout en fait
        &= \sum\limits_{i\leqslant k} \vol S_i (y_{i+1} -y_i) + \sum\limits_{i>k} \vol \overline{S_i} (y_{i+1} - y_i)
     \end{aligned}
 \]
+by grouping differently the terms: we expand the product, and factorize terms of consecutive indexes.
 
-What we have done, to summarize, $\underset{\underset{y(=1_S)}{\downarrow}}{S}$ opt of $\Phi(G)$.
-
+In short, what we have done: For $S$ optimizing $\Phi(G)$, we have
 \[
     \min\limits_y \frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}} \leqslant \Phi(G)
 \]
-Thus, $=$.
+where $(y_i)_i$ come from $(1_S(i))_i$.
 
-Goal $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. Start with $x$ which obtains $\lambda_2(\L)$.
+\bigskip
 
+Thus, we have the equality we claim above.
+
+\bigskip
+
+Now, we want to obtain $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. We start with $x\in\RR^n$ which obtains $\lambda_2(\L)$:
 \[
     \frac{\underset{ij\la \nu}{\EE}(x_i-x_j)^2}{\underset{(i,j)\la\mu\times\mu}{\EE}(x_i-x_j)^2} = \lambda_2(\L)
 \]
 
-Produce a $y$ (from $x$) such that
+From this $x$, we have to produce a convenient $y$ with the constraints:
 \begin{enumerate}[(1)]
     \item $\mu_{\frac{1}{2}}(y) = 0$
     \item $\frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j\rvert}{2\underset{i}{\EE}\lvert y_i \rvert} \leqslant (\overset{?}{=}) \sqrt{\lambda_2(\L)}$
 \end{enumerate}
 
-$y_i = {x_i}^2 \sgn(x_i)$
+There is some natural ideas:
+\begin{itemize}
+    \item \textcolor{red}{$y_i = \lvert x_i \rvert$}: but the absolute value is not nice, 
+    \item \textcolor{red}{$y_i = \sqrt{x_i}$}: but by continuing computation, we see that that goes in the wrong direction. So, we compensate with:
+    \item \textcolor{red}{$y_i = {x_i}^2$}: but this expression lose the information about the sign of $x_i$, so we finish with
+    \item \textcolor{green!50!black}{$y_i = {x_i}^2 \sgn(x_i)$} which is a good formula. Let's us this one!
+\end{itemize}
 
 \[
     \begin{aligned}
-        \underset{ij\la\nu}{\EE} \lvert y_i - y_j \rvert &= \underset{ij \la \nu}{\EE} \lvert \sgn(x_i){x_i}^2 - \sgn(x_j){x_j}^2\rvert\\
-        &\leqslant \underset{ij\la \nu}{\EE} \lvert x_i-x_j \rvert(\lvert x_i \rvert + \lvert x_j \rvert)\\
-        &\leqslant \sqrt{\underset{ij\la\nu}{\EE}(x_i-x_j)^2} \sqrt{\underset{ij\la \nu}{\EE} (\lvert x_i \rvert + \lvert x_j \rvert)^2}\\
-        &\leqslant \sqrt{\underset{ij\la\nu}{\EE}(x_i-x_j)^2} \sqrt{2\underset{ij\la \nu}{\EE} \lvert x_i \rvert^2 + \lvert x_j \rvert^2}\\
-        &\leqslant \sqrt{\underset{ij\la\nu}{\EE}(x_i-x_j)^2} \sqrt{4\underset{i\la \mu}{\EE} \lvert y_i \rvert}
+        \esp[ij\la\nu]{\lvert y_i - y_j \rvert} &= \esp[ij \la \nu]{\lvert \sgn(x_i){x_i}^2 - \sgn(x_j){x_j}^2\rvert}\\
+        &\leqslant \esp[ij\la \nu]{\lvert x_i-x_j \rvert(\lvert x_i \rvert + \lvert x_j \rvert)}\\
+        &\leqslant \sqrt{\esp[ij\la\nu]{(x_i-x_j)^2}} \sqrt{\esp[ij\la \nu]{\lvert x_i \rvert + \lvert x_j \rvert}^2}\\
+        &\leqslant \sqrt{\esp[ij\la\nu]{(x_i-x_j)^2}} \sqrt{2\esp[ij\la \nu]{\lvert x_i \rvert^2 + \lvert x_j \rvert^2}}\\
+        &\leqslant \sqrt{\esp[ij\la\nu]{(x_i-x_j)^2}} \sqrt{4\esp[i\la \mu]{\lvert y_i \rvert}}
     \end{aligned}
 \]
+since $(a+b)^2 \leqslant 2(a^2+b^2)$.
 
 
 So
 
 \[
-    \frac{\underset{ij\la\nu}{\EE}\lvert y_i-y_j \rvert}{\underset{i\la\mu}{\EE}\lvert y_i \rvert} \leqslant \sqrt{\frac{4 \underset{ij\la\nu}{\EE}(x_i-x_j)^2}{\underset{i\la\mu}{\EE}\lvert y_i \rvert}} \leqslant\sqrt{8\lambda_2(\L)}
+    \frac{\esp[ij\la\nu]{\lvert y_i-y_j \rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} \leqslant \sqrt{\frac{4 \esp[ij\la\nu]{(x_i-x_j)^2}}{\esp[i\la\mu]{\lvert y_i \rvert}}} \leqslant\sqrt{8\lambda_2(\L)}
 \]
-
+and finally 
 \[
     \Phi(G) \leqslant \sqrt{2\lambda_2(\L)}
 \]
 
+We have the \textsc{Cheeger}''s inequality. Wa can directly deduce the approximation algorithm.
+
 \begin{algorithm}[!ht]
+    \caption{Approximation algorithm for graph conductance.}
     \DontPrintSemicolon
     Compute $x$\;
     $y_i = \sgn(x_i){x_i}^2$\;
