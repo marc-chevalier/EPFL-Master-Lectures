@@ -688,7 +688,7 @@ We have just prove a lower bound on conductance: $\lambda_2(\L) \leqslant 2\Phi(
 
 Now we reduced our problem to finding an eigenvalue, this approximation is computable in polynomial time as we have seen previously and then computing the bound is feasible.
 
-Now, we will prove an upper bound of the conductance, the \textsc{Cheeger}'s inequality: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. This inequality is convenient since it involve the same eigenvalue.
+Now, we will prove an upper bound of the conductance, the \textsc{Cheeger}'s inequality: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. This inequality is convenient since it involves the same eigenvalue.
 
 \paragraph{Part 1}
 
@@ -740,16 +740,13 @@ To prove the other inequality, let's take $y_1 < \cdots < y_n$ be an embedding o
 
 % Blabla que je comprends pas pour en arrievr à Chasles.
 
-\begin{notation}
-    $S_i = \llbracket 1,i \rrbracket$ and $\overline{S_i} = \brackets{i+1,n}$
-\end{notation}
+    We can define the splits $(S_i, \overline{S_i})$ from our real line embedding by cutting between each possible $y_i$. We take $S_i = \brackets{1,i}$ and $\overline{S_i} = \brackets{i+1,n}$ for each $i$ and we call these cuts "sweep cuts".
 
-$S_1, S_2,\ldots, S_{n-1}$ are called the "sweep cuts".
 
 \paragraph{Numerator:}
 
 \[
-    \sum\limits_{e=ij} \lvert y_i-y_j \rvert = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \lvert E(S_i, \overline{S_i}) \rvert
+    \sum\limits_{e\in E,\ ij=e} \lvert y_i-y_j \rvert = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \lvert E(S_i, \overline{S_i} \rvert
 \]
 
 In other words, instead of summing the length of each edge, we can count the number of edges which cross each possible interval. 
@@ -810,7 +807,7 @@ where $(y_i)_i$ come from $(1_S(i))_i$.
 
 \bigskip
 
-Thus, we have the equality we claim above.
+Since we proved the inequalities in both directions we proved the equality.
 
 \bigskip
 
