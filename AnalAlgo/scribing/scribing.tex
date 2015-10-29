@@ -589,7 +589,7 @@ is the fraction of edges which go through the cut, that we can write as
     \]
 \end{proposition}
 \begin{proof}
-    In one hand, we compute the numerator:
+    In the one hand, we compute the numerator:
     \[
         \begin{aligned}
             \esp[ij\la\nu]{(1_S(i)-1_S(j))^2} &= \frac{\card{E(S,\overline{S})}}{m}\\
@@ -622,7 +622,8 @@ is the fraction of edges which go through the cut, that we can write as
 \begin{proposition}
     \[
         \begin{aligned}
-            h(G) &= \min\limits_{S} \frac{\overbrace{\esp[ij\la \nu]{(1_S(i)-1_S(j))^2}}^{\text{laplacian of the graph}}}{\underbrace{\esp[(i,j)\la\mu\times\mu]{(1_S(i)-1_S(j))^2}}_{\text{laplacian of the complete graph}}}=\min\limits_{x\in\set{0,1}^n} \frac{\esp[ij\la\nu]{(x_i-x_j)^2}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}}\\
+            h(G) &= \min\limits_{S} \frac{\overbrace{\esp[ij\la \nu]{(1_S(i)-1_S(j))^2}}^{\text{laplacian of the graph}}}{\underbrace{\esp[(i,j)\la\mu\times\mu]{(1_S(i)-1_S(j))^2}}_{\text{laplacian of the complete graph}}}\\
+            &=\min\limits_{x\in\set{0,1}^n} \frac{\esp[ij\la\nu]{(x_i-x_j)^2}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}}\\
             &\geqslant \min\limits_{x\in\RR^n} \frac{\esp[ij\la\nu]{(x_i-x_j)^{2}}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}}
         \end{aligned}
     \]
@@ -654,7 +655,7 @@ So, the relaxation can be rewrite
 \]
 
 
-Let's define $y = D^{\frac{1}{2}} x$ where 
+This expression is close to a mathematical program finding an eigen value at the exception of the $D$ in the denominator. To reduce this problem to finding the second smallest eigen value, we can apply the following change of variable: $y = D^{\frac{1}{2}} x$ where 
 \[
     D^{\frac{1}{2}} = \left(\begin{matrix}
          \ddots&&0 \\
@@ -667,13 +668,12 @@ since $\forall i, d_i >0$.
 
 \[
     \begin{aligned}
-        \min\limits_{\substack{y\in\RR^n\\\angle{D^{- \frac{1}{2}}y,D1}=0}} \frac{(D^{-\frac{1}{2}} y)^T L (D^{-\frac{1}{2}}y)}{y^Ty} &= \min\limits_{\angle{y, D^{\frac{1}{2}}1}=0} \frac{y^T(D^{-\frac{1}{2}}LD^{-\frac{1}{2}})y}{y^T y}\\
+        &\min\limits_{\substack{y\in\RR^n\\\angle{D^{- \frac{1}{2}}y,D1}=0}} \frac{(D^{-\frac{1}{2}} y)^T L (D^{-\frac{1}{2}}y)}{y^Ty} &= \min\limits_{\angle{y, D^{\frac{1}{2}}1}=0} \frac{y^T(D^{-\frac{1}{2}}LD^{-\frac{1}{2}})y}{y^T y}
         &= \lambda_2 (\L)
     \end{aligned}
 \]
-where $\L = D^{-\frac{1}{2}} L D^{-\frac{1}{2}}$ is the normalized laplacian, since $D^{\frac{1}{2}}1$ is an eigenvector associated to the smallest eigenvalue of $\L$.
+where $\L = D^{-\frac{1}{2}} L D^{-\frac{1}{2}}$ is the normalized Laplacian. We also note that since $D^{\frac{1}{2}}1$ is an eigenvector associated to the smallest eigenvalue of $\L$, we have $\L D^{\frac{1}{2}} 1 =0$.
 
-$\L D^{\frac{1}{2}} 1 =0$
 \[
     \boxed{\L_{i,j} = \frac{L_{i,j}}{\sqrt{d_id_j}}}
 \]
@@ -682,9 +682,11 @@ $\L D^{\frac{1}{2}} 1 =0$
     \lambda_2(\L) = h_\RR(G) \leqslant h(G) \leqslant 2\Phi(G)
 \]
 
-We have just prove a lower bound on conductance: $\lambda_2(\L) \leqslant 2\Phi(G)$. The bound is an eigenvalue which is a value that we can compute in polytime.
+We have just prove a lower bound on conductance: $\lambda_2(\L) \leqslant 2\Phi(G)$. 
 
-Now, we will prove an upper bound of conductance the \textsc{Cheeger}'s inequality: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. This inequality is convenient since it involve the same eigenvalue.
+Now we reduced our problem to finding an eigenvalue, this approximation is computable in polynomial time as we have seen previously and then computing the bound is feasible.
+
+Now, we will prove an upper bound of the conductance, the \textsc{Cheeger}'s inequality: $\Phi(G) \leqslant 2\sqrt{\lambda_2(\L)}$. This inequality is convenient since it involve the same eigenvalue.
 
 \paragraph{Part 1}
 
@@ -696,7 +698,7 @@ Reformulate $\Phi(G)$ in term of embeddings.
 $\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We use square distance.
 
 \[
-    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
+    \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}(y)=0}}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
 \]
 
 where $\mu_{\frac{1}{2}}$ is the median: any $t$ such that $\mu\set{i\vert y_i < t} \leqslant \frac{1}{2}$ and $\mu\set{i\vert y_i >t} \leqslant \frac{1}{2}$. This value is not well defined. In fact $\mu_{\frac{1}{2}}(i)$ must be a set. But whatever, we will use this notation to designate any element of this set.
