@@ -226,7 +226,7 @@
 %EvalPerf
 \newcommand{\Var}[1]{\text{Var}\left( #1 \right)}
 \newcommand{\prob}[1]{\PP\left( #1 \right)}
-\newcommand{\esp}[1]{\EE\left[ #1 \right]}
+\newcommand{\esp}[2][]{\underset{#1}{\EE}\left[ #2 \right]}
 \newcommand{\dd}{\mathrm{d}}
 
 
@@ -378,7 +378,7 @@ As the problem is known to be \NP-hard, we will consider a relaxation of this pr
 This definition is not dimension free. For example, if we replace each edge by two copy of itself, the conductance will double. Indeed, the cardinal of the cut will not change since it is a set of vertexes. But the cardinal of $E(S,\overline{S})$ will double, as a set of edges. We would like a definition which make the conductance invariant by such meaningless transformation.
 
 \begin{definition}[Volume]
-    The volume of a set of vertex $S$ is the sum of degree in the graph induced by $S$ and the neighbour vertexes. Equivalently, it is twice the number of edges in the induced graph.
+    The volume of a set of vertex $S$ is the sum of degree of the vertexes in $S$. Equivalently, it is twice the number of edges in the induced graph plus the number of edges through the cut.
     \[
         \opname{vol} S = \sum\limits_{v\in S}d_v
     \]
@@ -495,7 +495,7 @@ We define the h-value as following :
 \]
 In particular,
 \[
-    \Phi(G) \leqslant \underbrace{h(G)}_{\text{hard}} \leqslant 2 \Phi(G)
+    \Phi(G) \leqslant h(G) \leqslant 2 \Phi(G)
 \]
 
 We just proved that the h-value is a 2-approximation of the conductance. But the problem remains \NP-hard.
@@ -555,11 +555,23 @@ We can express as $\card{E(S,\overline{S})}$ as
 \]
 indeed, we can part $E$ in 3 sets: $\set{ij \vert i\in S \wedge j \in S}$ (edges in the graph induced by $S$), $\set{ij \vert i\not\in S \wedge j \not\in S}$ (edges in the graph induced by $\overline{S}$) and $\set{ij \vert i\in S \oplus j \in S}$. For the two firsts, $1_S(i) = 1_S(j)$. But for the last one, $\lvert 1_S(i) - 1_S(j)\rvert = 1$. Moreover, this set is exactly $E(S,\overline{S})$, hence the formula.
 
-\begin{Huge}
-    \textcolor{red}{Je comprends pas cette formule ni la proposition en dessous, mais j'ai du mal à croire cette formule sans justification.}
-\end{Huge}
+We notice that
+\[
+    \begin{aligned}
+        \frac{\opname{vol} S}{\opname{vol} G} &= \frac{\sum\limits_{i\in S} d_i}{\sum\limits_{i\in G} d_i}\\
+        &= \sum\limits_{i\in S}\frac{d_i}{2m}\\
+        &= \esp[i\la\mu]{1_S(i)}
+    \end{aligned}
+\]
 
-$\frac{\opname{vol} S}{\opname{vol} G} = \esp{1_S(i)} = \esp{(1_S(i)-1_S(j))^2}$.
+Moreover
+\[
+    \begin{aligned}
+        \frac{\opname{vol} S}{\opname{vol} G} &= \frac{\sum\limits_{i\in S} d_i}{\sum\limits_{i\in G} d_i}\\
+        &= \sum\limits_{i\in S}\frac{d_i}{2m}\\
+        &= \esp[ij\la\nu]{(1_S(i)-1_S(j))^2}
+    \end{aligned}
+\]
 
 
 \begin{proposition}
