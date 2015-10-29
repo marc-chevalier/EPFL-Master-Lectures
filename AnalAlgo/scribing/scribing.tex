@@ -434,7 +434,7 @@ This definition of $\Phi(S)$ is a \emph{dimension-less} quantity and lies always
     \]
 \end{example}
 
-Looking for the conductance of a graph has also crucial real-world applications. Indeed, it plays a central role in the design of recursive algorithms, image segmentation, community detection, clustering and percolation. For instance, the permeability of petroleum through porous rock can be modelled in terms of the conductance of a graph, with weights given by pore sizes.
+Looking for the conductance of a graph has also crucial real-world applications. Indeed, it plays a central role in the design of recursive algorithms, image segmentation, community detection, clustering and percolation. For instance, the permeability of petroleum through porous rock can be modelled in terms of the conductance of a graph, with weights given by pore sizes. Finding $S$ and $\overline{S}$ is also equivalent to differentiate a graph into two clusters.
 
 \begin{definition}[Graph conductance]
     The conductance of a graph is min conductance of a non trivial cut.
@@ -695,9 +695,7 @@ Now, we will prove an upper bound of the conductance, the \textsc{Cheeger}'s ine
 Reformulate $\Phi(G)$ in term of embeddings.
 
 % Droite réelle avec des y_i dans l'ordre. 
-\wtf{}
-
-$\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We use square distance.
+Indeed, $\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We previously used square-Euclidian distances for convenience in computations. But, it makes more sense to consider $\left|y_i-y_j\right|$.
 
 \[
     \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}}(y)=0}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
@@ -708,9 +706,8 @@ where $\mu_{\frac{1}{2}}$ is the median: any $t$ such that $\mu\set{i\vert y_i <
 
 
 \paragraph{Part 2}
-\wtf{C'est quoi ce truc ?}
 \[
-    \frac{\esp[ij\la\nu]{(x_i-x_j)^2}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}} \rightsquigarrow x^*
+    \frac{\esp[ij\la\nu]{(x_i-x_j)^2}}{\esp[(i,j)\la\mu\times\mu]{(x_i-x_j)^2}} \rightsquigarrow \overbrace{x^*}^{rounding\,\, 2\sqrt{\lambda_2(\L)}}
 \]
 
 
@@ -736,26 +733,31 @@ Say $S:=\underset{S}{\argmin}\,\Phi(S)$ ie. the cut achieving the optimal conduc
 \bigskip
 
 \wtf{C'était quoi la première inégalité ?}
-To prove the other inequality, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$\wtf{Il manque un bout ?}. We assume that the $y_i$ are pairwise distinct and that $\mu_{\frac{1}{2}}(y) = 0$.
+To prove the other inequality, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which minimises $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$. We assume that the $y_i$ are pairwise distinct and that $\mu_{\frac{1}{2}}(y) = 0$.
 
-% Blabla que je comprends pas pour en arrievr à Chasles.
+in order to compute the term $\left|y_j-y_i\right|$, we will use the simple decomposition of substractions in the first Euclidian norm :
+
+\[
+    y_j-y_i=(y_j-y_{j-1})+(y_{j-1}-y_{j-2})+\dots+(y_{i+1}-y_i)
+\]
 
     We can define the splits $(S_i, \overline{S_i})$ from our real line embedding by cutting between each possible $y_i$. We take $S_i = \brackets{1,i}$ and $\overline{S_i} = \brackets{i+1,n}$ for each $i$ and we call these cuts "sweep cuts".
+    
+    Hence, $\left(y_{i+1}-y_i\right) = \left|E\left(S_i,\,\overline{S_i}\right)\right|$.
 
 
 \paragraph{Numerator:}
 
 \[
-    \sum\limits_{e\in E,\ ij=e} \lvert y_i-y_j \rvert = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \lvert E(S_i, \overline{S_i} \rvert
+    \sum\limits_{e\in E,\ ij=e} \lvert y_i-y_j \rvert = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \lvert E(S_i, \overline{S_i}) \rvert
 \]
 
 In other words, instead of summing the length of each edge, we can count the number of edges which cross each possible interval. 
 
 \paragraph{Denominator:}
 
-\wtf{C'est quoi cette somme vide ? Qui revient plus loin en plus...}
 \[
-    \sum\limits_{i=1}^n \overset{?}{=} \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \min(\vol S_i, \vol \overline{S_i})
+    \sum\limits_{i=1}^n d_i\left|y_i\right| = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \min(\underbrace{\vol S_i, \vol \overline{S_i}}_{d_i})
 \]
 
 And we have
@@ -763,7 +765,7 @@ And we have
     \frac{\sum\limits_i \alpha_i n_i}{\sum\limits_i \alpha_i d_i} \geqslant \min\limits_i \frac{n_i}{d_i}
 \]
 
-because $\frac{a_1+a_2}{b_1+b_2} \geqslant \min\set{\frac{a_1}{b_1},\frac{a_2}{b_2}}$ which is true if $b_i > 0$.
+because $\frac{a_1+a_2}{b_1+b_2} \geqslant \min\set{\frac{a_1}{b_1},\frac{a_2}{b_2}}$.
 
 
 $\widehat{S}$ denotes the cut with minimal conductance among $(S_i)_{i\in\brackets{1,n-1}}$.
@@ -778,7 +780,7 @@ $\widehat{S}$ denotes the cut with minimal conductance among $(S_i)_{i\in\bracke
 
 So, it remains 
 \[
-    \sum\limits_{i=1}^n \overset{?}{=} \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \min(\vol S_i, \vol \overline{S_i})
+    \sum\limits_{i=1}^n d_i\left|y_i\right| = \sum\limits_{i=1}^{n-1} (y_{i+1} - y_i) \min(\vol S_i, \vol \overline{S_i})
 \]
 to prove.
 
@@ -787,6 +789,8 @@ to prove.
 % Encore la droite réelle des y_i. Avec 0 en y_k.
 
 We make the assumption that $\exists k : y_k = 0$. This is just a simplification for the proof, but it can be generalized even when $\forall k, y_k \neq 0$. We name $k$ the index such that $y_k = 0$.
+
+Actually, this proof generalizes easily. We just have to set $y_k = \max\limits_{i \in \N} \{y_i,\, y_i<0\}$.
 
 \[
     \begin{aligned}
