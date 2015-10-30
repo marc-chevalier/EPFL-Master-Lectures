@@ -343,7 +343,7 @@ Scribes: Marc Chevalier, Jean-Baptiste Cordonnier, Thibaut Loiseleur \\ \\
 {\bfseries \large Graphs and conductance} \\ \\ \hline
 \end{tabular}
 \end{center}
-% Et je maintiens le droit à nos noms, les premiers les ont mis, il est habituel de les mettre dans ce genre de cas et le prof ne peut pas nous le refuser sans se rendre coupable de plagiat et d'infraction au droit d'auteur (loi du 9 octobre 1992, on remarque que le titre 2, chaptitre 1, article 6, font de nous les auteurs, et pas lui). Et vu la fraction colossale du boulot qu'il nous laisse... 
+
 
 %\tableofcontents
 
@@ -657,7 +657,7 @@ So, the relaxation can be rewrite
 \]
 
 
-This expression is close to a mathematical program finding an eigen value at the exception of the $D$ in the denominator. To reduce this problem to finding the second smallest eigen value, we can apply the following change of variable: $y = D^{\frac{1}{2}} x$ where 
+This expression is close to a mathematical program finding an eigenvalue at the exception of the $D$ in the denominator. To reduce this problem to finding the second smallest eigenvalue, we can apply the following change of variable: $y = D^{\frac{1}{2}} x$ where 
 \[
     D^{\frac{1}{2}} = \left(\begin{matrix}
          \ddots&&0 \\
@@ -694,8 +694,7 @@ Now, we will prove an upper bound of the conductance, the \textsc{Cheeger}'s ine
 
 Reformulate $\Phi(G)$ in term of embeddings.
 
-% Droite réelle avec des y_i dans l'ordre. 
-Indeed, $\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We previously used square-Euclidian distances for convenience in computations. But, it makes more sense to consider $\left|y_i-y_j\right|$.
+Indeed, $\lvert y_i -y_j \rvert \neq (y_i-y_j)^2$. We previously used square-Euclidean distances for convenience in computations. But, it makes more sense to consider $\left|y_i-y_j\right|$.
 
 \[
     \min\limits_{\substack{y\in\RR^n\\\mu_{\frac{1}{2}}(y)=0}} \frac{\esp[ij\la\nu]{\lvert y_i-y_j\rvert}}{\esp[i\la\mu]{\lvert y_i \rvert}} = \Phi(G)
@@ -732,10 +731,9 @@ Say $S:=\underset{S}{\argmin}\,\Phi(S)$ ie. the cut achieving the optimal conduc
 
 \bigskip
 
-\wtf{C'était quoi la première inégalité ?}
-To prove the other inequality, let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which minimises $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$. We assume that the $y_i$ are pairwise distinct and that $\mu_{\frac{1}{2}}(y) = 0$.
+Let's take $y_1 < \cdots < y_n$ be an embedding of $G$ which minimises $\frac{\esp{\lvert y_i-y_j\rvert}}{2\esp{\lvert y_i \rvert}}$. We assume that the $y_i$ are pairwise distinct and that $\mu_{\frac{1}{2}}(y) = 0$.
 
-in order to compute the term $\left|y_j-y_i\right|$, we will use the simple decomposition of substractions in the first Euclidian norm :
+In order to compute the term $\left|y_j-y_i\right|$, we will use the simple decomposition of subtractions in the first Euclidean norm :
 
 \[
     y_j-y_i=(y_j-y_{j-1})+(y_{j-1}-y_{j-2})+\dots+(y_{i+1}-y_i)
@@ -786,7 +784,6 @@ to prove.
 
 \bigskip
 
-% Encore la droite réelle des y_i. Avec 0 en y_k.
 
 We make the assumption that $\exists k : y_k = 0$. This is just a simplification for the proof, but it can be generalized even when $\forall k, y_k \neq 0$. We name $k$ the index such that $y_k = 0$.
 
