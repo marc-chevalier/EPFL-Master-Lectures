@@ -1,0 +1,179 @@
+\section{Flows}
+
+$G = (V,E)$ undirected, unweighted.
+
+Capacities:
+\[
+    c:E\to  \RR
+\]
+
+$(s,t) \in V^2$, $s$: source, $t$: sink.
+
+Goal: find a flow from $s$ to $t$ of max value respecting capacities.
+
+\begin{definition}[Flow]
+    cf. Algo2, L3.
+\end{definition}
+
+Conservation blabla. Divergent...
+
+We want to maximize the flow through the graph.
+
+\section{Electrical flows}
+
+\begin{definition}[Resistive network]
+    $G=(V,E)$. We replace each edge by a resistor of $1\Omega$: \tikz \draw (0,0) to[R=$1\Omega$] (2,0);
+    \[
+        \begin{aligned}
+           c_{ext} : V &\to \RR
+        \end{aligned}
+    \]
+    $c_{ext}(v) = $ external current coming in at $v$.
+    \[
+        R:R\to\RR^+
+    \]
+    resistance.
+\end{definition}
+
+\begin{definition}[Incidence matrix]
+    $B\in\M_{n,m}(\set{-1,0,1})$.
+\end{definition}
+
+We just need to fix arbitrary directions for edges.
+
+$e=uv \Ra B_{e,u} = 1 \wedge B_{e,u} = -1$.
+
+\[
+    i:E\to\RR
+\]
+current through each edge (intensity).
+
+
+\begin{theorem}[\textsc{Kirchoff}]
+    $\forall v\in V,$ incoming + outgoing = 0 ie.
+    \[
+        B^T i = c_{ext}
+    \]
+\end{theorem}
+
+
+\begin{theorem}[\textsc{Ohm}]
+    $U=RI$ ie. $i_e = \frac{v_i-v_j}{r_e}$
+    \[
+        B^TB v = c_{ext}    
+    \]
+\end{theorem}
+
+\begin{proposition}
+    \[
+        B^TB = L(G)
+    \]
+\end{proposition}
+\begin{proof}
+    $(B^TB)_{i,i} = \deg i$.
+    
+    For $i\neq j$, $(B^TB)_{i,j} = -1$ (since it's a undirected simple graph).
+\end{proof}
+
+$R = Diag(\gamma_e)$.
+
+$L = B^TR^{-1}B$ wrt the resistances $R$.
+
+\begin{definition}[Effective resistance]
+    \[
+        \begin{aligned}
+            R_{eff}(s,t) &= v_s-s_t\\
+            &=(e_s - e_t)^T L^{-1} (e_s - e_t)
+        \end{aligned}            
+    \]
+\end{definition}
+
+\begin{center}
+	\begin{circuitikz}
+	    \draw (0,0) to[R=$r_e$, i=$i_e$] (2,0);
+	\end{circuitikz}
+\end{center}
+
+The power dispersed at the edge $e$ is $r_e{i_e}^2$. In the whole circuit $\sum\limits_{e\in E} r_e{i_e}^2$.
+
+\[
+    i_e = \frac{b_e^TL^+}{r_e}(e_s-e_t)
+\]
+where $b_e$ is the $e^{\text{th}}$ line of $B$.
+
+\[
+    \begin{aligned}
+        \sum\limits_{e\in E} r_e{i_e}^2 &= \sum\limits_{e\in E} \frac{({b_e}^TL^+(e_s-e_t))^2}{r_e}\\
+        &= \sum\limits_{e\in E} \frac{1}{r_e} ((e_s-e_t)^TL^+b_e)({b_e}^TL^+(e_s-e_t))\\
+        &= (e_s-e_t)^T L^+  \underbrace{\left(\sum\limits_{e\in E}\frac{b_e{b_e}^T}{r_e}\right)}_{=L}L^+(e_s-e_t)\\
+        &= R_{eff}(s,t)
+    \end{aligned}
+\]
+
+\begin{theorem}
+    Among all flows, the one that minimizes energy is $f^* = R^{-1}L^+(e_s-e_t)$.
+\end{theorem}
+\begin{proof}
+	\begin{notation}
+	    \[
+	        \Pi := R^{-\frac{1}{2}} B L^+ B^T R^{-\frac{1}{2}}
+	    \]
+	\end{notation}
+	
+	\begin{proposition}
+	    \begin{enumerate}
+	        \item $\Pi^T = \Pi$ (symmetric)
+	        \item $\Pi^2 = \Pi$ (projection)
+	        \item Orthogonal projection
+	        \item $Sp(\Pi) \subseteq \set{0,1}$
+	    \end{enumerate}
+	\end{proposition}
+	\begin{proof}
+	    \begin{enumerate}
+	        \item Clear
+	        \item \[
+	            \begin{aligned}
+	                \Pi^2 &= R^{-\frac{1}{2}} B L^+ B^T R^{-\frac{1}{2}} R^{-\frac{1}{2}} B L^+ B^T R^{-\frac{1}{2}}\\
+	                &= R^{-\frac{1}{2}} B L^+ B^T R^{-1} B L^+ B^T R^{-\frac{1}{2}}\\
+	                &= R^{-\frac{1}{2}} B L^+ L L^+ B^T R^{-\frac{1}{2}}\\
+	                &= R^{-\frac{1}{2}} B L^+ B^T R^{-\frac{1}{2}}\\
+	                &= \Pi
+	            \end{aligned}                    
+	        \]
+	        \item Symmetric + projection
+	        \item $\Pi y=\lambda y$ and $\Pi^2 y = \lambda^2 y$ so $\lambda - \lambda^2 = 0$.
+	    \end{enumerate}
+	\end{proof}
+    Let $g$ be a flow. The energy consume by $g$ is 
+    \[
+        \begin{aligned}
+            \sum\limits_{e\in E} {g_e}^2 r_e &= \left\lVert R^{\frac{1}{2}} g \right\rVert^2\\
+            &\geqslant \left\lVert  \Pi R^{\frac{1}{2}} g \right\rVert^2 \\
+            &= g^T R^{\frac{1}{2}} \Pi R^{\frac{1}{2}}g\\
+            &= g^TBL^+B^Tg\\
+            &= \text{energy of }f^*
+        \end{aligned}
+    \]
+\end{proof}	
+
+\begin{theorem}
+    $\varepsilon > 0$ accuracy. Find a $s-t$ flow of value $\geqslant (1-3\varepsilon) F^*$.
+\end{theorem}
+
+
+\begin{theorem}
+    $\varepsilon > 0$ accuracy. $F$ (guess for $F^*$). Either:
+    \begin{itemize}
+        \item find a $s-t$flow of value $\geqslant (1-3\varepsilon)F$
+        \item produce a certificate that $F^* < F$.
+    \end{itemize}
+    
+    \# of iteration $\leqslant \frac{\sqrt{m}}{\varepsilon^{2.5}}$.
+\end{theorem}
+
+
+
+
+
+
+
