@@ -142,6 +142,54 @@ ie $(U_1\ldots U_l) \--- (X_1\ldots X_n) \--- (Y_1\ldots Y_n) \--- (V_1\ldots V_
 \end{theorem}
 In particular, if $\delta := \frac{H}{\tau_S} - \frac{c}{\tau_C}>0$ then $\overline{P_e}$ is bounded away from 0 by some function of $\delta$, regardless of how the encoder and decoder is designed.
 
+$P_{e,\max} = \max\limits_i \prob{U_i \neq V_i} \geqslant \overline{P_e}$.
+\[
+    \begin{aligned}
+        P_{e,block} &= \prob{(V_1\ldots V_l)\neq(U_1\ldots U_L)}\\
+        &=\prob{\bigcup\limits_{i=1}^L\set{U_i\neq V_i}}\\
+        &\geqslant P_{e,\max}
+    \end{aligned}
+\]
+
+\begin{proof}[Proof of the theorem]
+    Suppose we have Enc and Dec as
+    \[
+        \begin{aligned}
+            (U_1\ldots U_L) \to &Enc \to (X_1\ldots X_n)\\
+            (Y_1\ldots Y_n) \to &Dec \to (V_1\ldots V_L)
+        \end{aligned}   
+    \]
+    
+    We already prove $\frac{1}{L}\sum\limits_{i=1}^L H(U_i \vert V_i) \geqslant H-\frac{\tau_S}{\tau_C} C$.
+    
+    We also have proved $h_2(P_{e,i}) + P_{e,i}\log(\lvert \U\rvert -1) \geqslant H(U_i \vert V_i)$.
+    
+    So, we will be done is we can show
+    \[
+        h_2(\overline{P_e}) + \overline{P_e}\log(\lvert \U\rvert -1) \geqslant \frac{1}{L} \sum\limits_{i=1}^L (h_2(P_{e,i}) + P_{e,i} \log(\card{\U} -1)
+    \]
+    equivalent to
+    \[
+        h_2\left( \frac{1}{L} \sum\limits_{i=1}^L P_{e,i} \right) \geqslant \frac{1}{L} \sum\limits_{i=1}^L h_2(P_{e,i})
+    \]
+    \begin{lemma}
+        \[
+            h_2\left( \frac{1}{L} \sum\limits_{i=1}^L p_i \right) \geqslant \frac{1}{L} \sum\limits_{i=1}^L h_2(p_i)
+        \]
+    \end{lemma}        
+    \begin{proof}
+        Let $a_1\ldots A_L$ be binary random variables with $\prob{A_i = 0} = 1-p_i$ and $\prob{A_1 = 1} = p_i$, we have $H(A_i) = h_2(p_i)$. Let $B\in \brackets{1,L}$, independent of $(A_1\ldots A_L)$ and $\prob{B=i} = \frac{1}{L}$. Let $A=A_B$. Then 
+        \[
+            \begin{aligned}
+                \prob{A = 1} &= \sum\limits_{i=1}^L\prob{A_i = 1 \vert B=i}\prob{B=i}\\
+                &= \frac{1}{L} \sum\limits_{i=1}^L p_i
+            \end{aligned}                    
+        \]
+        $\Ra H(A) = h_2\left( \frac{1}{L} \sum\limits_{i=1}^L p_i \right)$.
+        
+        Also $H(A\vert B) = \sum\limits_{i=1}^L \underbrace{H(A\vert B=i)}_{\underbrace{H(A_i\vert B=i)}_{H(A_i)}}\prob{B=i} = \frac{1}{L}\sum\limits_{i=1}^L h_2(p_i)$
+    \end{proof}
+\end{proof}
 
 
 
