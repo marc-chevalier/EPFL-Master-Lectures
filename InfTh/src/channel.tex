@@ -124,3 +124,30 @@ ie $(U_1\ldots U_l) \--- (X_1\ldots X_n) \--- (Y_1\ldots Y_n) \--- (V_1\ldots V_
     \]
 \end{proof}
 
+\begin{definition}[Errors]
+    \[
+        \begin{aligned}
+            P_{e,i} &:= \prob{U_i \neq V_i}\\
+            \overline{P_e} &:= \frac{1}{L} \sum\limits_{i=1}^L \prob{U_i \neq V_i}
+        \end{aligned}
+    \]
+\end{definition}
+
+
+\begin{theorem}
+    No matter how the Encoder and Decoder are designed, we have
+    \[
+        h_2(p) + \overline{P_e} \log(\lvert\U\rvert - 1)    \geqslant \tau_S\left( \frac{H}{\tau_S} - \frac{c}{\tau_C}\right)
+    \]
+\end{theorem}
+In particular, if $\delta := \frac{H}{\tau_S} - \frac{c}{\tau_C}>0$ then $\overline{P_e}$ is bounded away from 0 by some function of $\delta$, regardless of how the encoder and decoder is designed.
+
+
+
+
+
+
+
+
+
+
