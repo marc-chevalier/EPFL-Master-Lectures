@@ -191,6 +191,48 @@ $P_{e,\max} = \max\limits_i \prob{U_i \neq V_i} \geqslant \overline{P_e}$.
     \end{proof}
 \end{proof}
 
+Given a source $(U_1U_2\ldots), \tau_S$ and a channel $\set{P(y\vert x)}, \tau_C$ Let us say that (source, channel) is compatible if $\forall \varepsilon > 0,\exists Enc, Dec: \overline{P_e} < \varepsilon$.
+
+The theorem we just proved is equivalent to (source, channel) is compatible $\Ra$ $\frac{H}{\tau_S} \leqslant \frac{C}{\tau_C}$.
+
+We now attempt the other direction ($\La$).
+
+Suppose we insist on modular design.
+
+$U_1U_2\ldots$ (stationary, entropy rate $H$)
+
+The channel encoder and channel decoder we seek are of the following kind.
+\[
+    f:\set{0,1}^k \to \X^n \equiv f:\brackets{1,2^k} \to \X^n\overset{\sim}{\equiv} f:\brackets{1,M} \to \X^n
+\]
+
+\begin{definition}
+    \[
+        \opname{rate}(f) = \frac{k}{n} \equiv \frac{\log M}{n}
+    \]
+\end{definition}
+
+$\emptyset : \Y^n \to \set{0,1}^k$
+
+\begin{definition}
+    \[
+        \prob{error\vert i} = \prob{\emptyset(Y_1,\ldots,Y_n) \neq i \vert (X_1\ldots X_n) = f(i))}    
+    \]
+    \[
+        \overline{error}(f,\emptyset,channel) = \frac{1}{M} \sum\limits_{i=1}^M \prob{error\vert i}    
+    \]
+    \[
+        error_{\max}(f,\emptyset,channel) = \max\limits_{1\leqslant i\leqslant M} \prob{error \vert i}
+    \]
+\end{definition}
+
+\begin{definition}
+    Given a channel $\prob{y\vert x}$ we say that $R$ is an achievable rate if $\forall \varepsilon > 0$, there exists $f,\emptyset$ such that $rate(f) \geqslant R$, $error_{\max}(f,\emptyset, P) \leqslant \varepsilon$.
+\end{definition}
+
+\begin{theorem}
+    Given a channel $\prob{y\vert x}$ with $C= \max_{p_X} I(X,Y)$ then any $R < C$ is achievable.
+\end{theorem}
 
 
 
