@@ -134,7 +134,7 @@ ie $(U_1\ldots U_l) \--- (X_1\ldots X_n) \--- (Y_1\ldots Y_n) \--- (V_1\ldots V_
 \end{definition}
 
 
-\begin{theorem}
+\begin{theorem}[Bad news]
     No matter how the Encoder and Decoder are designed, we have
     \[
         h_2(p) + \overline{P_e} \log(\lvert\U\rvert - 1)    \geqslant \tau_S\left( \frac{H}{\tau_S} - \frac{c}{\tau_C}\right)
@@ -234,10 +234,130 @@ $\emptyset : \Y^n \to \set{0,1}^k$
     Given a channel $\prob{y\vert x}$ with $C= \max_{p_X} I(X,Y)$ then any $R < C$ is achievable.
 \end{theorem}
 
+\begin{theorem}[Good news]
+    If $\frac{H}{\tau_S} < \frac{C}{\tau_C}$, can achieve $\overline{P_e} \to 0$.
+\end{theorem}
 
 
+\section{The probabilistic method}
+
+$(\exists P_z : \prob{A(z)} > 0)\Ra(\exists z : A(z))$.
+
+$(\exists P_z : \esp{g(z)} \leqslant \alpha)\Ra(\exists z : g(z) \leqslant \alpha)$.
+
+\paragraph{Random coding}
+
+Let $X_i^{(m)}$ be iid $p(x)$.
+
+Let $T^n(\varepsilon) = \set{(x,y) \left\vert \left\lvert \widehat{P}_{\X,\Y}(x,y) - p(x)p(y\vert x) \right\rvert \leqslant \varepsilon p(x)p(y\vert x) \right.}$
+
+\begin{itemize}
+    \item Find all $m$ such that $(X^{(m)}, Y) \in T^n(\varepsilon)$
+    \item If only one such message $m$, output $m$
+    \item Otherwise, output 0.
+\end{itemize}
 
 
+\begin{lemma}
+    \begin{itemize}
+        \item if $(X,Y) \overset{idd}{\sim} p(x)p(y\vert x)$, then $\prob{(X,Y) \in T^n(\varepsilon)} \to 1$ as $n\to \infty$.
+        \item If $(X, Y) \overset{idd}{\sim} p(x)p(y)$ then $\prob{(X,Y) \in T^n(\varepsilon)} \leqslant 2^{-n(I(X,Y)-\delta(\varepsilon))}$, $\delta(\varepsilon) \underset{\varepsilon \to 0}{\longra} 0$
+    \end{itemize}
+\end{lemma}
+\begin{proof}
+    \item
+    \begin{itemize}
+        \item LLN
+        \item $D(p\Vert q) = \sum\limits_z p(z) \log\frac{p(z)}{q(z)}$ so $D(P_{XY} \Vert P_Xp_Y) = I(X,Y)$
+    \end{itemize}
+\end{proof}
+
+\section{Binary Symmetric Channel}
+
+$p(y\vert x) = \begin{cases}
+    1-\delta & x = y\\
+    \delta & x \neq y
+\end{cases}$ with $\X = \Y = \set{0,1}$.
 
 
+\[
+    \begin{aligned}
+        H(Y \vert X=0) &= H(Y \vert X=1)\\
+        &= h_2(\delta)\\
+        &= -\delta \log \delta - (1-\delta) \log (1-\delta)
+    \end{aligned}
+\]
+
+So
+
+\[
+    \begin{aligned}
+        I(X,Y) &= H(Y) - H(Y\vert X)\\
+        &= H(Y) - h_2(\delta)\\
+        &\leqslant 1 - h_2(\delta)
+    \end{aligned}
+\]
+
+$C = 1-h_2(\delta)$ bits.
+
+\section{Binary Erase Channel}
+
+$\X = \set{0,1}$, $\Y= \set{0,1,e}$.
+
+$p(y\vert x) = \begin{cases}
+    1-\varepsilon & y=x\\
+    \varepsilon & y=e
+\end{cases}$
+
+$e$ for erasure.
+
+\[
+    \begin{aligned}
+        H(X \vert Y = 0) &= 0
+        H(X \vert Y = 1) &= 0
+        H(X \vert Y = e) &= H(X)
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        I(X,Y) = (1-\varepsilon) H(X)\\
+        &\leqslant 1-\varepsilon
+    \end{aligned}
+\]
+
+$C = 1-\varepsilon$ bits.
+
+\section{Convexity and Concavity}
+
+$f : D \to \RR$ is convex if blablabla...
+
+Fix $p(y\vert x)$ consider $I(P_x) = I(X,Y) $. 
+
+$D = \set{(P_1,\ldots,P_k) \left\vert \card{\X} = k, \forall i\in\brackets{i,k}, P_i\geqslant 0, \sum\limits_{i=1}^n P_i = 1\right.}$
+
+\begin{theorem}
+    $I(P_X)$ est concave.
+\end{theorem}
+
+Maximize $f(P_X)$ such that $P(x)\geqslant 0$, $\sum\limits_xP_X(x) = 1$.
+
+$f(P_x) = f(P_1,\ldots,P_k)$. Suppose some $(P_1,\ldots,P_k)$ "believed optimal".
+
+If so, it must be that $f(P_1,\ldots,P_i+\varepsilon,\ldots, P_j-\varepsilon,\ldots,P_k) - f(P_1,\ldots,P_k) \leqslant 0$.
+
+LHS $= \varepsilon \frac{\partial f}{\partial P_i}-\varepsilon\frac{\partial f}{\partial P_j}+o(\varepsilon)$. Should have $\forall(i,j), P_j > 0 \Ra \frac{\partial f}{\partial P_i}-\frac{\partial f}{\partial P_j} \leqslant 0$.In particular $\forall(i,j), P_i>0\wedge P_j > 0 \Ra \frac{\partial f}{\partial P_i}-\frac{\partial f}{\partial P_j} = 0$
+
+
+\begin{definition}[\textsc{Karush Kuhn Tucker} conditions (KKT)]
+    $(P_1,\ldots, P_k)$ satisfies KKT if $\exists \lambda:$
+    \[
+        \begin{aligned}
+            \forall i, P_i>0 &\Ra \frac{\partial f}{\partial P_i} = \lambda\\
+            \forall i, P_i=0 &\Ra \frac{\partial f}{\partial P_i} \leqslant \lambda\\
+        \end{aligned}    
+    \]
+\end{definition}
+
+$\approx$ like $\underset{x}{\opname{argmax}} g(x)$ must have $\nabla g(x) = G$ (Unconstrained).
 
