@@ -1,0 +1,90 @@
+\input{src/macros.tex}
+
+\title{Approximate Max Flow in Undirected Graphs in Almost-Linear-Time}
+\author{Marc \textsc{Chevalier}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{A Problem}
+The problem in which we are interested is to find a max $s$-$t$ flow in an undirected graph.
+
+\bigskip
+
+In an undirected graph $G=(V,E)$ with a capacity function $c:E\to\RR^+$, a flow is a function $f:E\to\RR$ such that
+\[
+    \begin{aligned}
+        \forall uv\in E&, \lvert f(uv)\rvert \leqslant c(uv)\\
+        \forall u\in V&, \sum\limits_{v\in \N(u)} f(uv)=b(u)
+    \end{aligned}
+\]
+where $b$ is an excess function $b:V\to\RR$.
+
+\bigskip
+
+in the problem of max $s$-$t$ flow is the problem of looking for a flow such that $\forall u\in V\setminus\set{s,t}{}, b(u) = 0$ and which maximize $\sum\limits_{u\in\N(s)} f(su)$.
+
+Let $\lvert f \rvert := \sum\limits_{u\in\N(s)} f(su) = \sum\limits_{u\in\N(t)} f(ut)$. This quantity is named the value of the flow.
+
+\bigskip
+
+This problem can be seen by many other equivalent ways. One of them is to try to minimize the congestion of a unitary flow. The congestion of an edge $e$ is $\frac{\lvert f(e)\rvert}{c(e)}$. The congestion of the whole flow is the maximum congestion over all edges. This problem is almost the same since we just have to rescale the flow until the congestion reaches $1$ to obtain a max flow.
+
+The other equivalent problem is the dual view: the minimum cut. This problem is to find a partition of the vertices of a graph into two disjoint subsets which minimize the weight of edges of the cut-set (the set of edges that have one endpoint in each part of the cut).
+
+These problem have a lot of real-world application, from application in other kind of algorithms (image segmentation) to direct application (routing or scheduling). Graphs involve in such application can be very large and complex, so it can be interesting to save time on the Max-Flow problem.
+
+\section{Some Complexities}
+
+There are a lot of algorithms to find the max flow in a directed graph. We can adapt them for undirected graphs just by using the graph where we have replace each edge by two directed arcs in opposite directions. This operation does not change asymptotic complexity.
+
+Let $n = \card{V}$ and $m = \card{E}$.
+
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{rl}
+        Algorithm & Complexity\\
+        \hline
+        \textsc{Ford–Fulkerson} & $\grandO{m\lvert f\rvert}$\\
+        \textsc{Edmonds–Karp} & $\grandO{nm^2}$\\
+        Push–relabel & $\grandO{n^2m}$\\
+        \textsc{Dinic} & $\grandO{nm\log n}$\\
+        \textsc{Orlin} &  $\grandO{mn}$
+    \end{tabular}
+    \caption{List of exact algorithms for MaxFlow}
+\end{table}
+
+
+\section{A Complexity for an approximation}
+
+The algorithm seen during the lecture has a complexity of $\grandO{m^\frac{3}{2} \opname{poly}\left(\frac{1}{\varepsilon}\right)}$ for finding a $1-\varepsilon$-approximation.
+
+\section{Better Complexities for approximations}
+
+We can have a $1+\varepsilon$-approximation of the minimum congestion flows in $m\varepsilon^{-2}\exp(\grandO{\sqrt{\log n}})$~\cite{sherman2013nearly}. This complexity is found by using an algorithm which makes $\grandO{\alpha \varepsilon^{-2}\log^2(n)}$ iterations given an $\alpha$-congestion-approximator and where each iteration required $\grandO{m}$ time, plus a multiplication by two matrices of size $n\times n$.
+
+\bigskip
+
+\cite{kelner2014almost} shows an algorithm running in time $\grandO{m^{1+\petitO{1}} \varepsilon^{-2}}$ . This is interesting because the exponent is more precise than in $\exp(\grandO{\log \frac{n}{2}})$, but, assuming $\grandO{\log \frac{n}{2}} = \log\frac{n}{2}+\petitO{1}$, we have $n^{1+\petitO{1}}$ vs $m^{1+\petitO{1}}$. In average, the first complexity is more interesting but on sparse graphs, the second one can be advantageous.
+
+\bigskip
+
+We also can achieve a $\grandO{m \opname{polylog}(n)}$ algorithm~\cite{peng2014note}. This complexity is linear with respect to $m$ but the $\opname{polylog}$ becomes hard to determine.
+
+\section{Aims}
+
+I want to make the complexity in \cite{sherman2013nearly} more clear to be sure it is not $\grandO{m\varepsilon^{-2}\left(\frac{n}{2}\right)^k}$ with $k>1$. After a first read, I didn't found any mention of that and it would be problem. In fact, we want to replace $\grandO{}$ by $\sim$.
+
+Moreover I will look for mistakes or incomplete proofs. I will try to simplify proofs or get a better complexity, maybe for some kind of graphs.
+
+At least, if everything is perfect and I have no idea to do better or simpler, I will explain clearly the content.
+
+
+\bibliographystyle{alpha}
+\bibliography{proposal}
+
+\end{document}
+
+

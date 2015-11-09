@@ -1,0 +1,147 @@
+\section{Linear Systems}
+
+We will solve $Ax = b$ as a general case of $Lx=b$ where $A \succ 0$ et $A\in\S(\RR)$.
+
+Iterative algorithm: Gaussian elimination ($\cplx{n^3}$).
+
+\begin{notation}
+    With, $A \succ 0$,
+    \[
+        \angle{x,y}_A = x^TAy
+    \]
+    and
+    \[
+        \lVert x \rVert_A := \sqrt{\angle{x,x}_A}= \sqrt{x^T A x}
+    \]
+\end{notation}
+
+Let $x^*$ be the unique solution to $Ax^* = b$.
+\[
+    f : x \mapsto {\lVert x-x^* \rVert_A}^2
+\]
+
+\[
+    \begin{aligned}
+        \nabla f(x) &= 2(Ax - b)\\
+        \nabla^2 f(x) &= 2A
+    \end{aligned}
+\]
+
+As $A$ is positive definite, $f$ is convex. Finding $x^*$ $\LRa$ finding $\min\limits_x f(x)$.
+
+So, gradient descent
+\[
+    \begin{aligned}
+        x^1 &= 0\\
+        x^{t+1} &= x^t - \alpha_t \nabla f(x_t)
+    \end{aligned}
+\]
+
+\[
+    \begin{aligned}
+        f(x^{t+1}) - f(x^t) &= \lVert x^{t+1} - x^* \rVert_A^2 - \lVert x^{t} - x^* \rVert_A^2\\
+        &= x^{t+1} A x^{t+1} - 2 x^{t+1}A x^* + x^*Ax^* - x^t A x^t + 2x^t A x^* - x^*Ax^*\\
+        &= (x^t - \alpha_t \nabla f(x_t)) A (x^t - \alpha_t \nabla f(x_t)) -2 (x^t - \alpha\nabla f(x^t))A x^* - x^tAx^t + 2 x^t A x^*\\
+        &=  \alpha_t^2(\nabla f(x^t)) A \nabla f(x^t) - 2\alpha_t x^t A \nabla f(x^t) +2\alpha_t x^* A \nabla f(x^t)
+    \end{aligned}
+\]
+With transposition missing everywhere\dots.
+
+\[
+    \begin{aligned}
+        \frac{\partial( f(x^{t+1}) - f(x^t))}{\partial \alpha_t} &= 2\alpha_t\lVert \nabla f(x_t) \rVert_A^2 - 2x^tA\nabla f(x^t) + 2x^* A \nabla f(x^t)\\
+        &= 0\\
+        &\LRa\\
+        \alpha_t &= \frac{\nabla f(x^t) r_t}{\lVert \nabla f(x_t) \rVert_A^2}
+    \end{aligned}
+\]
+where $r_t = A x_t -b$.
+
+$f(x^{t+1}) \leqslant f(x^t)(1-\lambda)$
+
+\[
+    \begin{aligned}
+        f(x^t{t+1}) &= (x^t-x^*)A(x^t-x^*) - \frac{\lVert \nabla f(x^t) \rVert^4}{4\lVert \nabla f(x^t)\rVert_A^2}\\
+        &= f(x^t) \left(1-\frac{\lVert \nabla f(x^t) \rVert^4}{4\lVert \nabla f(x^t)\rVert_A^2f(x^t)}\right)
+    \end{aligned}
+\]
+
+lower bound:
+
+$Sp(A) = \set{\lambda_i}_{i\in\brackets{1,n}}$ with $\lambda_i \leqslant \lambda_{i+1}$, we have $x^T A x \leqslant \lambda_n x^Tx$ and $x^T A^{-1} x \leqslant \lambda_1^{-1} x^Tx$.
+
+$\nabla f(x^t) = 2Ax^t - 2b = 2r^t$.
+
+\[
+    \begin{aligned}
+        \frac{\lVert \nabla f(x^t) \rVert^4}{4\lVert \nabla f(x^t)\rVert_A^2f(x^t)} &\geqslant \frac{4r^tr^t}{(x^t-x^*)A(x^t-x^*)}\\
+        &=\frac{4r^tr^t}{(x^t-x^*)AA-1A(x^t-x^*)}\\
+        &= \frac{4r^tr^t}{r^tA^{-1}r^t}\\
+        &\geqslant 4\lambda_1
+    \end{aligned}
+\]
+
+$f(x^{t+1}) \leqslant f(x^t) \left(1- \frac{\lambda_1}{\lambda_n}\right)$.
+
+We note that the $\frac{\lambda_n}{\lambda_1}$ is the condition number $\kappa$ of $A$.
+
+\[
+    \begin{aligned}
+        f(x^{t+1}) &\leqslant f(x^t) \left(1-\frac{1}{\kappa}\right)\\
+        &\leqslant f(x^t) e^{-\frac{t}{\kappa}}\\
+        &= {\lVert x^* \rVert_A}^2 e^{-\frac{t}{\kappa}}\\
+        &\leqslant \delta {\lVert x^* \rVert_A}^2 \text{\qquad for }t = \kappa \ln \frac{1}{\delta}
+    \end{aligned}
+\]
+
+Oh! The nice convergence in $\Theta\left(\ln\frac{1}{\delta}\right)$. Wow! Such impressive, very quick, many convergence, much gradient. Wow!
+
+
+\begin{theorem}
+    Given $A\succ 0, b$, $0=x^1,\ldots, x^t, x^{t+1},\ldots$ where $x^{t+1} = x^{t} - \alpha_t\nabla f(x^t)$. After $t$ steps,
+    \[
+        f(x^t) \leqslant f(x^1) e^{-\frac{t}{\kappa}}
+    \]
+    $t = \kappa \log \frac{1}{\delta} \Ra f(x^t) \leqslant \lVert x^* \rVert_A^2 \delta$.
+\end{theorem}
+
+\section{Conjugate Gradient}
+
+$K_t := \opname{Span}(b, Ab, \ldots, A^t b)$.
+
+\begin{proposition}
+    $x^{t+1} \in K_t$
+\end{proposition}
+
+
+Idea (new): $x^* = \underset{x\in K_t}{\argmin} f(x)$\;
+
+
+$\B = (v_0,\ldots v_t)$ o.n.b. for $K_t$.
+
+$x = \sum\limits_{i=0}^t \alpha_i v_i$, $f(x) = \lVert x-x^* \rVert_A^2 = \sum\limits_{i,j} \alpha_i\alpha_j v_iAv_j -2x^*A\sum\alpha_iv_i + x^*Ax^*$.
+
+If we exchange orthogonality for
+
+$v_i A v_j = [i=j]$ (A-orthogonality), the sum is way simpler: $f(x) = \sum\limits_{i} {\alpha_i}^2 v_iAv_i -2x^*A\sum\alpha_iv_i + x^*Ax^*$
+
+
+Separable problem:
+
+$\sum\limits_i g_i(\alpha_i)$
+
+where $g_i$ is appropriately defined. So we can optimize individually for each $i$. We get $\alpha_i^*$ and $x^{t+1} = \sum\limits_{i=0}^t \alpha_i^* v_i$.
+
+How to compute an A-orthonormal basis for $K_t$? \textsc{Gram-Schmidt}.
+
+$v_n = \frac{Ab^{n} - \sum\limits_{i=0}^{n-1}\angle{Ab^n, v_i}_Av_i}{\left\lVert Ab^{n} - \sum\limits_{i=0}^{n-1}\angle{Ab^n, v_i}_Av_i \right\rVert}$.
+
+We need $\Theta(t^2)$ vector-matrix multiplications.
+
+But, $v_{t-2}A(Av_t) = 0$. So, $v_{t+1} = Av_t - \angle{\ldots}v_t - \angle{\ldots}v_{t-1}$. We need only $\Theta(t)$ vector-matrix multiplications.
+
+
+
+
+
+
