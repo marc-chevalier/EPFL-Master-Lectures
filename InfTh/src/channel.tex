@@ -361,3 +361,67 @@ LHS $= \varepsilon \frac{\partial f}{\partial P_i}-\varepsilon\frac{\partial f}{
 
 $\approx$ like $\underset{x}{\opname{argmax}} g(x)$ must have $\nabla g(x) = G$ (Unconstrained).
 
+\begin{theorem}
+    Consider $\max\limits_{\substack{(P_1,\ldots,P_n)\\\forall i\in\brackets{1,n}, P_i \geqslant 0\\\sum\limits_{i=1}^n P_i = 1}} f(x)$ concave differentiable.
+    
+    $p(x)$ optimal $\LRa$ KKT.
+\end{theorem}
+\begin{proof}
+    ($\La$): ie. if $(P_1,\ldots,P_k)$ satisfies KKT, then $\forall q, (\forall i\in\brackets{1,n},Q_i \geqslant 0\wedge \sum\limits_{i=1}^n Q_i = 1) \Ra f(q) \leqslant f(p)$.
+    
+    \[
+        \begin{aligned}
+            f(\theta q + (1-\theta)p) &\geqslant (1-\theta)f(p) + \theta f(q)\\
+            f(\theta q + (1-\theta)p) - f(p) &\geqslant -\theta f(p) + \theta f(q)\\
+            f(q) - f(p) &\leqslant \frac{1}{\theta}\left( f(p+\theta(q-p)) - f(p) \right)\\
+            \to f(q) - f(p) &\leqslant \sum\limits_i (q_i - p_i) \frac{\partial f}{\partial P_i}\\
+            &\leqslant \sum\limits_i(q_i-p_i)\lambda\\
+            &= \lambda \left(\sum\limits_i q_i - \sum\limits_i p_i\right)\\
+            &= 0
+        \end{aligned}            
+    \]
+\end{proof}
+
+\begin{theorem}
+    \[
+        p(x) \in \opname{argmax} I(X,Y) \LRa \exists \lambda: \forall x, \sum\limits_y p(y\vert x) \log \frac{p(y\vert x)}{p(y)} \leqslant \lambda
+    \]
+    with equality when $p(x) > 0$. If so, then $\lambda = C$
+\end{theorem}
+$\approx$ each used input reveals the same amount of information.
+\begin{proof}
+    Use KKT, prove $\frac{\partial I(X,Y)}{\partial P(x)} = \sum\limits_y p(y\vert x) \log \frac{p(y\vert x)}{p(y)}-\log e$. (careful: $p(y)$ depends on $p(y)$). $I(X,Y) = H(Y) - H(Y\vert X)$.
+
+    \bigskip
+    
+    ($\lambda = C$): sum $p(x) \sum\limits_y p(y\vert x) \log \frac{p(y\vert x)}{p(x)} = \lambda p(x)$ over $x$.    
+\end{proof}
+
+\begin{remark}
+    For symmetric channels, can "guess" $P_x = \left( \frac{1}{K},\ldots,\frac{1}{K}\right)$ and verify KKT.
+\end{remark}
+
+\begin{definition}[Z-channel]
+    \[
+        \begin{aligned}
+            p(0 \to 0) &= 1
+            p(1 \to 0) &= \delta
+            p(1 \to 1) &= 1 - \delta
+        \end{aligned}
+    \]
+\end{definition}
+
+\[
+    \begin{aligned}
+        p_Y(0) &= 1-P_X(1)(1-\delta)\\
+        P_Y(1) &= P_X(1)(1-\delta)
+    \end{aligned}            
+\]
+
+KKT:
+\begin{itemize}
+    \item $x=0$: $\lambda = \log \frac{1}{P_Y(0)}$
+    \item $x=1$: $\lambda = \delta \log \frac{\delta}{P_Y(0)} + (1-\delta) \log \frac{1-\delta}{P_Y(1)}$
+\end{itemize}
+
+
