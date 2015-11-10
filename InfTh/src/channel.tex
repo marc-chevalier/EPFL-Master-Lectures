@@ -404,8 +404,8 @@ $\approx$ each used input reveals the same amount of information.
 \begin{definition}[Z-channel]
     \[
         \begin{aligned}
-            p(0 \to 0) &= 1
-            p(1 \to 0) &= \delta
+            p(0 \to 0) &= 1\\
+            p(1 \to 0) &= \delta\\
             p(1 \to 1) &= 1 - \delta
         \end{aligned}
     \]
@@ -423,5 +423,55 @@ KKT:
     \item $x=0$: $\lambda = \log \frac{1}{P_Y(0)}$
     \item $x=1$: $\lambda = \delta \log \frac{\delta}{P_Y(0)} + (1-\delta) \log \frac{1-\delta}{P_Y(1)}$
 \end{itemize}
+
+
+\[
+    \begin{aligned}
+        h_2(\delta) &= -\delta \log \delta - (1-\delta) \log(1-\delta)\\
+        \lambda &= -h_2(\delta) + \delta \lambda - (1-\delta) \log\left (1-2^{-\lambda}\right )\\
+        \lambda &= \log\left( 1-2^{-\frac{h_2(\delta)}{1-\delta}} \right) = C\\
+        P_Y(0) &= 2^{-\lambda}\\
+        &= \frac{1}{1+2^{\frac{-h_2(\lambda)}{1-\delta}}}\\
+        P_Y(1) &= 1- P_Y(0)\\
+        P_X(1) &= \frac{P_Y(1)}{1-\delta}\\
+        &= \frac{1}{(1-\delta)\left(1+2^{\frac{h_2(\delta)}{1-\delta}}\right)}\\
+        P-X(0) &= 1-P_X(1)
+    \end{aligned}
+\]
+
+\section{Continuous channels}
+
+So far: discrete (memoryless) channels.
+
+But we would to add a Gaussian noise. So, we need a real-valued channel.
+
+Let $(X,Y)$ have probability density functions $f_X, f_Y, f_{XY}, f_{Y\vert X}$ etc..
+
+\[
+    \begin{aligned}
+        h(X) &= \int f_X(x) \log f_X(x) \dd x\\
+        &= \esp{-\log f_X(X)}\\
+        h(X\vert Y) &= \esp{-\log f_{X\vert Y} (X\vert Y)}\\
+        h(X,Y) &= \esp{-\log f{XY}(X,Y)}\\
+        D(f_X \Vert g_X) &= \EE_f\left[\log\frac{f_X(X)}{g_X(X)}\right]\\
+        &= \int f_X(x) \log \frac{f_X(x)}{g_X(x)} \dd x\\
+        I(X,Y) &= D(f_{XY} \Vert f_X f_Y)\\
+        &=\iint f_{XY}(x,y) \log \frac{f_{Y\vert X}(y,x)}{f_Y(y)} \dd x\dd y
+    \end{aligned}
+\]
+
+\begin{enumerate}
+    \item $I(X,Y) = h(X) - h(X\vert Y) = h(Y) = h(Y\vert X)$ \textsc{Bayes} ok
+    \item $D(f\Vert g) \geqslant 0$ with equality $\LRa$ $f = g$
+    \item $I(X,Y) \geqslant 0$ with equality $\LRa$ $X \perp\hspace{-7pt}\perp Y$
+    \item Conditioning reduces $h$: $h(X\vert Y) \leqslant h(X)$
+    \item Chain rules: $h(X_1,\ldots, X_n) = h(X_1) + h(X_2 \vert X_1) + \cdots + h(X_n \vert X_1,\ldots,X_{n-1})$
+    \item $h(X_1,\ldots,X_n) \leqslant \sum\limits_{i=1}^n h(X_i)$
+\end{enumerate}
+
+BUT
+
+$h(X) \not\geqslant 0$ in general.
+
 
 
