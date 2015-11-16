@@ -469,9 +469,84 @@ Let $(X,Y)$ have probability density functions $f_X, f_Y, f_{XY}, f_{Y\vert X}$ 
     \item $h(X_1,\ldots,X_n) \leqslant \sum\limits_{i=1}^n h(X_i)$
 \end{enumerate}
 
-BUT
+But
 
 $h(X) \not\geqslant 0$ in general.
+
+\begin{example}
+    $X \sim \U\left( \left[ \frac{-a}{2},\frac{a}{2} \right] \right)$.
+    
+    \[
+        \begin{aligned}
+            h(X) &= \log_2 a\\
+        \end{aligned}
+    \]
+\end{example}
+
+\begin{proposition}
+    \[
+        \begin{aligned}
+            \forall c \in \RR, &h(X + c) = h(X)\\
+            &h(cX) = \log \lvert c \rvert + h(X)
+        \end{aligned}
+    \]
+\end{proposition}
+
+\begin{definition}[Entropy typical set]
+    \[
+        T^n(\varepsilon) = \set{x \left\vert \left\lvert \frac{1}{n} \log f_X(x_i) - h(X) \right\rvert \leqslant \varepsilon \right.}
+    \]
+\end{definition}
+
+\begin{proposition}
+    Discrete case
+    \[
+        \card{T^n(\varepsilon)} = 2^{n(H(X) + \delta(\varepsilon))}
+    \]
+
+    Continuous case
+    \[
+        Vol(T^n(\varepsilon)) = 2^{nh(X) + \delta(\varepsilon)}
+    \]
+    where $\delta \underset{\varepsilon \to 0}{\to} 0$.
+\end{proposition}
+
+\begin{proposition}
+    \[
+        \prob{X \in T^n(\varepsilon)} \to 1
+    \]
+\end{proposition}
+
+Let $X$ be continuous rv with a continuous $f_X(x)$ and $X_\Delta = \Delta_i$ for $\Delta i \leqslant X < \Delta(i+1)$.
+
+\begin{theorem}
+    \[
+        \lim\limits_{\Delta \to 0}( H(X_\Delta) + \log \Delta) = h(X)
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            p_i &= \prob{X_\Delta = \Delta_i}\\
+            &= \int_{i\Delta}^{(i+1)\Delta} f(x) \dd x\\
+            &= f(x_i) \Delta \text{\qquad for some }x_i\in [i\Delta, (i+1)\Delta]
+        \end{aligned}
+    \]
+    
+    \[
+        \begin{aligned}
+            H(X_\Delta) &= - \sum\limits_i p_i\log p_i\\
+            &= - \sum\limits_i \Delta f(x_i) \log (\Delta f(x_i))\\
+            &= \underbrace{- \sum\limits_i \Delta f(x_i) \log f(x_i)}_{\scriptscriptstyle \begin{aligned}\underset{\Delta \to 0}{\to} &-\int f(x) \log f(x)\dd x \\ &h(X) \end{aligned}} - \underbrace{\underbrace{\sum\limits_i f(x_i) \Delta}_{\int f(x) \dd x = 1} \log \Delta}_{\log \Delta}
+        \end{aligned}            
+    \]
+\end{proof}
+
+
+
+
+
+
 
 
 
