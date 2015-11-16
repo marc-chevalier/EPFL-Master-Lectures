@@ -542,10 +542,72 @@ Let $X$ be continuous rv with a continuous $f_X(x)$ and $X_\Delta = \Delta_i$ fo
     \]
 \end{proof}
 
+\begin{theorem}
+    \[
+        I(X_\Delta, Y_\Delta) \underset{\Delta\to 0}{\to} I(X,Y)
+    \]
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            I(X_\Delta, Y) &= H(X_\Delta) - H(X_\Delta \vert Y)\\
+            &= (h(X - \log \Delta + o(\Delta)) - (h(X\vert Y) - \log \Delta + o(\Delta))\\
+            &= h(X) - h(X\vert Y) + o(\Delta)\\
+            &\to I(X,Y)
+        \end{aligned}
+    \]
+    
+    So $I(X_\Delta, Y) \to I(X,Y)$. Similarly $I(X, Y_\Delta) \to I(X,Y)$ and $I(X_\Delta, Y_\Delta) \to I(X,Y_\Delta)$. So $I(X_\Delta, Y_\Delta) \to I(X,Y)$.
+\end{proof}
 
+\subsection{Gaussian Noise}
 
+$X \sim \N(0,\sigma^2)$.
 
+\[
+    f_X(x) = \frac{1}{\sqrt{2\pi\sigma^2}} e^{\frac{-x^2}{2\sigma^2}}
+\]
 
+\[
+    \begin{aligned}
+        h(X) &= \esp{-\ln f_X(x)}\\
+        &= \esp{\frac{1}{2} \ln(2\pi\sigma^2) + \frac{1}{2\sigma^2}X^2}\\
+        &= \frac{1}{2}\left( 1+\ln(2\pi\sigma^2) \right)\\
+        &= \frac{1}{2} \ln(2\pi e\sigma^2)\text{ NATS}\\
+        &= \frac{1}{2} \log(2\pi e\sigma^2) \text{ Bits}
+    \end{aligned}
+\]
+
+\begin{theorem}[Maximal entropy]
+    If $\Var{X} = \sigma^2$, then $h(X) \leqslant \frac{1}{2} \log (2\pi e\sigma^2)$ with equality iff $X\sim \N(\mu,\sigma^2)$ for some $\mu$.
+\end{theorem}
+\begin{proof}
+    Wlog $\esp{X} = 0$.
+    
+    Let $X$ have pdf $f$ and let $g$ be the $N(0,\sigma^2)$ pdf.
+    
+    \[
+        \begin{aligned}
+            \int f(x) \log g(x) \dd x &= \EE_f\left[ c_1 + c_2 X^2 \right]\\
+            &= \EE_g\left[ c_1 + c_2 X^2\right]\\
+            &= \int g(x) \log g(x) \dd x
+        \end{aligned}
+    \]
+    
+    Goal: show $-\int f(x) \log f(x) \dd x\leqslant -\int g(x) \log g(x) \dd x \LRa -\int f(x) \log f(x) \dd x\leqslant -\int f(x) \log g(x) \dd x$. Ie. $\int f(x) \log \frac{f(x)}{g(x)} \geqslant 0$ ie. $\D(f\Vert g) \geqslant 0$.
+\end{proof}
+
+\subsection{Vector Extensions}
+\begin{itemize}
+    \item If $X \in \RR^d$, $X=\N(0, K)$ where $K \in \M_d(\RR)$, then $h(X) = \frac{1}{2}\log \det(2\pi e K)$.
+    \item $\opname{Cov}(X)) = K$, then $h(X) \leqslant \frac{1}{2} \log \det (2\pi e K)$.
+    \item $h(X+\varepsilon = h(X)$.
+    \item $h(AX) = h(X) + \log \lvert\det A \rvert$.
+\end{itemize}
+
+\subsection{Additive White Gaussian Noise Channel}
+
+$Y = X + Z$, $Z\sim \N(0,\sigma^2)$. White noise: $Z_i \perp\hspace{-7pt}\perp Z_j$ for $i\neq j$ (ie. memoryless).
 
 
 
