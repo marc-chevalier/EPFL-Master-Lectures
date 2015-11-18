@@ -609,6 +609,54 @@ $X \sim \N(0,\sigma^2)$.
 
 $Y = X + Z$, $Z\sim \N(0,\sigma^2)$. White noise: $Z_i \perp\hspace{-7pt}\perp Z_j$ for $i\neq j$ (ie. memoryless).
 
+\[
+    \begin{aligned}
+        I(X,Y) &= I(X+Z) - \underbrace{h(X+Z \vert X}_{\scriptscriptstyle\begin{aligned}
+                &= h(Z + X)\\&=h(Z)\\&=\frac{1}{2}\log(2\pi e \sigma^2))
+        \end{aligned}}
+    \end{aligned}
+\]
 
+Cost function $b(x)$.
 
+Average constraint $\frac{1}{M} \sum\limits_{n=1}^{M} \frac{1}{n} \sum\limits_{i=1}^n b(x_i^{(u)}) \leqslant P$.
 
+\begin{theorem}
+    If $\frac{H}{\tau_S} > \frac{C(P)}{\tau_C}$, any code  with $\sum\limits_u p(u) \frac{1}{n} \sum\limits_{i=1}^nb(x^{(u)}_i) \leqslant P$ has bit error rate $P_e \not\to 0$.
+\end{theorem}
+
+\begin{lemma}
+    \[
+        \sum\limits_{i=1}^n I(X_i, Y_i) \leqslant , C(P)
+    \]
+\end{lemma}
+
+\subsection{Parallel Gaussian Channel}
+
+Let $x = (X_1,\ldots,X_k)$.
+
+$Z_1 \sim\N(0,\sigma_1^2)$ and  $Z_k \sim\N(0,\sigma_k^2)$
+
+$Y_i = X_i + Z_i$.
+
+$Z_i$ pairwise independent.
+
+Power constraint
+
+$b(x) = b(x_1,\ldots,x_n) = \sum\limits_{i=1}^k x_i^2$
+
+Constrain $\esp{b(X)} \leqslant P$.
+
+$C(P) = \max\limits_{\sum\limits_{i=1}^k \esp{X_i^2}} I(X_1,\ldots,X_k ; Y_1,\ldots, Y_k) = \max\limits_{\substack{P_1,\ldots,P_k\\P_i \geqslant 0\\\sum\limits_{i=1}^k P_i \leqslant P}} \sum\limits_{i=1}^n\frac{1}{2} \log\left(1+\frac{P_i}{\sigma_i^2}\right)$.
+
+Let $\alpha_i=\frac{P_i}{P}$ (proportion of power used in subchannel $i$)
+
+KKT : 
+\[
+    \begin{aligned}
+        \text{Optimal} \&LRa \exists \lambda: \frac{\partial f}{\partial \alpha_i} \leqslant\lambda\\
+        &\LRa \exists \lambda : \sigma_i^2+P\alpha_i \geqslant \lambda\\
+        &\LRa \exists \lambda \sigma_i^2+P_i \geqslant \lambda \text{ with equality if }P_i > 0
+    \end{aligned}
+\]
+$P_i = \max\set{0,\lambda - \sigma_i^2}$
