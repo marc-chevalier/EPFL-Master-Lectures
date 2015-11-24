@@ -654,9 +654,118 @@ Let $\alpha_i=\frac{P_i}{P}$ (proportion of power used in subchannel $i$)
 KKT : 
 \[
     \begin{aligned}
-        \text{Optimal} \&LRa \exists \lambda: \frac{\partial f}{\partial \alpha_i} \leqslant\lambda\\
+        \text{Optimal} &\LRa \exists \lambda: \frac{\partial f}{\partial \alpha_i} \leqslant\lambda\\
         &\LRa \exists \lambda : \sigma_i^2+P\alpha_i \geqslant \lambda\\
         &\LRa \exists \lambda \sigma_i^2+P_i \geqslant \lambda \text{ with equality if }P_i > 0
     \end{aligned}
 \]
 $P_i = \max\set{0,\lambda - \sigma_i^2}$
+
+\section{Build Your Own Encoder/Decoder}
+
+For a while, we will be concerned with the Binary Symmetric Channel  ($\prob{x=y} = p$ et $\prob{x=1-y} = 1-p$).
+
+Code for the BSC is a array $M (=2^{nR}) \times n$ of binary entries.
+
+Given $\overline{y} = (y_1,\ldots,y_n)$ find the codeword (a table row) closet to $\overline{y}$ in \textsc{Hamming} distance.
+
+Why?
+\[
+    \begin{aligned}
+        \prob{\overline{y}\vert \overline{x}} &= \prod\limits_{i=1}^n \underbrace{\prob{y_k \vert x_i}}_{\begin{cases}1-p & y_i = x_i\\p & y_i \neq x_i\end{cases}}\\
+        &= (1-p)^n \left( \frac{p}{1-p} \right)^{\card{\set{i}{y_i\neq x_i}}}
+        &= \text{decreasing in }d_H(\overline{x},\overline{y})
+    \end{aligned}
+\]
+So
+\[
+    \text{Maximum likehood} \LRa \text{Minimum distance}
+\]
+
+\begin{definition}[\textsc{Hamming} distance]
+    \[
+        d_H(\overline{x}, \overline{y}) := \card{\set{i\vert y_i\neq x_i}}
+    \]
+\end{definition}
+
+We immediately see $(n, nR)$ as visible parameters of the code (named $\C$). Let us also add $d = d_H(\C) = \min\limits_{\substack{1\leqslant i\leqslant M\\1\leqslant j < i}} d_H\left(X^{(i)}, X^{(j)}\right)$. as the minimum distance of $\C$ to these parameter.
+
+
+\begin{theorem}[\textsc{Singleton} bound]
+    \[
+        M > 2^k \Ra d \geqslant n - k
+    \]
+    where $M$ is the number of codewords.
+\end{theorem}
+\begin{proof}
+    Given $k$ columns, we can only write $2^k$ different things. So, is we have to write more than $2^k$ codewords, at least 2 will agree on these $k$ columns. So, their \textsc{Hamming} distance is at most $n - k$.
+\end{proof}
+
+\begin{corollary}[\textsc{Singleton} bound, other style]
+    \[
+        M = 2^k \Ra d \geqslant n - k + 1
+    \]
+    where $M$ is the number of codewords.
+\end{corollary}
+
+\begin{theorem}
+    The \textsc{Hamming} distance is a distance.
+\end{theorem}
+\begin{proof}
+    Isn't it obvious?
+\end{proof}
+
+\begin{corollary}
+    Suppose $(x, x') \in \left(\set{0,1}^n\right)^2$ with $d = d_H(x, x')$. Set $r = \floor{ \frac{d-1}{2}}$. Then $\mathcal{B}(x, r) \cap \mathcal{B}(x',r) = \emptyset$.
+\end{corollary}
+\begin{proof}
+    Suppose not, then $\exists \overline{y} : d_H(x,y) \leqslant r \wedge d_H(x',y) \leqslant r$. But $d_H(x,y) \leqslant r \Ra d_H(x',y) \leqslant r \Ra d(x,x') \leqslant 2r < d$. Contradiction.
+\end{proof}
+
+Also note $\card{\mathcal{B}(x,r)} = \sum\limits_{k=0}^{\min(n,r)}\binom{n}{k}$.
+
+\begin{theorem}[Sphere packing bound]
+    Suppose $\C \subseteq \set{0,1}^n$ is a binary code with $M$ codeword. Then
+    \[
+        M \sum\limits_{k=0}^{\min\left(n,\ceil{\frac{d-1}{2}}\right)}\binom{n}{k} \leqslant 2^n
+    \]
+\end{theorem}
+\begin{proof}
+    By the corollary, the balls $\set{\mathcal{B}(x,r)\vert x \in \C}$ are all disjoint. Then
+    \[
+        \sum\limits_{x\in \C}\card{\mathcal{B}(x,r)} = \card{\bigcup\limits_{x \in \C} \mathcal{B}(x,r)}
+    \]
+
+    But $\bigcup\limits_{x \in \C} \mathcal{B}(x,r) \subseteq \set{0,1}^n$ so
+    
+    \[
+        \card{\bigcup\limits_{x \in \C} \mathcal{B}(x,r)} \leqslant 2^n
+    \]
+\end{proof}
+
+
+\begin{theorem}[\textsc{Gilbert-Varshamov} bound]
+    Given $n, d$, there exists a code $\C$ with blocklength $n$, $d_{\min} \geqslant d$
+    \[
+        M \sum\limits_{k=0}^{d-1} \binom{n}{k} \geqslant 2^n
+    \]
+\end{theorem}
+\begin{proof}
+    We take a word in $\set{0,1}^n$ and we mark the ball of radius $d-1$. And we redo with an unmarked word until the whole space is marked.
+    \[
+        \underbrace{M}_{\text{\# of codeword}} \underbrace{\sum\limits_{k=0}^{d-1} \binom{n}{k}}_{\geqslant \text{\# of word marked at each step}} \geqslant \underbrace{2^n}_{\text{total number of words}}
+    \]
+\end{proof}
+
+
+
+
+
+
+
+
+
+
+
+
+
