@@ -757,6 +757,97 @@ Also note $\card{\mathcal{B}(x,r)} = \sum\limits_{k=0}^{\min(n,r)}\binom{n}{k}$.
     \]
 \end{proof}
 
+\begin{definition}
+    A code $\C\subseteq\set{0,1}^M$ is said to be linear if $\forall (x,y)\in\C^2, x+y\in\C$.
+\end{definition}
+
+\begin{example}
+    $\C = \set{001,111}$ is not linear ($000$ missing).
+    
+    $\C = \set{001,111,000,110}$ is linear since 
+    
+    \[
+        \begin{aligned}
+            \C&=\opname{Vect}_{\ZZ/2\ZZ}((001,111))\\
+            &= \set{\left(\begin{matrix}u_1&u_2\end{matrix}\right)\left(\begin{matrix}0&0&1\\1&1&1\end{matrix}\right)\vert (u_1,u_2)\in\set{0,1}^2}\\
+            &= \set{\left(\begin{matrix}0&1\\0&1\\1&1\end{matrix}\right)\left(\begin{matrix}u_1\\u_2\end{matrix}\right)\vert (u_1,u_2)\in\set{0,1}^2}
+        \end{aligned}
+    \]
+\end{example}
+
+\begin{proposition}
+    If $\C$ is a linear code, then $\card{\C} = 2^k$ for some integer $k$, and there exists a $k\times n$ binary matrix $G$ such that
+    \[
+        \C = \M_{1,k}(\ZZ/2\ZZ)G    
+    \]
+\end{proposition}
+
+\begin{proposition}
+    If $\C\subseteq \set{0,1}^M$ is a linear code whith $\card{\C} = 2^k$, then there exists a $n\times(n-1)$ matrix $H$ such that $\C = \opname{Ker} H$.
+\end{proposition}
+
+$H$ is called the parity-check matrix.
+
+\begin{definition}
+    The \textsc{Hamming} weight $w_H(x)$ of a vector $x$ is the sum of its components. Ie. it is the 1-norm.
+\end{definition}
+
+\begin{definition}
+    Given a linear code $\C$, let $w_{\min}(\C) = \min_{\substack{x\in\C\\x\neq 0}w_H(x)}$.
+\end{definition}
+
+\begin{theorem}
+    For a linear code $\C$, $w_H(\C) = d_{\min}(\C)$
+\end{theorem}
+\begin{proof}
+    \[
+        d_H(x,0) = w_H(x)
+    \]
+    so
+    \[
+        x_H(\C) \geqslant d_{min}(C)
+    \]
+    Also if $x\neq x' \in \C$, $w_H(x+x') = d_H(x,x')$.
+\end{proof}
+
+\begin{example}
+    Let
+    \[
+        H = \left(
+            \begin{matrix}
+                1 & 0 & 0\\
+                0 & 1 & 0\\
+                0 & 0 & 1\\
+                1 & 1 & 0\\
+                0 & 1 & 1\\
+                1 & 0 & 1\\
+                1 & 1 & 1\\
+            \end{matrix}
+        \right)
+    \]
+    
+    Let $\C = \opname{Ker} H^T$.
+    
+    \[
+        \left(
+        \begin{matrix}
+        x_1\\x_2\\x_3
+        \end{matrix}
+        \right) = \left( \begin{matrix}
+        1&0&1&1\\
+        1&1&0&1\\
+        0&1&1&1\\
+        \end{matrix} \right) \left( \begin{matrix}
+        x_4\\x_5\\x_6\\x_7
+        \end{matrix}\right)
+    \]
+    So $\card{\C} = 16$.
+    The spheres of radius 1 around the 16 codewords are disjoint and completely cover $\set{0,1}^7$.
+\end{example}
+
+We can generalize to $(2^m-1,2^m-m-1,3)$ \textsc{Hamming} code.
+
+
 
 
 
