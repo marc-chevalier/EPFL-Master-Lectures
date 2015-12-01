@@ -661,7 +661,7 @@ KKT :
 \]
 $P_i = \max\set{0,\lambda - \sigma_i^2}$
 
-\section{Build Your Own Encoder/Decoder}
+\section{Error Detection and Correction}
 
 For a while, we will be concerned with the Binary Symmetric Channel  ($\prob{x=y} = p$ et $\prob{x=1-y} = 1-p$).
 
@@ -847,7 +847,46 @@ $H$ is called the parity-check matrix.
 
 We can generalize to $(2^m-1,2^m-m-1,3)$ \textsc{Hamming} code.
 
+\subsection{\textsc{Reed-Solomon} Codes}
 
+Given a field $\FF$, given $n \leqslant \card{\FF}$, given $k\leqslant n$, we will construct a linear code $\C \subseteq \FF^n$ with $\card{\C} = 2^k$ as follow:
+\begin{enumerate}[1)]
+    \item Pick $(\alpha_i)_{i\in\brackets{1,n}} \in \FF^n$ pairwise distinct.
+        \[
+            \C = \set{(u(\alpha_i))_{i\in\brackets{1,n}} \vert u \in \FF_{k-1}[X]}
+        \]
+\end{enumerate}
+
+\begin{proposition}
+    All \textsc{Reed-Solomon} code are linear.
+\end{proposition}
+\begin{proof}
+    Since the evaluation morphism is\dots a morphism.
+\end{proof}
+
+\begin{corollary}
+    \[
+        \opname{dim}(\C) = w_{\min}(\C)
+    \]
+\end{corollary}
+
+\begin{theorem}
+    An $(n,k)$ RS code has $d_{\min} \geqslant n-(k-1)$.
+\end{theorem}
+\begin{proof}
+    $d_{\min} = w_{\min}(\C)$.
+    
+    Fir any $u\in\FF_{k-1}[X]$ and $u\neq 0$, $u$ has at most $k-1$ roots. So among $(u(\alpha_i))_{i\in\brackets{1,n}}$ there are at most $k-1$ zeros. Thus, $\lVert (u(\alpha_i))_{i\in\brackets{1,n}} \rVert_1 \geqslant n-(k-1)$.
+\end{proof}
+
+\begin{corollary}
+    An $(n,k)$ RS code has $d_{\min} = n-(k-1)$.
+\end{corollary}
+\begin{proof}
+    cf. previous theorem and \textsc{Singleton} bound.
+\end{proof}
+
+If we are given a binary input channel (e.g. BSC) and we have designed a RS code for the field $\FF = \FF_2^m$ with block length $n$, and size $\card{\FF_2^m}^k = 2^{mk}$.
 
 
 
