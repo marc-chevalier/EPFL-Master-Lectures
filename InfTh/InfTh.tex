@@ -32,6 +32,178 @@ Website: \url{http://ipg.epfl.ch/doku.php?id=en:courses:2015-2016:itc}
 
 \chapter{Channel}
     \input{src/channel.tex}
+    
+\chapter{Rate-Distortion theory}
+
+Rate-distortion theory = Lossy compression = Lossy source coding = Quantization.
+
+Setup
+\begin{itemize}
+    \item Memory less stationary source: $\U_1,\U_2,\ldots$ iid $\sim p_u$, $\U_i \in \U$
+    \item Reproduction alphabet $\V$
+    \item Distortion measure $d:\U\times\V \to \RR^+$
+\end{itemize}
+
+What we want
+
+$U_1,\ldots,U_n \overset{f}{\to} nR \text{ bits integer} \overset{\Phi}{\to} V_1\ldots,V_n$
+
+Two parameters:
+\begin{itemize}
+    \item $R$: bits/source letter
+    \item $D = \esp{\frac{1}{n} \suml_{i=1}^n d(U_1, V_1) }$: expectation average distribution.
+\end{itemize}
+
+Question: what $(R,D)$ pairs are feasible?
+
+\begin{theorem}[Bad news]
+    Suppose $\U^n := U_1,\ldots,U_n \overset{f}{\to} nR \text{ bits integer} \overset{\Phi}{\to} V_1\ldots,V_n$ with expected average distribution $=D$, then $\exists p_(v\vert u) : R \geqslant I(U,V) \wedge D \geqslant \esp{d(U,V)}$, computed wrt $p_{uv}(u,v) = p_u(u)p(v\vert u)$.
+\end{theorem}
+\begin{proof}
+    \[
+        \begin{aligned}
+            n R &\geqslant I(\U^n, \V^n)\\
+            &= H(U^n) - H(U^n\vert V^n)\\
+            &= \suml_iH(U_i) - \sum_i H(U_i\vert V^nU^{i-1})\\
+            &\geqslant \suml_i (H(u_i) - H(U_i |vert V_i)\\
+            &= \suml_{i=1}^n I(U_i, V_i)
+        \end{aligned}
+    \]
+    
+    \begin{enumerate}
+        \item $R \geqslant \frac{1}{n} \suml_{i=1}^n I(U_i, V_i)$
+        \item $D=\frac{1}{n} \suml_{i=1}^n \esp{d(U_1, V_i)}$
+    \end{enumerate}
+    
+    denote the distribution of $(U_1, V_i)$ by $p_i(u,v)$ note that $p_i(u,v) = p_u(u) p_i(v\vert u)$.
+    
+    Consequently 
+    \begin{itemize}
+        \item $R \geqslant \frac{1}{n} \suml_{i=1}^n I(U,V) \vert_{p_{uv} = p_u(u) p_i(v\vert u)}$
+        \item $D = \frac{1}{n} \suml_{i=1}^n \esp{d(U,V)} \vert_{p_{uv} = p_u(u) p_i(v\vert u)} = \suml_{u,v} \frac{1}{n} \suml_{i=1}^n d(u,v) p_u(u) p_i(v\vert u) = \esp{d(U,V)}$
+    \end{itemize}
+
+    Also note
+    \[
+        \frac{1}{n} \suml_{i=1}^nI(U,V)\vert_{p_{uv} = p_u(u)p_i(v\vert u)} = I(U,V \vert Q)
+    \]
+    where $(Q,U,V)$ has the distribution $\prob{Q=i, U=u, V=v} = \frac{1}{n} = \frac{1}{n} p_0(u) p_i(v\vert u)$
+
+    $\Ra$ $\prob{U=u, V=v} = p_u(u) \frac{1}{n} \suml_{i=1}^n p_i(v\vert u) = p(u,v)$ and $I(U,V \vert Q) = I(U,VQ) \geqslant I(U,V)$
+    
+    So we see that for $(v\vert u) = \frac{1}{n} \sum p_i(v\vert u)$ we have
+    \begin{enumerate}
+        \item $R\geqslant I(U,V)$
+        \item $D = \esp{d(U,V)}$
+    \end{enumerate}
+    as we were supposed to show.
+\end{proof}
+
+\begin{theorem}[Good news]
+    Given $p_u(u)$ (ie. fiven a memoryless stationary source) and given $p(v\vert u)$ given any $\varepsilon > 0$ then, there exists $n,f,\Phi$ such that with $U_1,\ldots,U_n \overset{f}{\to} nR \text{ bits integer} \overset{\Phi}{\to} V_1\ldots,V_n$ with
+    \[
+        \begin{aligned}
+            R &\leqslant I(U,V) + \varepsilon\\
+            D &\leqslant \esp{d(U,V)} + \varepsilon
+        \end{aligned}    
+    \]
+\end{theorem}
+\begin{proof}
+    Given $p(v\vert u)$, given $R = I(U,V) + \varepsilon$ generate $2^{nR}$ sequences $V^n(1),\ldots, V^n(2^{nR})$. By choosing $\set{ V_i(m) \vert 1\leqslant i \leqslant n, 1\leqslant m \leqslant 2^{nR}}$ iid $\sim p_v(v)$. And set $\Phi(i) = V^n(i)$
+    
+    \[
+        f(u_1\ldots u_n) = \begin{cases}
+            i & \text{if } ((u_1, V_1(i)),\ldots, (u_n, V_n(i))) \in T^n_\varepsilon(p_{uv})\\
+            1 & \text{otherwise}
+        \end{cases}
+    \]
+    
+    Observations: the rate of this design is $R$, then only worry is about the distortion.
+    
+    if the success branch happens, then $U^n \overset{f}{\to} \overset{\Phi}{\to} V^n$ with $(U^n,V^n) \in T_\varepsilon^n(p_{uv})$.
+    
+    In this case 
+    \[
+        \begin{aligned}
+            \frac{1}{n} \suml_{i=1}^n d(U_1, V_i) &= \frac{1}{n} \sum_{u,v} d(u,v) \underbrace{\card{\set{i\vert (U_i, V_i) = (u,v)}}}_{\leqslant n(1+\varepsilon)p_{uv}(u,v)}\\
+            &= (1+\varepsilon)\esp{d(U,V)}
+        \end{aligned}
+    \]
+    
+    In case of failure,
+    \[
+        \begin{aligned}
+            \frac{1}{n} \suml_{i=1}^n d(U_i, V_i) &\leqslant \maxl_{u,v} d(u,v)\\
+            &= D_{\max}
+        \end{aligned}
+    \]
+    
+    \[
+        \begin{aligned}
+            \esp{\frac{1}{n}\sum d(U_i, V_i)} &\leqslant 1(1+\varepsilon) \esp{d(U,V)}+\prob{\text{failure}} D_{\max}
+        \end{aligned}    
+    \]
+    We will show that $\prob{\text{failure}} \overset{n\to\infty}{\longra} 0 $, which will prove the theorem.
+    
+    Failure happens if $\bigwedge\limits_{i=1}^{2^{nR}}(U^n, V^n(i)) \not\in T_\varepsilon^n(p_{uv})$.
+    
+    Suppose we fix $U^n = u^n$.
+    \[
+        \prob{\text{failure} \vert U^n = u^n} = \prodl_{m=1}^{2^{nR}} \prob{(U^n, V^n(m)) \not\in T_\varepsilon^n(p_{uv})} = \left( 1-\prob{(U^n, V^n(m)) \in T_\varepsilon^n(p_{uv})} \right)^{2^{nR}}
+    \]
+    
+    Consider two cases
+    
+    \begin{enumerate}
+        \item $u^n \in T^n_\varepsilon(p_u \Ra \prob{\text{failure}} = \prob{\text{failure} \vert U^n\in T_\varepsilon^n(p_{uv})}$
+        \item $u^n \not\in T^n_\varepsilon(p_u \Ra \prob{\text{failure}} = 1$
+    \end{enumerate}
+    
+    Consider the experiment $U_1, \ldots, U_n$ iid $\sim p_u$, $V_1,\ldots, V_n$ iid $\sim p_v$.
+    
+    \[
+        \prob{(U^v,V^n)\in T_{\varepsilon}^n(p_{uv}} \approx 2^{-nI(U,V)(1\pm \varepsilon)}
+    \]
+    when $u^n \in T^n_\varepsilon(p_u)$ we have
+    \[
+        \prob{(u^n, V^n(1))\in T^n_\varepsilon(p_{uv}} \geqslant 2^{-nI(U,V)(1+\varepsilon)}
+    \]
+    \[
+        \begin{aligned}
+            \prob{\text{failure} \vert u^n} &\leqslant \left(1-2^{-nI(U,V)(1+\varepsilon}\right)^{2^{nR}}\\
+            &\leqslant \exp\left(-2^{-nI(U,V)(1+\varepsilon)}\right) 2^{nR}\\
+            &= \exp\left(-2^{n\left(R-I(U,V)(1+\varepsilon)\right)}\right)
+        \end{aligned}
+    \]
+    So
+    \[
+        \begin{aligned}
+            \prob{\text{failure}} &= \prob{\text{failure} \vert U^n \in T(p_u)}\prob{U^n \in T(p_u)} + \prob{\text{failure} \vert U^n \not\in T(p_u)}\prob{U^n \not\in T(p_u)}\\
+            &\leqslant \prob{\text{failure} \vert U^n \in T} + \prob{U^n\not\in T}
+        \end{aligned}
+    \]
+    So $\prob{\text{failure}} \overset{n\to\infty}{\longra} 0$
+\end{proof}
+
+\begin{example}
+    $U\in\set{0,1}$ equal prob. $\V = \set{0,1}$, $d(u,v) = [u\neq v]$
+    \[
+        \begin{aligned}
+            R &= 1-h_2(p)\\
+            D &= p\\
+            0 &\leqslant p \leqslant \frac{1}{2}
+        \end{aligned}
+    \]
+\end{example}
+
+\begin{example}
+    $U\sim \N(0,\sigma^2) \in \RR$, $\V \in \RR$, $d(u,v) = (u-v)^2$
+    
+    \[
+        R = \frac{1}{2} \log\frac{\sigma^2}{D}\qquad D \leqslant \sigma^2
+    \]
+\end{example}
+
 
 \bibliographystyle{alpha}
 \bibliography{bibliography}

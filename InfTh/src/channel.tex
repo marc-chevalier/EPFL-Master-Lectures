@@ -853,7 +853,7 @@ Given a field $\FF$, given $n \leqslant \card{\FF}$, given $k\leqslant n$, we wi
 \begin{enumerate}[1)]
     \item Pick $(\alpha_i)_{i\in\brackets{1,n}} \in \FF^n$ pairwise distinct.
         \[
-            \C = \set{(u(\alpha_i))_{i\in\brackets{1,n}} \vert u \in \FF_{k-1}[X]}
+            \C = \set{(u(\alpha_i))_{i\in\brackets{1,n}} \middle\vert u \in \FF_{k-1}[X]}
         \]
 \end{enumerate}
 
@@ -888,14 +888,100 @@ Given a field $\FF$, given $n \leqslant \card{\FF}$, given $k\leqslant n$, we wi
 
 If we are given a binary input channel (e.g. BSC) and we have designed a RS code for the field $\FF = \FF_2^m$ with block length $n$, and size $\card{\FF_2^m}^k = 2^{mk}$.
 
+\subsection[Polar Codes]{Polar Codes [E. \textsc{Arikan}]}
 
+Among binary input channels, there are two easy cases.
 
+\[
+    \prob{y \vert 0} \prob{y \vert 1} = 0
+\]
+perfect channel! Capacity = 1 achieved by the trivial code: $Id$.
 
+The other nice case is 
+\[
+    \prob{y\vert 0} = \prob{y \vert 1}
+\]
+ie. $Y$ is independent of $X$. The capacity is 0. We can do nothing with this channel. The code $m\mapsto 0$ is optimal.
 
+The real life channel are neither perfect, nor useless.
 
+If we can somehow convert a imperfect channel into a mixture of "perfect" ans "useless" channels, then the best code will be the combination of the two trivial codes.
 
+Convolution method:
 
+$X_1 = U_1+U_2$, $X_2 = U_2$ so $U_1 = X_1+X_2$, $U_2 = X_2$.
 
+$p^-: U_1 \to (Y_1,Y_2)$, $p^+:U_2\to(Y_1,Y_2,U_1)$.
 
+Suppose we have designed codes for $p^-$
+\[
+    \begin{array}{ll}
+        f^- : m^- \to U_1\ldots U_n & \Phi^- : ((Y_1,Y_2),\ldots,(Y_{2n-1},Y_{2n})) \to \widehat{m^-}\\
+        f^+ : m^+ \to U_{n+1}\ldots U_{2n} & \Phi^+ : ((Y_1,Y_2,U_1),\ldots,(Y_{2b-1},Y_{2n},U_n)) \to \widehat{m^+}
+    \end{array}
+\]
+
+Suppose $f^-, \Phi^-$ had a probability of error $p^-$ 
+and $f^+, \Phi^+$ had a probability of error $p^+$.
+
+\[
+    \left.
+    \begin{array}{lclcl}
+        m^- & \ra & f^- & \ra & U_1\ldots U_n\\
+        m^+ & \ra & f^+ & \ra & U_{n+1}\ldots U_{2n}
+    \end{array}\right\rbrace
+    \begin{array}{lcc}
+        X_1 = U_1\oplus U_{n+1} & \ra & Y_1\\
+        X_2 = U_{n+1} & \ra & Y_2\\
+        X_3 = U_2\oplus U_{n+2} & \ra & Y_3\\
+        X_4 = U_{n+2} & \ra & Y_4\\
+        \qquad \vdots\\
+        X_{2n-1} = U_n\oplus U_{2n} & \ra & Y_{2n-1}\\
+        X_{2n} = U_{2n} & \ra & Y_{2n}\\
+    \end{array}
+\]
+
+What is the probability $p_e$ of error the overall scheme $(m^-,m^+) \to (\widehat{m^-},\widehat{m^+})$.
+
+\[
+    \begin{aligned}
+        \set{\widehat{m^-} \neq m^- \vee \widehat{m^+}\neq m^+} &= \set{\widehat{m^-} \neq m^-} \cup \set{\widehat{m^+}\neq m^+}\\
+        &= \set{\widehat{m^-} \neq m^-} \sqcup \set{\widehat{m^+}\neq m^+ \wedge \widehat{m^-} = m^-}\\
+        p_e &\leqslant p_e^+ + p_e^-
+    \end{aligned}
+\]
+
+\begin{theorem}
+    There is a function $\kappa$ with $\forall \delta \in \left] 0;\frac{1}{2} \right], \kappa(\delta) = 0$, such that for any channel $P$,
+    \[
+        I(P) \in ]\delta;1-\delta[ \Ra I(p^+) - I(p^-) \geqslant \kappa(\delta)
+    \]
+\end{theorem}
+\begin{proof}
+    Later
+\end{proof}
+
+\begin{theorem}
+    Given a $P : \FF_2 \ra \Y$ define
+    \[
+        \theta_l(\delta) = \frac{1}{2^l} \suml_{s\in\set{-\cdots-,\ldots,+\cdots+}} \mathbb{1}\set{I(p^s)\in]\delta, 1-\delta[}
+    \]
+    Then for any $\delta > 0$, $\liml_{l\to\infty} \theta_l(\delta) = 0$.
+\end{theorem}
+
+\begin{theorem}
+    \[
+        I(p) \in ]\delta;1-\delta[ \Ra I(p)-I(p^-) \geqslant \frac{\kappa(\delta)}{2}
+    \]
+\end{theorem}
+
+From these, we have a coding method: given $R < I(p)$, choose $l$ such that the fraction of good channels is $>R$.
+
+The code construction
+\begin{itemize}
+    \item can achieve rate $R$ with $R<I(P)$
+    \item encoding complexity $\frac{n}{2}l = \frac{n}{2}\log_2(n)$ xor for a block length $n$ code
+    \item decoding complexity $\cplx{n\log n}$ multiplications and additions.
+\end{itemize}
 
 
