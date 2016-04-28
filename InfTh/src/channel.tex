@@ -27,7 +27,7 @@ There is a sequence of events:
 
 We say that the transmission is performed without feedback if
 \[
-    \prob{x_i \vert x_{i-1} ldots x_1 y_{i-1}\ldots y_1} = \prob{x_i \vert x_{i-1}\ldots x_1}
+    \prob{x_i \vert x_{i-1} \ldots x_1 y_{i-1}\ldots y_1} = \prob{x_i \vert x_{i-1}\ldots x_1}
 \]
 
 \begin{theorem}
@@ -313,15 +313,15 @@ $e$ for erasure.
 
 \[
     \begin{aligned}
-        H(X \vert Y = 0) &= 0
-        H(X \vert Y = 1) &= 0
+        H(X \vert Y = 0) &= 0\\
+        H(X \vert Y = 1) &= 0\\
         H(X \vert Y = e) &= H(X)
     \end{aligned}
 \]
 
 \[
     \begin{aligned}
-        I(X,Y) = (1-\varepsilon) H(X)\\
+        I(X,Y) &= (1-\varepsilon) H(X)\\
         &\leqslant 1-\varepsilon
     \end{aligned}
 \]
@@ -627,7 +627,7 @@ Average constraint $\frac{1}{M} \sum\limits_{n=1}^{M} \frac{1}{n} \sum\limits_{i
 
 \begin{lemma}
     \[
-        \sum\limits_{i=1}^n I(X_i, Y_i) \leqslant , C(P)
+        \sum\limits_{i=1}^n I(X_i, Y_i) \leqslant C(P)
     \]
 \end{lemma}
 
@@ -793,7 +793,7 @@ $H$ is called the parity-check matrix.
 \end{definition}
 
 \begin{definition}
-    Given a linear code $\C$, let $w_{\min}(\C) = \min_{\substack{x\in\C\\x\neq 0}w_H(x)}$.
+    Given a linear code $\C$, let $w_{\min}(\C) = \min_{\substack{x\in\C\\x\neq 0}}w_H(x)$.
 \end{definition}
 
 \begin{theorem}
